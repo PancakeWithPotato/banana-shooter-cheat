@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{c00f5cf8-5c4c-4bb9-bce3-429daf36eb6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\headers">
+      <UniqueIdentifier>{1b613e12-9823-44b5-bddc-21ca7247a428}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\sources">
+      <UniqueIdentifier>{1aadaac3-cd27-4686-850a-67a8232f3b9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ext">
+      <UniqueIdentifier>{1bc6a9fb-da9a-4f50-8442-bafc1e6643fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ext\minhook">
+      <UniqueIdentifier>{73347c4b-df02-418a-bed5-b8f1d5612fca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ext\termcolor">
+      <UniqueIdentifier>{87ee575f-9aae-4756-bbec-e656dee75402}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>src\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\mh\buffer.c">
+      <Filter>ext\minhook</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\mh\hook.c">
+      <Filter>ext\minhook</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\mh\trampoline.c">
+      <Filter>ext\minhook</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\mh\hde\hde32.c">
+      <Filter>ext\minhook</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\mh\hde\hde64.c">
+      <Filter>ext\minhook</Filter>
+    </ClCompile>
+    <ClCompile Include="hooks.cpp">
+      <Filter>src\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="hack.cpp">
+      <Filter>src\sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="includes.h">
+      <Filter>src\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="hooks.h">
+      <Filter>src\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\mh\buffer.h">
+      <Filter>ext\minhook</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\mh\MinHook.h">
+      <Filter>ext\minhook</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\mh\trampoline.h">
+      <Filter>ext\minhook</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\mh\hde\hde32.h">
+      <Filter>ext\minhook</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\mh\hde\hde64.h">
+      <Filter>ext\minhook</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\mh\hde\pstdint.h">
+      <Filter>ext\minhook</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\mh\hde\table32.h">
+      <Filter>ext\minhook</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\mh\hde\table64.h">
+      <Filter>ext\minhook</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\termcolor\termcolor.hpp">
+      <Filter>ext\termcolor</Filter>
+    </ClInclude>
+    <ClInclude Include="hack.h">
+      <Filter>src\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="offsets.h">
+      <Filter>src\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="binds.h">
+      <Filter>src\headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
