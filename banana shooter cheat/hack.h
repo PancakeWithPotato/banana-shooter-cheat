@@ -4,6 +4,7 @@
 #include "ext/termcolor/termcolor.hpp"
 #include "binds.h"
 
+
 #define SUCCES termcolor::green
 #define WAIT termcolor::yellow
 #define ERROR termcolor::red 

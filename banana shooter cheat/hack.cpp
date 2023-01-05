@@ -26,6 +26,7 @@ bool hack::Setup()
 	if(!g_Hooks->Setup())
 		return false;
 
+	g_Funcs->Setup();
 	return true;
 }
 

@@ -1,0 +1,18 @@
+﻿D:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(520,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+  dllmain.cpp
+C:\Users\Pancake\source\repos\banana shooter cheat\banana shooter cheat\hack.h(9,1): warning C4005: 'ERROR': macro redefinition
+D:\Windows Kits\10\Include\10.0.19041.0\um\wingdi.h(118): message : see previous definition of 'ERROR'
+  hack.cpp
+C:\Users\Pancake\source\repos\banana shooter cheat\banana shooter cheat\hack.h(9,1): warning C4005: 'ERROR': macro redefinition
+D:\Windows Kits\10\Include\10.0.19041.0\um\wingdi.h(118): message : see previous definition of 'ERROR'
+  hooks.cpp
+C:\Users\Pancake\source\repos\banana shooter cheat\banana shooter cheat\hack.h(9,1): warning C4005: 'ERROR': macro redefinition
+D:\Windows Kits\10\Include\10.0.19041.0\um\wingdi.h(118): message : see previous definition of 'ERROR'
+  Generating Code...
+  buffer.c
+  hde32.c
+  hde64.c
+  hook.c
+  trampoline.c
+  Generating Code...
+  banana shooter cheat.vcxproj -> C:\Users\Pancake\source\repos\banana shooter cheat\build\debug\meowware.dll

@@ -157,6 +157,7 @@
     <ClInclude Include="ext\mh\MinHook.h" />
     <ClInclude Include="ext\mh\trampoline.h" />
     <ClInclude Include="ext\termcolor\termcolor.hpp" />
+    <ClInclude Include="functions.h" />
     <ClInclude Include="hack.h" />
     <ClInclude Include="hooks.h" />
     <ClInclude Include="includes.h" />

@@ -89,5 +89,8 @@
     <ClInclude Include="binds.h">
       <Filter>src\headers</Filter>
     </ClInclude>
+    <ClInclude Include="functions.h">
+      <Filter>src\headers</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
