@@ -10,5 +10,6 @@ namespace Offsets
 	namespace Firearms {
 		constexpr uintptr_t CreateBullet = 0x3ADF90;
 		constexpr uintptr_t CreateExplosiveBullet = 0x3AE4F0;
+		constexpr uintptr_t DoAttack = 0x3AEC10;
 	}
 }

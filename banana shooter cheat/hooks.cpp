@@ -22,12 +22,17 @@ bool Hooks::Setup()
 		return false;
 	}
 
-	this->oCreateBullet = reinterpret_cast<Hooks::CreateBulletFN>(this->AddHook(reinterpret_cast<void*>(g_Hack->pAssembly + Offsets::Firearms::CreateBullet), this->hCreateBullet).oAddr);
-	if (!this->oCreateBullet) {
+	//this->oCreateBullet = reinterpret_cast<Hooks::CreateBulletFN>(this->AddHook(reinterpret_cast<void*>(g_Hack->pAssembly + Offsets::Firearms::CreateBullet), this->hCreateBullet).oAddr);
+	//if (!this->oCreateBullet) {
+	//	g_Hack->Log(hack::error, "Failed to get hook number ", this->m_iCount);
+	//	return false;
+	//}
+		
+	this->oDoAttack = reinterpret_cast<Hooks::DoAttackFN>(this->AddHook(reinterpret_cast<void*>(g_Hack->pAssembly + Offsets::Firearms::DoAttack), this->hDoAttack).oAddr);
+	if (!this->oDoAttack) {
 		g_Hack->Log(hack::error, "Failed to get hook number ", this->m_iCount);
 		return false;
 	}
-		
 	return true;
 }
 void Hooks::Destroy() 
@@ -46,9 +51,14 @@ void __cdecl Hooks::hRecoilFir(void* thisptr, float x, float y, float z)
 
 void __cdecl Hooks::hCreateBullet(void* thisptr, UnityEngine_Vector3_o pos)
 {
-	for (size_t i = 0; i < 15; i++)
-	{
-		g_Hooks->oCreateBullet(thisptr, pos);
-	}
+	std::cout << "Createbullet got called!" << std::endl;
 	return 	g_Hooks->oCreateBullet(thisptr, pos);
+}
+
+
+void __cdecl Hooks::hDoAttack(Firearms_o* thisptr) 
+{
+	std::cout << "DoAttack()\n";
+	thisptr->fields.bulletCount = 15;
+	return g_Hooks->oDoAttack(thisptr);
 }

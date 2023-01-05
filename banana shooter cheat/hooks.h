@@ -18,12 +18,17 @@ public:
 	void Destroy();
 	static void __cdecl hRecoilFir(void* thisptr, float x, float y, float z);
 	static void __cdecl hCreateBullet(void* thisptr, UnityEngine_Vector3_o);
+	static void __cdecl hDoAttack(Firearms_o* thisptr);
 
 private:
 	//typedefs lolz
 	typedef void(__cdecl* RecoilFirFN)(void* thisptr, float x, float y, float z);
+
 	typedef void(__cdecl* CreateBulletFN)(void*, UnityEngine_Vector3_o);
+	typedef void(__cdecl* DoAttackFN)(Firearms_o*);
 public:
 	RecoilFirFN oRecoil = nullptr;
+
 	CreateBulletFN oCreateBullet = nullptr;
+	DoAttackFN oDoAttack = nullptr;
 }; inline Hooks* g_Hooks = new Hooks();
