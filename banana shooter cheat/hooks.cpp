@@ -22,11 +22,11 @@ bool Hooks::Setup()
 		return false;
 	}
 
-	//this->oCreateBullet = reinterpret_cast<Hooks::CreateBulletFN>(this->AddHook(reinterpret_cast<void*>(g_Hack->pAssembly + Offsets::Firearms::CreateBullet), this->hCreateBullet).oAddr);
-	//if (!this->oCreateBullet) {
-	//	g_Hack->Log(hack::error, "Failed to get hook number ", this->m_iCount);
-	//	return false;
-	//}
+	this->oCreateBullet = reinterpret_cast<Hooks::CreateBulletFN>(this->AddHook(reinterpret_cast<void*>(g_Hack->pAssembly + Offsets::Firearms::CreateBullet), this->hCreateBullet).oAddr);
+	if (!this->oCreateBullet) {
+		g_Hack->Log(hack::error, "Failed to get hook number ", this->m_iCount);
+		return false;
+	}
 		
 	this->oDoAttack = reinterpret_cast<Hooks::DoAttackFN>(this->AddHook(reinterpret_cast<void*>(g_Hack->pAssembly + Offsets::Firearms::DoAttack), this->hDoAttack).oAddr);
 	if (!this->oDoAttack) {
@@ -52,6 +52,7 @@ void __cdecl Hooks::hRecoilFir(void* thisptr, float x, float y, float z)
 void __cdecl Hooks::hCreateBullet(void* thisptr, UnityEngine_Vector3_o pos)
 {
 	std::cout << "Createbullet got called!" << std::endl;
+	g_Funcs->pCreateExplosiveBullet(thisptr, pos);
 	return 	g_Hooks->oCreateBullet(thisptr, pos);
 }
 
@@ -60,5 +61,7 @@ void __cdecl Hooks::hDoAttack(Firearms_o* thisptr)
 {
 	std::cout << "DoAttack()\n";
 	thisptr->fields.bulletCount = 15;
+	auto camera = g_Funcs->pGetCurrentCam();
+	g_Funcs->pSetCameraAspect(camera, 4.3f);
 	return g_Hooks->oDoAttack(thisptr);
 }

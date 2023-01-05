@@ -12,4 +12,13 @@ namespace Offsets
 		constexpr uintptr_t CreateExplosiveBullet = 0x3AE4F0;
 		constexpr uintptr_t DoAttack = 0x3AEC10;
 	}
+
+	namespace Cam {
+		constexpr uintptr_t GetCurrent = 0x1C80BD0;
+		constexpr uintptr_t SetAspect = 0x1C81370;
+	}
+
+	namespace Transform {
+		constexpr uintptr_t GetPos = 0x1CCE680;
+	}
 }
