@@ -4,6 +4,7 @@
 #include "../config/config.hpp"
 
 bool Hooks::AddHook(std::string hookName, unsigned long long pTarget, void* detour, void* original)  {
+	this->iHooks[0]++;
 	if (MH_CreateHook(reinterpret_cast<LPVOID>(pTarget), reinterpret_cast<LPVOID>(detour), reinterpret_cast<LPVOID*>(original)) != MH_OK) {
 		g_Debug.logState(error, "Could not hook: " + hookName);
 		return false;
@@ -15,6 +16,7 @@ bool Hooks::AddHook(std::string hookName, unsigned long long pTarget, void* deto
 	}
 
 	g_Debug.logState(success, "Hooked: " + hookName);
+	this->iHooks[1]++;
 	return true;
 }
 
@@ -25,16 +27,18 @@ bool Hooks::Setup()  {
 	}
 
 	if (!AddHook("RecoilFire", (Offsets::pAssembly + Offsets::Recoil::RecoilFir), &hRecoilFir, &oRecoil))
-		return false;
+		g_Debug.logState(error, "Failed to hook #", this->iHooks[0]);
 
 	if (!AddHook("DoAttack", (Offsets::pAssembly + Offsets::Firearms::DoAttack), &hDoAttack, &oDoAttack))
-		return false;
+		g_Debug.logState(error, "Failed to hook #", this->iHooks[0]);
 
 	if (!AddHook("UpdatePlayer", (Offsets::pAssembly + Offsets::Player::Update), &hUpdatePlayer, &oUpdatePlayer))
-		return false;
+		g_Debug.logState(error, "Failed to hook #", this->iHooks[0]);
 
 	if (!AddHook("ReloadGun", (Offsets::pAssembly + Offsets::Firearms::Reload), &hReloadGun, &oReloadGun))
-		return false;
+		g_Debug.logState(error, "Failed to hook #", this->iHooks[0]);
+
+	std::cout << (this->iHooks[1] / this->iHooks[0] > 0.50f ? SUCCES : ERR) << std::format("Managed to hook {} functions out of {} \n", this->iHooks[1], this->iHooks[0]);
 
 	if (kiero::init(kiero::RenderType::D3D11) != 0) {
 		g_Debug.logState(error, "Could not initialize Kiero");
@@ -60,15 +64,16 @@ void Hooks::Destroy() {
 	MH_Uninitialize();
 }
 
-void __stdcall Hooks::hRecoilFir(Firearms_o* thisptr, float x, float y, float z) {
-	if (g_Config.NoRecoil)
-		return g_Hooks->oRecoil(thisptr, 0.f, 0.f, 0.f);
+void __stdcall Hooks::hRecoilFir(void* thisptr, float x, float y, float z) {
 
+	g_Debug.logState(::warning, "We are in recoilfir");
+	if (g_Config::NoRecoil)
+		return g_Hooks->oRecoil(thisptr, 0, 0, 0);
 	return g_Hooks->oRecoil(thisptr, x, y, z);
 }
 
 void __stdcall Hooks::hDoAttack(Firearms_o* thisptr) {
-	if (!g_Config.ExplosiveBullets)
+	if (!g_Config::ExplosiveBullets)
 		return g_Hooks->oDoAttack(thisptr);
 
 	Vector3 aimPos = g_Sdk.getTransformPosition(g_Hack->localPlayer->fields.aimTarget);
@@ -78,7 +83,7 @@ void __stdcall Hooks::hDoAttack(Firearms_o* thisptr) {
 }
 
 void __stdcall Hooks::hReloadGun(Firearms_o* thisptr, float time, int spin) {
-	if (!g_Config.NoReload)
+	if (!g_Config::NoReload)
 		return g_Hooks->oReloadGun(thisptr, time, spin);
 	
 	thisptr->fields.reloadTime = 0.0f;
@@ -91,6 +96,8 @@ void __stdcall Hooks::hUpdatePlayer(Player* player) {
 
 	return g_Hooks->oUpdatePlayer(player);
 }
+
+
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT WINAPI Hooks::WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {

@@ -16,7 +16,7 @@ bool Hack::Setup()  {
 	Offsets::pAssembly = reinterpret_cast<uintptr_t>(GetModuleHandleA("GameAssembly.dll"));
 	
 	if (Offsets::pAssembly)
-		g_Debug.logState(success, "Got GameAssembly.dll %p", (void*)&Offsets::pAssembly);
+		g_Debug.logState(success, "Got GameAssembly.dll 0x%p", (void*)&Offsets::pAssembly);
 	else
 		return false;
 
@@ -32,10 +32,12 @@ void Hack::GetName() {
 	DWORD lenght = sizeof(tmp);
 	GetUserNameA(tmp, &lenght);
 
-	m_strName = (strcmp("Pancake", tmp) ? "dev" : std::string(&tmp[0]));
+	m_strName = (strcmp("Pancake", tmp) == 0 ? "dev" : std::string(&tmp[0]));
 }
 
 void Hack::Destroy()  {
 	g_Hooks->Destroy();
 	delete g_Hooks;
+	delete g_Funcs;
+	g_Debug.DestroyConsole();
 }

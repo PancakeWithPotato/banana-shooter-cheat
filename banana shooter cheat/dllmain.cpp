@@ -22,8 +22,7 @@ BOOL WINAPI DllMain(HMODULE hMod, DWORD reason, void* reserved) {
 		break;
 	case DLL_PROCESS_DETACH:
 		g_Hack->Destroy();
-		g_Debug.DestroyConsole();
- 
+
 		delete g_Hack;
 		break;
 	}
