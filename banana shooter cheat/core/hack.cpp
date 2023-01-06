@@ -1,14 +1,13 @@
 #include "hack.hpp"
 #include "hooks/hooks.hpp"
 
-bool Hack::Setup() 
-{
+bool Hack::Setup()  {
 	g_Debug.setupConsole("banana $hooter cheat");
 
 	HWND consoleHWND = GetConsoleWindow();
 	
 	SetWindowLong(consoleHWND, GWL_EXSTYLE, GetWindowLong(consoleHWND, GWL_EXSTYLE) | WS_EX_LAYERED);
-	SetLayeredWindowAttributes(consoleHWND, 0, 225, LWA_ALPHA);
+	SetLayeredWindowAttributes(consoleHWND, 0, 240, LWA_ALPHA);
 
 	this->GetName();
 
@@ -21,15 +20,14 @@ bool Hack::Setup()
 	else
 		return false;
 
-	if(!g_Hooks->Setup())
+	if (!g_Hooks->Setup())
 		return false;
 
 	g_Funcs->Setup();
 	return true;
 }
 
-void Hack::GetName()
-{
+void Hack::GetName() {
 	char tmp[MAX_PATH + 1];
 	DWORD lenght = sizeof(tmp);
 	GetUserNameA(tmp, &lenght);
@@ -37,8 +35,7 @@ void Hack::GetName()
 	m_strName = (strcmp("Pancake", tmp) ? "dev" : std::string(&tmp[0]));
 }
 
-void Hack::Destroy() 
-{
+void Hack::Destroy()  {
 	g_Hooks->Destroy();
 	delete g_Hooks;
 }

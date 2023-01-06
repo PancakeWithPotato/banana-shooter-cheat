@@ -16,10 +16,21 @@ public:
 
 	static void __stdcall hUpdatePlayer(Player* player);
 
+	HWND window = NULL;
+	WNDPROC oWndProc;
+	ID3D11Device* pDevice = NULL;
+	ID3D11DeviceContext* pContext = NULL;
+	ID3D11RenderTargetView* mainRenderTargetView;
+
+	static LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	static HRESULT __stdcall hPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
 private:
+
 	typedef void(__thiscall* RecoilFirFN)(Firearms_o*, float, float, float);
 	typedef void(__thiscall* ReloadGunFN)(Firearms_o*, float, int);
 	typedef void(__thiscall* DoAttackFN)(Firearms_o*);
+	typedef unsigned long(__stdcall* PresentFN) (IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
+	typedef LRESULT(CALLBACK* WNDPROC)(HWND, UINT, WPARAM, LPARAM);
 
 	typedef void(__thiscall* UpdatePlayerFN)(Player*);
 public:
@@ -28,4 +39,6 @@ public:
 	ReloadGunFN oReloadGun = nullptr;
 
 	UpdatePlayerFN oUpdatePlayer = nullptr;
+
+	PresentFN oPresent = nullptr;
 }; inline Hooks* g_Hooks = new Hooks();

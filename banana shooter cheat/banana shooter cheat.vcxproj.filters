@@ -45,6 +45,14 @@
     <ClCompile Include="core\hack.cpp">
       <Filter>src\sources</Filter>
     </ClCompile>
+    <ClCompile Include="dependencies\imgui\imgui.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_demo.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_draw.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="dependencies\kiero\kiero.cpp" />
+    <ClCompile Include="core\menu\menu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utilities\includes.hpp">
@@ -93,5 +101,15 @@
     <ClInclude Include="sdk\sdk.hpp" />
     <ClInclude Include="utilities\debug.hpp" />
     <ClInclude Include="core\config\config.hpp" />
+    <ClInclude Include="dependencies\imgui\imconfig.h" />
+    <ClInclude Include="dependencies\imgui\imgui.h" />
+    <ClInclude Include="dependencies\imgui\imgui_impl_dx11.h" />
+    <ClInclude Include="dependencies\imgui\imgui_impl_win32.h" />
+    <ClInclude Include="dependencies\imgui\imgui_internal.h" />
+    <ClInclude Include="dependencies\imgui\imstb_rectpack.h" />
+    <ClInclude Include="dependencies\imgui\imstb_textedit.h" />
+    <ClInclude Include="dependencies\imgui\imstb_truetype.h" />
+    <ClInclude Include="dependencies\kiero\kiero.hpp" />
+    <ClInclude Include="core\menu\menu.hpp" />
   </ItemGroup>
 </Project>

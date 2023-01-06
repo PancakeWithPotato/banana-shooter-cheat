@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string>
 #include <thread>
+#include <d3d11.h>
 
 #include "../dependencies/termcolor/termcolor.hpp"
 
