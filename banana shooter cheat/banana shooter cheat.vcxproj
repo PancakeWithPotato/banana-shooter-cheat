@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClInclude Include="core\config\config.hpp" />
     <ClInclude Include="core\menu\menu.hpp" />
+    <ClInclude Include="core\menu\style.h" />
     <ClInclude Include="dependencies\imgui\imconfig.h" />
     <ClInclude Include="dependencies\imgui\imgui.h" />
     <ClInclude Include="dependencies\imgui\imgui_impl_dx11.h" />

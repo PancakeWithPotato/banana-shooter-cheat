@@ -5,9 +5,24 @@
 #include "../../dependencies/imgui/imgui_impl_dx11.h"
 #include "../../dependencies/imgui/imgui_impl_win32.h"
 
+ 
 struct Menu {
+private:
+	
+	enum TABS {
+		TAB_CONFIG,
+		TAB_COMBAT,
+		TAB_VISUALS
+	};
+	TABS TabCount = TAB_CONFIG;
+
+	//tabs renderables
+	void RenderConfig();
+	void RenderCombat();
+	void RenderVisuals();
+public:
 	void Render();
-	bool open = true; //cmon, you gotta set this true, how else would they notice they injected (let's ignore the console for a second)
+	bool open = true; //menu open by default
 }; 
 
 inline Menu g_Menu;

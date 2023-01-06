@@ -997,7 +997,7 @@ bool ImGui::Checkbox(const char* label, bool* v)
         *v = !(*v);
         MarkItemEdited(id);
     }
-
+    auto draw = ImGui::GetWindowDrawList();
     const ImRect check_bb(pos, pos + ImVec2(square_sz, square_sz));
     RenderNavHighlight(total_bb, id);
     RenderFrame(check_bb.Min, check_bb.Max, GetColorU32((held && hovered) ? ImGuiCol_FrameBgActive : hovered ? ImGuiCol_FrameBgHovered : ImGuiCol_FrameBg), true, style.FrameRounding);
@@ -1011,7 +1011,8 @@ bool ImGui::Checkbox(const char* label, bool* v)
     else if (*v)
     {
         const float pad = ImMax(1.0f, IM_FLOOR(square_sz / 6.0f));
-        RenderCheckMark(check_bb.Min + ImVec2(pad, pad), check_col, square_sz - pad*2.0f);
+        //RenderCheckMark(check_bb.Min + ImVec2(pad, pad), check_col, square_sz - pad*2.0f);
+        draw->AddRectFilled(ImVec2(check_bb.Min.x + 0.5f, check_bb.Min.y + 0.5f) + ImVec2(pad, pad), ImVec2(check_bb.Max.x - 0.5f, check_bb.Max.y - 0.5f) - ImVec2(pad, pad), check_col);
     }
 
     if (g.LogEnabled)

@@ -111,5 +111,6 @@
     <ClInclude Include="dependencies\imgui\imstb_truetype.h" />
     <ClInclude Include="dependencies\kiero\kiero.hpp" />
     <ClInclude Include="core\menu\menu.hpp" />
+    <ClInclude Include="core\menu\style.h" />
   </ItemGroup>
 </Project>
