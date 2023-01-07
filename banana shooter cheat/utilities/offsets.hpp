@@ -14,6 +14,7 @@ namespace Offsets
 		constexpr uintptr_t CreateExplosiveBullet = 0x3AE4F0;
 		constexpr uintptr_t DoAttack = 0x3AEC10;
 		constexpr uintptr_t Reload = 0x3B5AE0;
+		constexpr uintptr_t Update = 0x3B6920;
 	}
 
 	namespace Cam {
@@ -29,12 +30,17 @@ namespace Offsets
 		constexpr uintptr_t Update = 0x40FE70;
 	}
 
-	namespace Cursor {
-		constexpr uintptr_t SetLock = 0x1CA3130;
+	namespace UnityEngine {
+		constexpr uintptr_t SetCursorLock = 0x1CA3130;
+		constexpr uintptr_t WorldToScreen = 0x1C80780;
 	}
 
 	namespace Multiplayer {
 		constexpr uintptr_t GetNetworkManager = 0x3EC930;
 		constexpr uintptr_t GetLobbyManager = 0x3E21E0;
+	}
+
+	namespace AntiCheat {
+		constexpr uintptr_t Update = 0x440400;
 	}
 }

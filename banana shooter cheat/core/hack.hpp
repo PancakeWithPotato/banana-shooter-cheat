@@ -15,7 +15,8 @@ public:
 
 	bool shouldUnload = false;
 
-	Multiplayer_Client_ClientPlayer_o* localPlayer = nullptr; // weird compiler error
+	Multiplayer_Client_ClientPlayer_o* closestPlayer = nullptr;
+	Multiplayer_Client_ClientPlayer_o* localPlayer = nullptr;
 	std::vector<Multiplayer_Client_ClientPlayer_o*> players;
 }; inline Hack* g_Hack = new Hack();
 

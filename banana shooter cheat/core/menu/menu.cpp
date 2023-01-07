@@ -3,21 +3,23 @@
 #include "../hooks/hooks.hpp"
 #include "style.hpp"
 
-static void HelpMarker(const char* desc) //thx ImGui
-{
-	ImGui::TextDisabled("(?)");
-	if (ImGui::IsItemHovered())
-	{
-		ImGui::BeginTooltip();
-		ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
-		ImGui::TextUnformatted(desc);
-		ImGui::PopTextWrapPos();
-		ImGui::EndTooltip();
+namespace ImGui {
+	static void HelpMarker(const char* desc) {
+		ImGui::SameLine();
+		ImGui::TextDisabled("(?)");
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::BeginTooltip();
+			ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+			ImGui::TextUnformatted(desc);
+			ImGui::PopTextWrapPos();
+			ImGui::EndTooltip();
+		}
 	}
+
 }
 
-void Menu::Render() 
-{
+void Menu::Render()  {
 	if (GetAsyncKeyState(VK_INSERT) & 1) {
 		open = !open;
 		
@@ -32,6 +34,7 @@ void Menu::Render()
 			ImGui::GetIO().MouseDrawCursor = open;
 		}
 	}
+
 
 	if (!open)
 		return;
@@ -48,16 +51,18 @@ void Menu::Render()
 	if (ImGui::Button("Configs", ImVec2(115, 60)))
 		this->TabCount = TAB_CONFIG;
 
-	//show build date
 	ImGui::SetCursorPos({ ImGui::GetCursorPos().x, ImGui::GetCursorPos().y + 20 });
 	static std::string strRaw;
+	
 	if (!this->bInit)
 		this->FormatDate(strRaw, __DATE__);
+
 	static const std::string strBuildDate = "Build date: \n" + strRaw;
 	ImGui::Text(strBuildDate.data());
 	static const std::string strUser = "User: " + g_Hack->strName;
 	ImGui::Text(strUser.data());
 	ImGui::NextColumn();
+
 	switch (this->TabCount)
 	{
 	case TAB_CONFIG:
@@ -83,19 +88,21 @@ void Menu::RenderVisuals() {
 
 void Menu::RenderCombat() 
 {
-	ImGui::BeginChild("##combat", { 350, 240 }, true);
-	ImGui::Checkbox("Eliminate recoil", &g_Config::NoRecoil);
-	ImGui::Checkbox("Explosive bullets", &g_Config::ExplosiveBullets);
-	ImGui::Checkbox("Eliminate reload time", &g_Config::NoReload);
-	ImGui::Checkbox("Magic bullets", &g_Config::bMagicBullets);
+	ImGui::BeginChild("##combat", { 350, 260 }, true);
+	ImGui::Checkbox("Aimbot", &g_Config::Combat::Aimbot);
+
+	ImGui::Combo("Aimbot hitbox", &g_Config::Combat::AimbotHitbox, "Head\0Body");
+
+	ImGui::Checkbox("No reload", &g_Config::Combat::NoReload);
+	ImGui::Checkbox("No recoil", &g_Config::Combat::NoRecoil);
+
+	ImGui::Checkbox("Explosive bullets", &g_Config::Combat::ExplosiveBullets);
+
+	ImGui::HelpMarker("Will shoot x more bullets.");
+	ImGui::SliderInt("Bullet count", &g_Config::Combat::BulletsCount, 1, 100);
+	
 	ImGui::SameLine(); 
-	HelpMarker("Spawns bullets at the enemies.");
-	static const char* stuff[2] = {"Head", "Body"};
-	if (g_Config::bMagicBullets) {
-		ImGui::PushItemWidth(ImGui::CalcTextSize("Head").x + 15);
-		ImGui::ListBox("Magic bullets hitgroup", &g_Config::iMagicBullets, stuff, IM_ARRAYSIZE(stuff));
-		ImGui::PopItemWidth(); //very pro code (i will kill myself)
-	}
+	
 	ImGui::EndChild();
 }
 

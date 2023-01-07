@@ -16,7 +16,7 @@ bool Hack::Setup()  {
 	Offsets::pAssembly = reinterpret_cast<uintptr_t>(GetModuleHandleA("GameAssembly.dll"));
 	
 	if (Offsets::pAssembly)
-		g_Debug.logState(success, "Got GameAssembly.dll 0x%p", (void*)&Offsets::pAssembly);
+		g_Debug.logState(success, "Got GameAssembly.dll 0x%p", Offsets::pAssembly);
 	else
 		return false;
 
