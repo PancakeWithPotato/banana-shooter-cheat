@@ -7,6 +7,8 @@ typedef UnityEngine_Vector3_o Vector3;
 typedef UnityEngine_Transform_o Transform;
 typedef UnityEngine_Camera_o Camera;
 typedef Multiplayer_Client_ClientPlayer_o Player;
+typedef Multiplayer_NetworkManager_o NetworkManager;
+typedef Multiplayer_LobbyManager_o LobbyManager;
 
 struct {
 	enum PLAYER_BONES {
@@ -41,10 +43,40 @@ struct {
 		SILHOUETTE_ONLY
 	};
 
+	enum CURSOR_LOCK_MODE {
+		NONE,
+		LOCKED,
+		CONFINED,
+	};
+
 	Vector3 getTransformPosition(Transform* transform) {
 		if (!transform || !transform->fields.m_CachedPtr)
 			return Vector3{};
 
 		return reinterpret_cast<Vector3(__cdecl*)(Transform*)>(Offsets::pAssembly + Offsets::Transform::GetPos)(transform);
+	}
+
+	void setCursorLockedMode(CURSOR_LOCK_MODE mode) {
+		return reinterpret_cast<void(__cdecl*)(CURSOR_LOCK_MODE)>(Offsets::pAssembly + Offsets::Cursor::SetLock)(mode);
+	}
+
+	NetworkManager* getNetworkManager() {
+		return reinterpret_cast<NetworkManager*(__cdecl*)()>(Offsets::pAssembly + Offsets::Multiplayer::GetNetworkManager)();
+	}
+
+	LobbyManager* getLobbyManager() {
+		return reinterpret_cast<LobbyManager*(__cdecl*)()>(Offsets::pAssembly + Offsets::Multiplayer::GetLobbyManager)();
+	}
+
+	bool localInGame() {
+		NetworkManager* networkManager = getNetworkManager();
+
+		if (!networkManager)
+			return false;
+
+		if (networkManager->fields.connecting || !networkManager->fields.game)
+			return false;
+
+		return true;
 	}
 } g_Sdk;

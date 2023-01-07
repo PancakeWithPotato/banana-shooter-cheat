@@ -28,4 +28,13 @@ namespace Offsets
 	namespace Player {
 		constexpr uintptr_t Update = 0x40FE70;
 	}
+
+	namespace Cursor {
+		constexpr uintptr_t SetLock = 0x1CA3130;
+	}
+
+	namespace Multiplayer {
+		constexpr uintptr_t GetNetworkManager = 0x3EC930;
+		constexpr uintptr_t GetLobbyManager = 0x3E21E0;
+	}
 }

@@ -73,7 +73,6 @@ void __stdcall Hooks::hRecoilFir(void* thisptr, float x, float y, float z) {
 
 void __stdcall Hooks::hDoAttack(Firearms_o* thisptr) 
 {
-
 	Vector3 aimPos = g_Sdk.getTransformPosition(g_Hack->localPlayer->fields.aimTarget);
 
 	if (g_Config::bMagicBullets) {
@@ -105,14 +104,9 @@ void __stdcall Hooks::hDoAttack(Firearms_o* thisptr)
 	if (g_Config::ExplosiveBullets)
 		g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
 
+	thisptr->fields.createBullet = true;
+
 	return g_Hooks->oDoAttack(thisptr);
-	/*if (!g_Config::ExplosiveBullets)
-		return g_Hooks->oDoAttack(thisptr);
-
-	Vector3 aimPos = g_Sdk.getTransformPosition(g_Hack->localPlayer->fields.aimTarget);
-	g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
-
-	return g_Hooks->oDoAttack(thisptr);*/
 }
 
 void __stdcall Hooks::hReloadGun(Firearms_o* thisptr, float time, int spin) {
@@ -141,13 +135,10 @@ void __stdcall Hooks::hUpdatePlayer(Player* player) {
 	return g_Hooks->oUpdatePlayer(player);
 }
 
-
-
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT WINAPI Hooks::WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-	if (g_Menu.open)
-		if (!ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
-			return 0L;
+	if (g_Menu.open && ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
+		return 0L;
 	
 	return CallWindowProcA(g_Hooks->oWndProc, hWnd, uMsg, wParam, lParam);
 }

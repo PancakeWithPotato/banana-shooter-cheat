@@ -1,7 +1,7 @@
 #include "menu.hpp"
 #include "../../utilities/includes.hpp"
 #include "../hooks/hooks.hpp"
-#include "style.h"
+#include "style.hpp"
 
 static void HelpMarker(const char* desc) //thx ImGui
 {
@@ -18,22 +18,28 @@ static void HelpMarker(const char* desc) //thx ImGui
 
 void Menu::Render() 
 {
-	//mouse fix?!
-	ImGui::SetMouseCursor(ImGuiMouseCursor_Arrow);
-	ImGui::GetIO().WantCaptureMouse = g_Menu.open;
-	ImGui::GetIO().MouseDrawCursor = g_Menu.open;
-	if (GetAsyncKeyState(VK_INSERT) & 1)
+	if (GetAsyncKeyState(VK_INSERT) & 1) {
 		open = !open;
+		
+		if (g_Sdk.localInGame()) {
+			if (open) {
+				g_Sdk.setCursorLockedMode(g_Sdk.NONE);
+			}
+			else {
+				g_Sdk.setCursorLockedMode(g_Sdk.LOCKED);
+			}
+			
+			ImGui::GetIO().MouseDrawCursor = open;
+		}
+	}
 
 	if (!open)
 		return;
 
-
 	SetupStyles();
-	SetCapture(g_Hooks->window);
 	ImGui::Begin("Banana Shooter Hack", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoScrollbar);
 
-	ImGui::Columns(2, nullptr, false); //16 is ImGuiTableColumnFlags_WidthFixed
+	ImGui::Columns(2, nullptr, false);
 	ImGui::SetColumnOffset(1, 125);
 	if (ImGui::Button("Combat", ImVec2(115, 60)))
 		this->TabCount = TAB_COMBAT;
@@ -70,9 +76,11 @@ void Menu::Render()
 
 	ImGui::End();
 }
+
 void Menu::RenderVisuals() {
 	ImGui::Text("We got none lolz");
 }
+
 void Menu::RenderCombat() 
 {
 	ImGui::BeginChild("##combat", { 350, 240 }, true);

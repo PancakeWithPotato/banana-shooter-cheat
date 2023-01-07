@@ -256,7 +256,7 @@ void    ImGui_ImplWin32_NewFrame()
 IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     if (ImGui::GetCurrentContext() == NULL)
-        return 1;
+        return 0;
 
     ImGuiIO& io = ImGui::GetIO();
     switch (msg)
@@ -274,7 +274,7 @@ IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARA
         if (!ImGui::IsAnyMouseDown() && ::GetCapture() == NULL)
             ::SetCapture(hwnd);
         io.MouseDown[button] = true;
-        return 0;
+        return 1;
     }
     case WM_LBUTTONUP:
     case WM_RBUTTONUP:
@@ -289,38 +289,38 @@ IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARA
         io.MouseDown[button] = false;
         if (!ImGui::IsAnyMouseDown() && ::GetCapture() == hwnd)
             ::ReleaseCapture();
-        return 0;
+        return 1;
     }
     case WM_MOUSEWHEEL:
         io.MouseWheel += (float)GET_WHEEL_DELTA_WPARAM(wParam) / (float)WHEEL_DELTA;
-        return 0;
+        return 1;
     case WM_MOUSEHWHEEL:
         io.MouseWheelH += (float)GET_WHEEL_DELTA_WPARAM(wParam) / (float)WHEEL_DELTA;
-        return 0;
+        return 1;
     case WM_KEYDOWN:
     case WM_SYSKEYDOWN:
         if (wParam < 256)
             io.KeysDown[wParam] = 1;
-        return 0;
+        return 1;
     case WM_KEYUP:
     case WM_SYSKEYUP:
         if (wParam < 256)
             io.KeysDown[wParam] = 0;
-        return 0;
+        return 1;
     case WM_CHAR:
         // You can also use ToAscii()+GetKeyboardState() to retrieve characters.
         io.AddInputCharacter((unsigned int)wParam);
-        return 0;
+        return 1;
     case WM_SETCURSOR:
         if (LOWORD(lParam) == HTCLIENT && ImGui_ImplWin32_UpdateMouseCursor())
             return 1;
-        return 0;
+        return 1;
     case WM_DEVICECHANGE:
         if ((UINT)wParam == DBT_DEVNODES_CHANGED)
             g_WantUpdateHasGamepad = true;
-        return 0;
+        return 1;
     }
 
-    return 1;
+    return 0;
 }
 
