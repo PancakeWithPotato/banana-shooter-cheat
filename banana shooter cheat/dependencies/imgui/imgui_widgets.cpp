@@ -1012,7 +1012,7 @@ bool ImGui::Checkbox(const char* label, bool* v)
     {
         const float pad = ImMax(1.0f, IM_FLOOR(square_sz / 6.0f));
         //RenderCheckMark(check_bb.Min + ImVec2(pad, pad), check_col, square_sz - pad*2.0f);
-        draw->AddRectFilled(ImVec2(check_bb.Min.x + 0.5f, check_bb.Min.y + 0.5f) + ImVec2(pad, pad), ImVec2(check_bb.Max.x - 0.5f, check_bb.Max.y - 0.5f) - ImVec2(pad, pad), check_col);
+        draw->AddRectFilled(ImVec2(check_bb.Min.x + 0.25f, check_bb.Min.y + 0.25f) + ImVec2(pad, pad), ImVec2(check_bb.Max.x - 0.25f, check_bb.Max.y - 0.25f) - ImVec2(pad, pad), check_col);
     }
 
     if (g.LogEnabled)
