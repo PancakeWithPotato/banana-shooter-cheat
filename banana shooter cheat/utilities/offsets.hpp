@@ -28,4 +28,8 @@ namespace Offsets
 	namespace Player {
 		constexpr uintptr_t Update = 0x40FE70;
 	}
+
+	namespace Cursor {
+		constexpr uintptr_t SetLock = 0x1CA3130;
+	}
 }

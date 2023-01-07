@@ -41,10 +41,20 @@ struct {
 		SILHOUETTE_ONLY
 	};
 
+	enum CURSOR_LOCK_MODE {
+		NONE,
+		LOCKED,
+		CONFINED,
+	};
+
 	Vector3 getTransformPosition(Transform* transform) {
 		if (!transform || !transform->fields.m_CachedPtr)
 			return Vector3{};
 
 		return reinterpret_cast<Vector3(__cdecl*)(Transform*)>(Offsets::pAssembly + Offsets::Transform::GetPos)(transform);
+	}
+
+	void setCursorLockedMode(CURSOR_LOCK_MODE mode) {
+		return reinterpret_cast<void(__cdecl*)(CURSOR_LOCK_MODE)>(Offsets::pAssembly + Offsets::Cursor::SetLock)(mode);
 	}
 } g_Sdk;

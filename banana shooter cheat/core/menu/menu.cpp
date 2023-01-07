@@ -1,7 +1,8 @@
 #include "menu.hpp"
 #include "../../utilities/includes.hpp"
 #include "../hooks/hooks.hpp"
-#include "style.h"
+#include "style.hpp"
+
 void Menu::Render() 
 {
 	if (GetAsyncKeyState(VK_INSERT) & 1) {
@@ -10,6 +11,13 @@ void Menu::Render()
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Arrow);
 		ImGui::GetIO().WantCaptureMouse = g_Menu.open;
 		ImGui::GetIO().MouseDrawCursor = g_Menu.open;
+
+		if (open) {
+			g_Sdk.setCursorLockedMode(g_Sdk.NONE);
+		}
+		else {
+			g_Sdk.setCursorLockedMode(g_Sdk.LOCKED);
+		}
 	}
 
 	if (!open)
@@ -45,9 +53,11 @@ void Menu::Render()
 
 	ImGui::End();
 }
+
 void Menu::RenderVisuals() {
 	ImGui::Text("We got none lolz");
 }
+
 void Menu::RenderCombat() 
 {
 	ImGui::BeginChild("##combat", { 350, 240 }, true);
