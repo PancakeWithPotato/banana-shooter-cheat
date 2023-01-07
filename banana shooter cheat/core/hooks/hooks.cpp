@@ -65,17 +65,46 @@ void Hooks::Destroy() {
 }
 
 void __stdcall Hooks::hRecoilFir(void* thisptr, float x, float y, float z) {
+
 	if (g_Config::NoRecoil)
 		return g_Hooks->oRecoil(thisptr, 0, 0, 0);
 	return g_Hooks->oRecoil(thisptr, x, y, z);
 }
 
-void __stdcall Hooks::hDoAttack(Firearms_o* thisptr) {
-	if (!g_Config::ExplosiveBullets)
-		return g_Hooks->oDoAttack(thisptr);
-
+void __stdcall Hooks::hDoAttack(Firearms_o* thisptr) 
+{
 	Vector3 aimPos = g_Sdk.getTransformPosition(g_Hack->localPlayer->fields.aimTarget);
-	g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
+
+	if (g_Config::bMagicBullets) {
+		switch (g_Config::iMagicBullets)
+		{
+		case 0:
+			for (auto i : g_Hack->players)
+			{
+				aimPos = g_Sdk.getTransformPosition(i->fields.head);
+				if (g_Config::ExplosiveBullets)
+					return g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
+				else
+					g_Funcs->pCreateBullet(thisptr, aimPos);
+			}
+			break;
+		case 1:
+			for (auto i : g_Hack->players)
+			{
+				aimPos = i->fields.desiredPos;
+				if (g_Config::ExplosiveBullets)
+					g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
+				else
+					return g_Funcs->pCreateBullet(thisptr, aimPos);
+			}
+			break;
+		}
+	}
+
+	if (g_Config::ExplosiveBullets)
+		g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
+
+	thisptr->fields.createBullet = true;
 
 	return g_Hooks->oDoAttack(thisptr);
 }
@@ -91,7 +120,18 @@ void __stdcall Hooks::hReloadGun(Firearms_o* thisptr, float time, int spin) {
 void __stdcall Hooks::hUpdatePlayer(Player* player) {
 	if (player->fields._IsLocal_k__BackingField)
 		g_Hack->localPlayer = player;
+	else
+		g_Hack->players.emplace_back(player);
 
+	if (GetAsyncKeyState(VK_F1))
+	{
+		std::cout << "v = { ";
+		for (auto n : g_Hack->players)
+			std::cout << n->fields._SteamId_k__BackingField << ", ";
+		std::cout << "} \n";
+	}
+
+	g_Hack->players.clear(); //this is uncesseray to do every time this function runs, but what i made in original meowware is a mess (tho it works) so i don't want to implement it here lol
 	return g_Hooks->oUpdatePlayer(player);
 }
 

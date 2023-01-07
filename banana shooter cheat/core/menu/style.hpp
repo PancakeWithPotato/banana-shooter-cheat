@@ -12,7 +12,7 @@ void SetupStyles()
 	style.WindowRounding = 1.f;
 	style.FrameBorderSize = 1.f;
 	style.WindowMinSize = ImVec2{ 500,300 };
-	style.ItemInnerSpacing = ImVec2(8, 8);
+	style.ItemInnerSpacing = ImVec2(8.f, 8.f);
 	//style.FramePadding = ImVec2(6, 8);
 
 	ImVec4* colors = ImGui::GetStyle().Colors;
