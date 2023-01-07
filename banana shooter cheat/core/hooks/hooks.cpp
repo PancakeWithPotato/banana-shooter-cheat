@@ -6,16 +6,11 @@
 bool Hooks::AddHook(std::string hookName, unsigned long long pTarget, void* detour, void* original)  {
 	this->iHooks[0]++;
 	if (MH_CreateHook(reinterpret_cast<LPVOID>(pTarget), reinterpret_cast<LPVOID>(detour), reinterpret_cast<LPVOID*>(original)) != MH_OK) {
-		g_Debug.logState(error, "Could not hook: " + hookName);
+		g_Debug.logState(error, "Could not hook %d: %s", this->iHooks[0], hookName.c_str());
 		return false;
 	}
 
-	if (original == nullptr) {
-		g_Debug.logState(warning, "Original null (forgot to ref?): " + hookName);
-		return false;
-	}
-
-	g_Debug.logState(success, "Hooked: " + hookName);
+	g_Debug.logState(success, "Hooked %d: %s", this->iHooks[0], hookName.c_str());
 	this->iHooks[1]++;
 	return true;
 }
@@ -26,17 +21,12 @@ bool Hooks::Setup()  {
 		return false;
 	}
 
-	if (!AddHook("RecoilFire", (Offsets::pAssembly + Offsets::Recoil::RecoilFir), &hRecoilFir, &oRecoil))
-		g_Debug.logState(error, "Failed to hook #", this->iHooks[0]);
-
-	if (!AddHook("DoAttack", (Offsets::pAssembly + Offsets::Firearms::DoAttack), &hDoAttack, &oDoAttack))
-		g_Debug.logState(error, "Failed to hook #", this->iHooks[0]);
-
-	if (!AddHook("UpdatePlayer", (Offsets::pAssembly + Offsets::Player::Update), &hUpdatePlayer, &oUpdatePlayer))
-		g_Debug.logState(error, "Failed to hook #", this->iHooks[0]);
-
-	if (!AddHook("ReloadGun", (Offsets::pAssembly + Offsets::Firearms::Reload), &hReloadGun, &oReloadGun))
-		g_Debug.logState(error, "Failed to hook #", this->iHooks[0]);
+	AddHook("RecoilFire", (Offsets::pAssembly + Offsets::Recoil::RecoilFir), &hRecoilFir, &oRecoil);
+	AddHook("DoAttack", (Offsets::pAssembly + Offsets::Firearms::DoAttack), &hDoAttack, &oDoAttack);
+	AddHook("UpdatePlayer", (Offsets::pAssembly + Offsets::Player::Update), &hUpdatePlayer, &oUpdatePlayer);
+	AddHook("ReloadGun", (Offsets::pAssembly + Offsets::Firearms::Reload), &hReloadGun, &oReloadGun);
+	AddHook("FirearmsUpdate", (Offsets::pAssembly + Offsets::Firearms::Update), &hFirearmsUpdate, &oFirearmsUpdate);
+	AddHook("AntiCheatUpdate", (Offsets::pAssembly + Offsets::AntiCheat::Update), &hUpdateAntiCheat, nullptr); // we dont need the original
 
 	std::cout << (this->iHooks[1] / this->iHooks[0] > 0.50f ? SUCCES : ERR) << std::format("Managed to hook {} functions out of {} \n", this->iHooks[1], this->iHooks[0]);
 
@@ -64,6 +54,12 @@ void Hooks::Destroy() {
 	MH_Uninitialize();
 }
 
+void __stdcall Hooks::hFirearmsUpdate(Firearms_o* thisptr) {
+	g_Sdk.localCamera = thisptr->fields.PlayerCam;
+
+	return g_Hooks->oFirearmsUpdate(thisptr);
+}
+
 void __stdcall Hooks::hRecoilFir(void* thisptr, float x, float y, float z) {
 	if (g_Config::Combat::NoRecoil)
 		return g_Hooks->oRecoil(thisptr, 0.f, 0.f, 0.f);
@@ -72,35 +68,27 @@ void __stdcall Hooks::hRecoilFir(void* thisptr, float x, float y, float z) {
 }
 
 void __stdcall Hooks::hDoAttack(Firearms_o* thisptr) {
-	thisptr->fields.createBullet = true;
-	thisptr->fields.bulletCount = g_Config::Combat::BulletsCount;
-
-	Vector3 aimPos = g_Sdk.getTransformPosition(g_Hack->localPlayer->fields.aimTarget);
-
-	if (g_Config::Combat::ExplosiveBullets)
-		g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
-
 	if (g_Config::Combat::Aimbot) {
-		switch (g_Config::Combat::AimbotHitbox)
-		{
-		case 0:
-			aimPos = g_Sdk.getTransformPosition(g_Hack->closestPlayer->fields.head);
+		if (!g_Hack->closestPlayer)
+			return g_Hooks->oDoAttack(thisptr);
 
-			if (g_Config::Combat::ExplosiveBullets)
-				return g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
-			else
-				g_Funcs->pCreateBullet(thisptr, aimPos);
-			break;
-		case 1:
-			aimPos = g_Hack->closestPlayer->fields.desiredPos;
+		Vector3 aimPos = g_Sdk.getTransformPosition(g_Hack->closestPlayer->fields.head);
 
-			if (g_Config::Combat::ExplosiveBullets)
-				g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
-			else
-				return g_Funcs->pCreateBullet(thisptr, aimPos);
-			break;
-		}
+		if (g_Config::Combat::ExplosiveBullets)
+			g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
+		else
+			g_Funcs->pCreateBullet(thisptr, aimPos);
 	}
+	else {
+		Vector3 aimPos = g_Sdk.getTransformPosition(g_Hack->localPlayer->fields.aimTarget);
+
+		if (g_Config::Combat::ExplosiveBullets)
+			g_Funcs->pCreateBullet(thisptr, aimPos);
+		else
+			g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
+	}
+
+	thisptr->fields.bulletCount = g_Config::Combat::BulletsCount;
 
 	return g_Hooks->oDoAttack(thisptr);
 }
@@ -116,22 +104,37 @@ void __stdcall Hooks::hReloadGun(Firearms_o* thisptr, float time, int spin) {
 void __stdcall Hooks::hUpdatePlayer(Player* player) {
 	if (player->fields._IsLocal_k__BackingField)
 		g_Hack->localPlayer = player;
-	else
-		g_Hack->players.emplace_back(player);
+	else {
+		if (!std::count(g_Hack->players.begin(), g_Hack->players.begin(), player))
+			g_Hack->players.emplace_back(player);
+	}
 
 	float bestDistance = FLT_MAX;
 	
 	for (int i = 0; i < g_Hack->players.size(); i++) {
-		if (!g_Hack->players[i] || !g_Hack->players[i]->fields.m_CachedPtr) {
+		if (!g_Hack->players[i]) {
 			g_Hack->players.erase(g_Hack->players.begin() + i);
 			continue;
 		}
 
-		if (player->fields.distance < bestDistance)
-			g_Hack->closestPlayer = player;
+		if (g_Hack->localPlayer != nullptr && g_Hack->localPlayer->fields.health > 0 && player->fields.health > 0) {
+			Vector3 localPos = g_Sdk.getTransformPosition(g_Hack->localPlayer->fields.head);
+			Vector3 enemyPos = g_Sdk.getTransformPosition(player->fields.head);
+
+			float distance = g_Sdk.getDistance(localPos, enemyPos);
+			if (distance < bestDistance) {
+				g_Hack->closestPlayer = player;
+				bestDistance = distance;
+			}
+		}
 	}
 
 	return g_Hooks->oUpdatePlayer(player);
+}
+
+void __stdcall Hooks::hUpdateAntiCheat(Manager_AntiCheatDectect_o* ptr) {
+	ptr->klass->static_fields->banned = false;
+	return;
 }
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);

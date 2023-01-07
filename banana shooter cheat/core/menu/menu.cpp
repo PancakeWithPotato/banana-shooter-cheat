@@ -35,6 +35,7 @@ void Menu::Render()  {
 		}
 	}
 
+
 	if (!open)
 		return;
 
