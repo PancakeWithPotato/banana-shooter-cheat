@@ -65,8 +65,6 @@ void Hooks::Destroy() {
 }
 
 void __stdcall Hooks::hRecoilFir(void* thisptr, float x, float y, float z) {
-
-	g_Debug.logState(::warning, "We are in recoilfir");
 	if (g_Config::NoRecoil)
 		return g_Hooks->oRecoil(thisptr, 0, 0, 0);
 	return g_Hooks->oRecoil(thisptr, x, y, z);
@@ -97,13 +95,10 @@ void __stdcall Hooks::hUpdatePlayer(Player* player) {
 	return g_Hooks->oUpdatePlayer(player);
 }
 
-
-
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT WINAPI Hooks::WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-	if (g_Menu.open)
-		if (!ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
-			return 0L;
+	if (g_Menu.open && ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
+		return 0L;
 	
 	return CallWindowProcA(g_Hooks->oWndProc, hWnd, uMsg, wParam, lParam);
 }

@@ -32,4 +32,8 @@ namespace Offsets
 	namespace Cursor {
 		constexpr uintptr_t SetLock = 0x1CA3130;
 	}
+
+	namespace Multiplayer {
+		constexpr uintptr_t GetNetworkManager = 0x3EC930;
+	}
 }

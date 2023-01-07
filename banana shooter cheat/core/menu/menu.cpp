@@ -7,17 +7,17 @@ void Menu::Render()
 {
 	if (GetAsyncKeyState(VK_INSERT) & 1) {
 		open = !open;
-
-		ImGui::SetMouseCursor(ImGuiMouseCursor_Arrow);
-		ImGui::GetIO().WantCaptureMouse = g_Menu.open;
-		ImGui::GetIO().MouseDrawCursor = g_Menu.open;
-
-		if (open) {
-			g_Sdk.setCursorLockedMode(g_Sdk.NONE);
+		
+		if (g_Sdk.localInGame()) {
+			if (open) {
+				g_Sdk.setCursorLockedMode(g_Sdk.NONE);
+			}
+			else {
+				g_Sdk.setCursorLockedMode(g_Sdk.LOCKED);
+			}
 		}
-		else {
-			g_Sdk.setCursorLockedMode(g_Sdk.LOCKED);
-		}
+
+		ImGui::GetIO().MouseDrawCursor = open;
 	}
 
 	if (!open)
