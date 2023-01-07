@@ -11,7 +11,7 @@ bool Hack::Setup()  {
 
 	this->GetName();
 
-	std::cout << "Welcome, " << CHANGE << this->m_strName << std::endl << RESET;
+	std::cout << "Welcome, " << CHANGE << this->strName << std::endl << RESET;
 
 	Offsets::pAssembly = reinterpret_cast<uintptr_t>(GetModuleHandleA("GameAssembly.dll"));
 	
@@ -32,7 +32,7 @@ void Hack::GetName() {
 	DWORD lenght = sizeof(tmp);
 	GetUserNameA(tmp, &lenght);
 
-	m_strName = (strcmp("Pancake", tmp) == 0 ? "dev" : std::string(&tmp[0]));
+	strName = (strcmp("Pancake", tmp) == 0 ? "dev" : std::string(&tmp[0]));
 }
 
 void Hack::Destroy()  {

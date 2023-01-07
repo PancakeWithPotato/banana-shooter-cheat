@@ -3,9 +3,14 @@
 
 namespace g_Config 
 {
+	//combat tab
+
 	inline bool NoRecoil = false;
 	inline bool NoReload = false;
 	inline bool ExplosiveBullets = false;
+
+	inline bool bMagicBullets = false;
+	inline int iMagicBullets = 0;
 }
 //struct {
 //	bool NoRecoil = false;
