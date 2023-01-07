@@ -23,7 +23,7 @@ void Menu::Render()
 	if (!open)
 		return;
 
-	SetCapture(g_Hooks->window);
+	SetupStyles();
 	ImGui::Begin("Banana Shooter Hack", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoScrollbar);
 
 	ImGui::Columns(2, nullptr, false);
