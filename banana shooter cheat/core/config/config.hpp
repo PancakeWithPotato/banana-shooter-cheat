@@ -1,19 +1,14 @@
 #pragma once
-//i legit got no idea why a struct fucked with imgui, but with namespace it works well so i wont complain
 
-namespace g_Config 
-{
-	//combat tab
+namespace g_Config {
+	namespace Combat {
+		inline bool NoReload = false;
+		inline bool NoRecoil = false;
 
-	inline bool NoRecoil = false;
-	inline bool NoReload = false;
-	inline bool ExplosiveBullets = false;
+		inline bool ExplosiveBullets = false;
+		inline int BulletsCount = 1;
 
-	inline bool bMagicBullets = false;
-	inline int iMagicBullets = 0;
+		inline bool Aimbot = false;
+		inline int AimbotHitbox = 0;
+	}
 }
-//struct {
-//	bool NoRecoil = false;
-//	bool NoReload = false;
-//	bool ExplosiveBullets = false;
-//} g_Config;

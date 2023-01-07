@@ -65,52 +65,48 @@ void Hooks::Destroy() {
 }
 
 void __stdcall Hooks::hRecoilFir(void* thisptr, float x, float y, float z) {
+	if (g_Config::Combat::NoRecoil)
+		return g_Hooks->oRecoil(thisptr, 0.f, 0.f, 0.f);
 
-	if (g_Config::NoRecoil)
-		return g_Hooks->oRecoil(thisptr, 0, 0, 0);
 	return g_Hooks->oRecoil(thisptr, x, y, z);
 }
 
-void __stdcall Hooks::hDoAttack(Firearms_o* thisptr) 
-{
+void __stdcall Hooks::hDoAttack(Firearms_o* thisptr) {
+	thisptr->fields.createBullet = true;
+	thisptr->fields.bulletCount = g_Config::Combat::BulletsCount;
+
 	Vector3 aimPos = g_Sdk.getTransformPosition(g_Hack->localPlayer->fields.aimTarget);
 
-	if (g_Config::bMagicBullets) {
-		switch (g_Config::iMagicBullets)
+	if (g_Config::Combat::ExplosiveBullets)
+		g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
+
+	if (g_Config::Combat::Aimbot) {
+		switch (g_Config::Combat::AimbotHitbox)
 		{
 		case 0:
-			for (auto i : g_Hack->players)
-			{
-				aimPos = g_Sdk.getTransformPosition(i->fields.head);
-				if (g_Config::ExplosiveBullets)
-					return g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
-				else
-					g_Funcs->pCreateBullet(thisptr, aimPos);
-			}
+			aimPos = g_Sdk.getTransformPosition(g_Hack->closestPlayer->fields.head);
+
+			if (g_Config::Combat::ExplosiveBullets)
+				return g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
+			else
+				g_Funcs->pCreateBullet(thisptr, aimPos);
 			break;
 		case 1:
-			for (auto i : g_Hack->players)
-			{
-				aimPos = i->fields.desiredPos;
-				if (g_Config::ExplosiveBullets)
-					g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
-				else
-					return g_Funcs->pCreateBullet(thisptr, aimPos);
-			}
+			aimPos = g_Hack->closestPlayer->fields.desiredPos;
+
+			if (g_Config::Combat::ExplosiveBullets)
+				g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
+			else
+				return g_Funcs->pCreateBullet(thisptr, aimPos);
 			break;
 		}
 	}
-
-	if (g_Config::ExplosiveBullets)
-		g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
-
-	thisptr->fields.createBullet = true;
 
 	return g_Hooks->oDoAttack(thisptr);
 }
 
 void __stdcall Hooks::hReloadGun(Firearms_o* thisptr, float time, int spin) {
-	if (!g_Config::NoReload)
+	if (!g_Config::Combat::NoReload)
 		return g_Hooks->oReloadGun(thisptr, time, spin);
 	
 	thisptr->fields.reloadTime = 0.0f;
@@ -123,15 +119,18 @@ void __stdcall Hooks::hUpdatePlayer(Player* player) {
 	else
 		g_Hack->players.emplace_back(player);
 
-	if (GetAsyncKeyState(VK_F1))
-	{
-		std::cout << "v = { ";
-		for (auto n : g_Hack->players)
-			std::cout << n->fields._SteamId_k__BackingField << ", ";
-		std::cout << "} \n";
+	float bestDistance = FLT_MAX;
+	
+	for (int i = 0; i < g_Hack->players.size(); i++) {
+		if (!g_Hack->players[i] || !g_Hack->players[i]->fields.m_CachedPtr) {
+			g_Hack->players.erase(g_Hack->players.begin() + i);
+			continue;
+		}
+
+		if (player->fields.distance < bestDistance)
+			g_Hack->closestPlayer = player;
 	}
 
-	g_Hack->players.clear(); //this is uncesseray to do every time this function runs, but what i made in original meowware is a mess (tho it works) so i don't want to implement it here lol
 	return g_Hooks->oUpdatePlayer(player);
 }
 
