@@ -64,15 +64,17 @@ struct {
 		return reinterpret_cast<NetworkManager*(__cdecl*)()>(Offsets::pAssembly + Offsets::Multiplayer::GetNetworkManager)();
 	}
 
-	bool localConnecting() {
-		NetworkManager* networkManager = getNetworkManager();
-		return networkManager->fields.connecting;
+	LobbyManager* getLobbyManager() {
+		return reinterpret_cast<LobbyManager*(__cdecl*)()>(Offsets::pAssembly + Offsets::Multiplayer::GetLobbyManager)();
 	}
 
 	bool localInGame() {
 		NetworkManager* networkManager = getNetworkManager();
 
-		if (!networkManager || networkManager->fields.connecting || !networkManager->fields.game)
+		if (!networkManager)
+			return false;
+
+		if (networkManager->fields.connecting || !networkManager->fields.game)
 			return false;
 
 		return true;

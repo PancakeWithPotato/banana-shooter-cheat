@@ -15,9 +15,9 @@ void Menu::Render()
 			else {
 				g_Sdk.setCursorLockedMode(g_Sdk.LOCKED);
 			}
+			
+			ImGui::GetIO().MouseDrawCursor = open;
 		}
-
-		ImGui::GetIO().MouseDrawCursor = open;
 	}
 
 	if (!open)

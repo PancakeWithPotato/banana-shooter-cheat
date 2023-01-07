@@ -35,5 +35,6 @@ namespace Offsets
 
 	namespace Multiplayer {
 		constexpr uintptr_t GetNetworkManager = 0x3EC930;
+		constexpr uintptr_t GetLobbyManager = 0x3E21E0;
 	}
 }
