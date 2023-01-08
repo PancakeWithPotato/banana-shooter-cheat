@@ -29,7 +29,7 @@ bool Hooks::Setup()  {
 	AddHook("AntiCheatUpdate", (Offsets::pAssembly + Offsets::AntiCheat::Update), &hUpdateAntiCheat, nullptr); // we dont call the original
 	AddHook("BulletInitialization", (Offsets::pAssembly + Offsets::Bullet::BulletInitialization), &hBulletInitialization, &oBulletInitialization);
 
-	std::cout << (this->iHooks[1] / this->iHooks[0] > 0.50f ? SUCCES : ERR) << std::format("Managed to hook {} functions out of {} \n", this->iHooks[1], this->iHooks[0]);
+	g_Debug.logState((this->iHooks[1] / this->iHooks[0] > 0.50f ? success : error), "Managed to hook %d functions out of %d", this->iHooks[1], this->iHooks[0]);
 
 	if (kiero::init(kiero::RenderType::D3D11) != 0) {
 		g_Debug.logState(error, "Could not initialize Kiero");
@@ -84,9 +84,9 @@ void __stdcall Hooks::hDoAttack(Firearms_o* thisptr) {
 		Vector3 aimPos = g_Sdk.getTransformPosition(g_Hack->localPlayer->fields.aimTarget);
 
 		if (g_Config::Combat::ExplosiveBullets)
-			g_Funcs->pCreateBullet(thisptr, aimPos);
-		else
 			g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
+		else
+			g_Funcs->pCreateBullet(thisptr, aimPos);
 	}
 
 	thisptr->fields.bulletCount = g_Config::Combat::BulletsCount;
@@ -106,15 +106,15 @@ void __stdcall Hooks::hUpdatePlayer(Player* player) {
 	if (player->fields._IsLocal_k__BackingField)
 		g_Hack->localPlayer = player;
 	else {
-		if (!std::count(g_Hack->players.begin(), g_Hack->players.begin(), player))
-			g_Hack->players.emplace_back(player);
+		if (g_Hack->players.find(player->fields._SteamId_k__BackingField) == g_Hack->players.end())
+			g_Hack->players.insert({ player->fields._SteamId_k__BackingField, player });
 	}
 
 	float bestDistance = FLT_MAX;
 	
-	for (int i = 0; i < g_Hack->players.size(); i++) {
-		if (!g_Hack->players[i]) {
-			g_Hack->players.erase(g_Hack->players.begin() + i);
+	for (auto& [steamID, player] : g_Hack->players) {
+		if (!player) {
+			g_Hack->players.erase(steamID);
 			continue;
 		}
 
@@ -128,6 +128,22 @@ void __stdcall Hooks::hUpdatePlayer(Player* player) {
 				bestDistance = distance;
 			}
 		}
+	}
+
+	if (g_Config::Misc::StartGame) {
+		NetworkManager* networkManager = g_Sdk.getNetworkManager();
+
+		if (!networkManager)
+			return g_Hooks->oUpdatePlayer(player);
+
+		if (!networkManager->fields.game)
+			return;
+
+		networkManager->fields.game->fields.readyToStart = true;
+		networkManager->fields.game->fields.leftTime = 0.f;
+		networkManager->fields.game->fields.started = true;
+
+		g_Config::Misc::StartGame = false;
 	}
 
 	return g_Hooks->oUpdatePlayer(player);
