@@ -78,7 +78,7 @@ struct {
 	}
 
 	Vector3 getTransformPosition(Transform* transform) {
-		if (!transform || !transform->fields.m_CachedPtr)
+		if (!transform || sizeof(*transform) != sizeof(UnityEngine_Transform_o) || !transform->fields.m_CachedPtr)
 			return Vector3{};
 
 		return reinterpret_cast<Vector3(__cdecl*)(Transform*)>(Offsets::pAssembly + Offsets::Transform::GetPos)(transform);
@@ -98,11 +98,15 @@ struct {
 
 	bool localInGame() {
 		NetworkManager* networkManager = getNetworkManager();
+		LobbyManager* lobbyManager = getLobbyManager();
 
-		if (!networkManager)
+		if (!networkManager || !networkManager->fields.m_CachedPtr)
 			return false;
 
-		if (networkManager->fields.connecting || !networkManager->fields.game)
+		if (!networkManager->fields.connecting || !networkManager->fields.game)
+			return false;
+
+		if (!lobbyManager)
 			return false;
 
 		return true;
