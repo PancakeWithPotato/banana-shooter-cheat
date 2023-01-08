@@ -16,13 +16,13 @@ private:
 	};
 	TABS TabCount = TAB_CONFIG;
 	bool bInit = false;
-	//tabs renderables
+
 	void RenderConfig();
 	void RenderCombat();
 	void RenderVisuals();
 public:
 	void Render();
-	bool open = true; //menu open by default
+	bool open = false; // DONT turn on by def cuz it bugs out the input
 }; 
 
 inline Menu g_Menu;
