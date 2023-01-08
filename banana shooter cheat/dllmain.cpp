@@ -1,7 +1,8 @@
 #include "utilities/includes.hpp"
 #include "core/hack.hpp"
 
-void Main(HMODULE hMod)  {
+DWORD WINAPI DllEntry( LPVOID lpThreadParameter )
+{
 	if (!g_Hack->Setup())
 		g_Debug.logState(::error, "Failed to setup!");
 
@@ -11,21 +12,49 @@ void Main(HMODULE hMod)  {
 	g_Hack->shouldUnload = true;
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
-	FreeLibraryAndExitThread(hMod, 0); 
+	FreeLibraryAndExitThread(static_cast< HMODULE > ( lpThreadParameter ), 0); 
 }
 
-BOOL WINAPI DllMain(HMODULE hMod, DWORD reason, void* reserved) {
-	switch (reason)
-	{
-	case DLL_PROCESS_ATTACH:
-		_Post_ _Notnull_ CloseHandle(CreateThread(nullptr, 0, reinterpret_cast<LPTHREAD_START_ROUTINE>(Main), hMod, 0, nullptr));
-		break;
-	case DLL_PROCESS_DETACH:
-		g_Hack->Destroy();
+// pasted from https://learn.microsoft.com/en-us/windows/win32/dlls/dllmain
+BOOL WINAPI DllMain(
+    HINSTANCE hinstDLL,  // handle to DLL module
+    DWORD fdwReason,     // reason for calling function
+    LPVOID lpvReserved )  // reserved
+{
+    // Perform actions based on the reason for calling.
+    switch( fdwReason ) 
+    { 
+        case DLL_PROCESS_ATTACH:
+            // Initialize once for each new process.
+            // Return FALSE to fail DLL load.
+            DisableThreadLibraryCalls( hinstDLL );
 
-		delete g_Hack;
-		break;
-	}
+	    if ( HANDLE handle = CreateThread( nullptr, NULL, DllEntry, hinstDLL, NULL, nullptr ) )
+	    {
+		CloseHandle( handle );
+            }
+            break;
 
-	return TRUE;
+        case DLL_THREAD_ATTACH:
+            // Do thread-specific initialization.
+            break;
+
+        case DLL_THREAD_DETACH:
+            // Do thread-specific cleanup.
+            break;
+
+        case DLL_PROCESS_DETACH:
+        
+            if (lpvReserved != nullptr)
+            {
+                break; // do not do cleanup if process termination scenario
+            }
+            
+            // Perform any necessary cleanup.
+	    g_Hack->Destroy();
+	    delete g_Hack;
+            break;
+    }
+	
+    return TRUE;  // Successful DLL_PROCESS_ATTACH.
 }
