@@ -6,18 +6,18 @@
 bool Hooks::AddHook(std::string hookName, unsigned long long pTarget, void* detour, void* original)  {
 	this->iHooks[0]++;
 	if (MH_CreateHook(reinterpret_cast<LPVOID>(pTarget), reinterpret_cast<LPVOID>(detour), reinterpret_cast<LPVOID*>(original)) != MH_OK) {
-		g_Debug.logState(error, "Could not hook %d: %s", this->iHooks[0], hookName.c_str());
+		g_Debug.logState(ERROR, "Could not hook %d: %s", this->iHooks[0], hookName.c_str());
 		return false;
 	}
 
-	g_Debug.logState(success, "Hooked %d: %s", this->iHooks[0], hookName.c_str());
+	g_Debug.logState(SUCCESS, "Hooked %d: %s", this->iHooks[0], hookName.c_str());
 	this->iHooks[1]++;
 	return true;
 }
 
 bool Hooks::Setup()  {
 	if (MH_Initialize() != MH_OK) {
-		g_Debug.logState(error, "Could not initialize MinHook");
+		g_Debug.logState(ERROR, "Could not initialize MinHook");
 		return false;
 	}
 
@@ -30,20 +30,20 @@ bool Hooks::Setup()  {
 	AddHook("BulletInitialization", (Offsets::pAssembly + Offsets::Bullet::BulletInitialization), &hBulletInitialization, &oBulletInitialization);
 	AddHook("ChatUpdate", (Offsets::pAssembly + Offsets::Chat::Update), &hChatUpdate, &oChatUpdate);
 
-	g_Debug.logState((this->iHooks[1] / this->iHooks[0] > 0.50f ? success : error), "Managed to hook %d functions out of %d", this->iHooks[1], this->iHooks[0]);
+	g_Debug.logState((this->iHooks[1] / this->iHooks[0] > 0.50f ? SUCCESS : ERROR), "Managed to hook %d functions out of %d", this->iHooks[1], this->iHooks[0]);
 
 	if (kiero::init(kiero::RenderType::D3D11) != 0) {
-		g_Debug.logState(error, "Could not initialize Kiero");
+		g_Debug.logState(ERROR, "Could not initialize Kiero");
 		return false;
 	}
 
 	if (kiero::bind(8, (void**)&oPresent, &hPresent) != 0) {
-		g_Debug.logState(error, "Could not hook Present");
+		g_Debug.logState(ERROR, "Could not hook Present");
 		return false;
 	}
 
 	if (MH_EnableHook(MH_ALL_HOOKS) != MH_OK) {
-		g_Debug.logState(error, "Could not enable hooks");
+		g_Debug.logState(ERROR, "Could not enable hooks");
 		return false;
 	}
 
