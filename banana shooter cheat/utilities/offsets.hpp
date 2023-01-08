@@ -47,4 +47,10 @@ namespace Offsets
 	namespace AntiCheat {
 		constexpr uintptr_t Update = 0x440400;
 	}
+	namespace Chat {
+		constexpr uintptr_t Update = 0x33E6E0;
+		constexpr uintptr_t SwearCheck = 0x33E470;
+		constexpr uintptr_t AddMessage = 0x33D110;
+		constexpr uintptr_t SetSteamID = 0x33DE60;
+	}
 }

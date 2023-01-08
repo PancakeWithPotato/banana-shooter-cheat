@@ -28,6 +28,7 @@ bool Hooks::Setup()  {
 	AddHook("FirearmsUpdate", (Offsets::pAssembly + Offsets::Firearms::Update), &hFirearmsUpdate, &oFirearmsUpdate);
 	AddHook("AntiCheatUpdate", (Offsets::pAssembly + Offsets::AntiCheat::Update), &hUpdateAntiCheat, nullptr); // we dont call the original
 	AddHook("BulletInitialization", (Offsets::pAssembly + Offsets::Bullet::BulletInitialization), &hBulletInitialization, &oBulletInitialization);
+	AddHook("ChatUpdate", (Offsets::pAssembly + Offsets::Chat::Update), &hChatUpdate, &oChatUpdate);
 
 	std::cout << (this->iHooks[1] / this->iHooks[0] > 0.50f ? SUCCES : ERR) << std::format("Managed to hook {} functions out of {} \n", this->iHooks[1], this->iHooks[0]);
 
@@ -53,6 +54,15 @@ void Hooks::Destroy() {
 	MH_DisableHook(MH_ALL_HOOKS);
 	MH_RemoveHook(MH_ALL_HOOKS);
 	MH_Uninitialize();
+}
+void __cdecl Hooks::hChatUpdate(Chat_o* self) 
+{
+	UnityEngine_Color_o color = { 255,0,0,255};
+	if (g_Funcs->pAddMessage) {
+		if (GetAsyncKeyState(VK_F1) & 1)
+			g_Funcs->pAddMessage(self, "Get this cheat at https://github.com/PancakeWithPotato/banana-shooter-cheat", color);
+	}
+	return g_Hooks->oChatUpdate(self);
 }
 
 void __stdcall Hooks::hFirearmsUpdate(Firearms_o* thisptr) {

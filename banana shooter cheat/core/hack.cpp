@@ -2,6 +2,7 @@
 #include "hooks/hooks.hpp"
 
 bool Hack::Setup()  {
+	srand(std::time(0)); //generate new random seed
 	g_Debug.setupConsole("banana $hooter cheat");
 
 	HWND consoleHWND = GetConsoleWindow();
