@@ -3,7 +3,7 @@
 
 void Main(HMODULE hMod)  {
 	if (!g_Hack->Setup())
-		g_Debug.logState(::error, "Failed to setup!");
+		g_Debug.logState(::ERROR, "Failed to setup!");
 
 	while (!GetAsyncKeyState(VK_END))
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
