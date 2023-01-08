@@ -11,4 +11,8 @@ namespace g_Config {
 		inline bool Aimbot = false;
 		inline int AimbotHitbox = 0;
 	}
+
+	namespace Misc {
+		inline bool StartGame = false;
+	}
 }

@@ -22,6 +22,10 @@ public:
 
 	static void __stdcall hUpdateAntiCheat(Manager_AntiCheatDectect_o* ptr);
 
+	static void __stdcall hBulletInitialization(Bullet_o* bullet, Vector3 dir, float speed, int damage, void* layermask, bool local, bool useGravity);
+
+	static void __cdecl hChatUpdate(Chat_o* self);
+
 	HWND window = NULL;
 	WNDPROC oWndProc;
 	ID3D11Device* pDevice = NULL;
@@ -44,6 +48,10 @@ private:
 	typedef void(__thiscall* UpdatePlayerFN)(Player*);
 
 	typedef void(__thiscall* UpdateAntiCheatFN)(Manager_AntiCheatDectect_o*);
+
+	typedef void(__thiscall* BulletInitFN)(Bullet_o*, Vector3, float, int, void*, bool, bool);
+
+	typedef void(__cdecl* UpdateChatFN)(Chat_o*);
 public:
 	RecoilFirFN oRecoil = nullptr;
 	DoAttackFN oDoAttack = nullptr;
@@ -53,6 +61,10 @@ public:
 	UpdatePlayerFN oUpdatePlayer = nullptr;
 
 	UpdateAntiCheatFN oUpdateAntiCheat = nullptr;
+
+	BulletInitFN oBulletInitialization = nullptr;
+
+	UpdateChatFN oChatUpdate = nullptr;
 
 	PresentFN oPresent = nullptr;
 }; inline Hooks* g_Hooks = new Hooks();

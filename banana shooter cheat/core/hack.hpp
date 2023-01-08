@@ -2,6 +2,7 @@
 #include "../sdk/il2cpp.h"
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 class Hack
 {
@@ -17,6 +18,6 @@ public:
 
 	Multiplayer_Client_ClientPlayer_o* closestPlayer = nullptr;
 	Multiplayer_Client_ClientPlayer_o* localPlayer = nullptr;
-	std::vector<Multiplayer_Client_ClientPlayer_o*> players;
+	std::unordered_map<unsigned long long, Multiplayer_Client_ClientPlayer_o*> players;
 }; inline Hack* g_Hack = new Hack();
 
