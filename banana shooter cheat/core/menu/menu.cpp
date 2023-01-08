@@ -30,8 +30,6 @@ void Menu::Render()  {
 			else {
 				g_Sdk.setCursorLockedMode(g_Sdk.LOCKED);
 			}
-			
-			ImGui::GetIO().MouseDrawCursor = open;
 		}
 	}
 
@@ -48,8 +46,8 @@ void Menu::Render()  {
 		this->TabCount = TAB_COMBAT;
 	if (ImGui::Button("Visuals", ImVec2(115, 60)))
 		this->TabCount = TAB_VISUALS;
-	if (ImGui::Button("Configs", ImVec2(115, 60)))
-		this->TabCount = TAB_CONFIG;
+	if (ImGui::Button("Misc", ImVec2(115, 60)))
+		this->TabCount = TAB_MISC;
 
 	ImGui::SetCursorPos({ ImGui::GetCursorPos().x, ImGui::GetCursorPos().y + 20 });
 	static std::string strRaw;
@@ -65,8 +63,8 @@ void Menu::Render()  {
 
 	switch (this->TabCount)
 	{
-	case TAB_CONFIG:
-		this->RenderConfig();
+	case TAB_MISC:
+		this->RenderMisc();
 		break;
 	case TAB_COMBAT:
 		this->RenderCombat();
@@ -106,12 +104,13 @@ void Menu::RenderCombat()
 	ImGui::EndChild();
 }
 
-void Menu::RenderConfig() 
+void Menu::RenderMisc() 
 {
-	ImGui::BeginChild("##configs", { 350, 240});
-	ImGui::Text("Once we have enough features, we will put\n configs there, until then;idk what to use it for, we'll see i guess.");
-	static bool bbool = false;
-	ImGui::Checkbox("Test checkbox", &bbool);
+	ImGui::BeginChild("##configs", { 350, 240 }, true);
+
+	if (ImGui::Button("Force start game", ImVec2(125, 30)))
+		g_Config::Misc::StartGame = true;
+
 	ImGui::EndChild();
 }
 

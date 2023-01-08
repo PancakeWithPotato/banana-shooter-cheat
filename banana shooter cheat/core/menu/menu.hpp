@@ -10,19 +10,19 @@ struct Menu {
 private:
 	void FormatDate(std::string& date, const std::string& rawdate);
 	enum TABS {
-		TAB_CONFIG,
+		TAB_MISC,
 		TAB_COMBAT,
 		TAB_VISUALS
 	};
-	TABS TabCount = TAB_CONFIG;
+	TABS TabCount = TAB_COMBAT;
 	bool bInit = false;
 
-	void RenderConfig();
+	void RenderMisc();
 	void RenderCombat();
 	void RenderVisuals();
 public:
 	void Render();
-	bool open = false; // DONT turn on by def cuz it bugs out the input
+	bool open = false;
 }; 
 
 inline Menu g_Menu;
