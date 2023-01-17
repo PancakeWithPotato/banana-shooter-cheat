@@ -68,6 +68,8 @@ void __cdecl Hooks::hChatUpdate(Chat_o* self)
 void __stdcall Hooks::hFirearmsUpdate(Firearms_o* thisptr) {
 	g_Sdk.localCamera = thisptr->fields.PlayerCam;
 
+	thisptr->fields.bobSpeed = g_Config::Visuals::fBobSpeed;
+
 	return g_Hooks->oFirearmsUpdate(thisptr);
 }
 

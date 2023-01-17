@@ -15,4 +15,8 @@ namespace g_Config {
 	namespace Misc {
 		inline bool StartGame = false;
 	}
+
+	namespace Visuals {
+		inline float fBobSpeed = 17.f;
+	}
 }

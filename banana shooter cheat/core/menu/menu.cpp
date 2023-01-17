@@ -81,7 +81,10 @@ void Menu::Render()  {
 }
 
 void Menu::RenderVisuals() {
-	ImGui::Text("We got none lolz");
+	ImGui::BeginChild("##visuals", { 350,260 }, true);
+	ImGui::SliderFloat("Movemenet bob speed", &g_Config::Visuals::fBobSpeed, 0, 150);
+	ImGui::HelpMarker("Setting to 0 will result in no movement bob.");
+	ImGui::EndChild();
 }
 
 void Menu::RenderCombat() 
@@ -89,15 +92,17 @@ void Menu::RenderCombat()
 	ImGui::BeginChild("##combat", { 350, 260 }, true);
 	ImGui::Checkbox("Aimbot", &g_Config::Combat::Aimbot);
 
+	//ImGui::PushItemWidth((ImGui::CalcTextSize("Head").x + 15));
 	ImGui::Combo("Aimbot hitbox", &g_Config::Combat::AimbotHitbox, "Head\0Body");
+	//ImGui::PopItemWidth();
 
 	ImGui::Checkbox("No reload", &g_Config::Combat::NoReload);
 	ImGui::Checkbox("No recoil", &g_Config::Combat::NoRecoil);
 
 	ImGui::Checkbox("Explosive bullets", &g_Config::Combat::ExplosiveBullets);
 
-	ImGui::HelpMarker("Will shoot x more bullets.");
 	ImGui::SliderInt("Bullet count", &g_Config::Combat::BulletsCount, 1, 100);
+	ImGui::HelpMarker("Will shoot x more bullets.");
 	
 	ImGui::SameLine(); 
 	
