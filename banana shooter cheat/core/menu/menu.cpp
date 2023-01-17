@@ -117,8 +117,15 @@ void Menu::RenderMisc()
 void Menu::FormatDate(std::string& date, const std::string& raw) 
 {
 	//this code is so horrible LMAO
-	size_t firstspace = raw.find_first_of(' ');
-	date = raw.substr(0, firstspace);;
-	date.append(raw.substr(firstspace + 1));
+#define NORMAL_SIZE  11 //size for single digit dates (like Jan 2)
+	if (raw.length() > NORMAL_SIZE)
+	{
+		size_t firstspace = raw.find_first_of(' ');
+		date = raw.substr(0, firstspace);;
+		date.append(raw.substr(firstspace + 1));
+	}
+	else
+		date = raw;
+	
 	this->bInit = true;
 }
