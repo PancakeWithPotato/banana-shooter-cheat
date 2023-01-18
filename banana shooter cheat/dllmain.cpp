@@ -1,9 +1,12 @@
 #include "utilities/includes.hpp"
 #include "core/hack.hpp"
+#include "discord/DiscordRPC.h"
 
 void Main(HMODULE hMod)  {
 	if (!g_Hack->Setup())
 		g_Debug.logState(::ERROR, "Failed to setup!");
+
+	g_Cord.DiscordThread();
 
 	while (!GetAsyncKeyState(VK_END))
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -11,6 +14,7 @@ void Main(HMODULE hMod)  {
 	g_Hack->shouldUnload = true;
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
+	g_Cord.ShutDown();
 	FreeLibraryAndExitThread(hMod, 0); 
 }
 
