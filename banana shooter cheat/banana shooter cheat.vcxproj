@@ -190,7 +190,8 @@
     <ClInclude Include="sdk\sdk.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="discord\discord.lib" />
+    <Library Include="discord\discord_debug.lib" />
+    <Library Include="discord\discord_release.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

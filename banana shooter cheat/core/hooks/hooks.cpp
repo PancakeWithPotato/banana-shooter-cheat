@@ -85,6 +85,8 @@ void __stdcall Hooks::hDoAttack(Firearms_o* thisptr) {
 		if (!g_Hack->closestPlayer)
 			return g_Hooks->oDoAttack(thisptr);
 
+		
+
 		Vector3 aimPos = g_Sdk.getTransformPosition(g_Hack->closestPlayer->fields.head);
 
 		if (g_Config::Combat::ExplosiveBullets)
@@ -115,11 +117,21 @@ void __stdcall Hooks::hReloadGun(Firearms_o* thisptr, float time, int spin) {
 }
 
 void __stdcall Hooks::hUpdatePlayer(Player* player) {
+	//update networkmanager
+	g_Sdk.networkManager = g_Sdk.getNetworkManager();
+
 	if (player->fields._IsLocal_k__BackingField)
 		g_Hack->localPlayer = player;
 	else {
 		if (g_Hack->players.find(player->fields._SteamId_k__BackingField) == g_Hack->players.end())
-			g_Hack->players.insert({ player->fields._SteamId_k__BackingField, player });
+			if (g_Sdk.IsTeamMode(g_Sdk.networkManager)) {
+				if (g_Hack->localPlayer) {
+					if (player->fields.team != g_Hack->localPlayer->fields.team)
+						g_Hack->players.insert({ player->fields._SteamId_k__BackingField, player });
+				}
+			}
+			else
+				g_Hack->players.insert({ player->fields._SteamId_k__BackingField, player });
 	}
 
 	float bestDistance = FLT_MAX;

@@ -118,6 +118,7 @@
     <ClInclude Include="discord\include\discord_rpc.h" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="discord\discord.lib" />
+    <Library Include="discord\discord_release.lib" />
+    <Library Include="discord\discord_debug.lib" />
   </ItemGroup>
 </Project>

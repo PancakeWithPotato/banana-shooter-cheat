@@ -96,8 +96,13 @@ struct {
 		return reinterpret_cast<LobbyManager*(__cdecl*)()>(Offsets::pAssembly + Offsets::Multiplayer::GetLobbyManager)();
 	}
 
+	bool IsTeamMode(NetworkManager* self)
+	{
+		return reinterpret_cast<bool(__cdecl*)(NetworkManager*)>(Offsets::pAssembly + Offsets::Multiplayer::IsTeamMode)(self);
+	}
+
 	bool localInGame() {
-		NetworkManager* networkManager = getNetworkManager();
+		//NetworkManager* networkManager = getNetworkManager();
 		LobbyManager* lobbyManager = getLobbyManager();
 
 		if (!networkManager || !networkManager->fields.m_CachedPtr)
@@ -111,4 +116,6 @@ struct {
 
 		return true;
 	}
+
+	NetworkManager* networkManager = nullptr;
 } g_Sdk;
