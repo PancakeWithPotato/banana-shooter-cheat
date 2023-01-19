@@ -7,7 +7,7 @@
 
 enum eLogs {
 	SUCCESS = 1,
-	ERROR = 2, // pancake: im dumb
+	ERROR = 2, //do better next time blastbrean
 	WARNING = 3
 };
 
