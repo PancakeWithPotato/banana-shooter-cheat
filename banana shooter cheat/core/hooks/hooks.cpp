@@ -80,30 +80,34 @@ void __stdcall Hooks::hRecoilFir(void* thisptr, float x, float y, float z) {
 	return g_Hooks->oRecoil(thisptr, x, y, z);
 }
 
-void __stdcall Hooks::hDoAttack(Firearms_o* thisptr) {
-	if (g_Config::Combat::Aimbot) {
-		if (!g_Hack->closestPlayer)
-			return g_Hooks->oDoAttack(thisptr);
+void __stdcall Hooks::hDoAttack(Firearms_o* thisptr) 
+{
+	Player* player = g_Combat.ClosestPlayer(g_Hack->players);
+	g_Combat.Aimbot(thisptr, player, g_Config::Combat::ExplosiveBullets, g_Config::Combat::AimbotHitbox);
 
-		
+	//if (g_Config::Combat::Aimbot) {
+	//	if (!g_Hack->closestPlayer)
+	//		return g_Hooks->oDoAttack(thisptr);
 
-		Vector3 aimPos = g_Sdk.getTransformPosition(g_Hack->closestPlayer->fields.head);
+	//	
 
-		if (g_Config::Combat::ExplosiveBullets)
-			g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
-		else
-			g_Funcs->pCreateBullet(thisptr, aimPos);
-	}
-	else {
-		Vector3 aimPos = g_Sdk.getTransformPosition(g_Hack->localPlayer->fields.aimTarget);
+	//	Vector3 aimPos = g_Sdk.getTransformPosition(g_Hack->closestPlayer->fields.head);
 
-		if (g_Config::Combat::ExplosiveBullets)
-			g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
-		else
-			g_Funcs->pCreateBullet(thisptr, aimPos);
-	}
+	//	if (g_Config::Combat::ExplosiveBullets)
+	//		g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
+	//	else
+	//		g_Funcs->pCreateBullet(thisptr, aimPos);
+	//}
+	//else {
+	//	Vector3 aimPos = g_Sdk.getTransformPosition(g_Hack->localPlayer->fields.aimTarget);
 
-	thisptr->fields.bulletCount = g_Config::Combat::BulletsCount;
+	//	if (g_Config::Combat::ExplosiveBullets)
+	//		g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
+	//	else
+	//		g_Funcs->pCreateBullet(thisptr, aimPos);
+	//}
+
+	//thisptr->fields.bulletCount = g_Config::Combat::BulletsCount;
 
 	return g_Hooks->oDoAttack(thisptr);
 }
@@ -119,7 +123,6 @@ void __stdcall Hooks::hReloadGun(Firearms_o* thisptr, float time, int spin) {
 void __stdcall Hooks::hUpdatePlayer(Player* player) {
 	//update networkmanager
 	g_Sdk.networkManager = g_Sdk.getNetworkManager();
-
 	if (player->fields._IsLocal_k__BackingField)
 		g_Hack->localPlayer = player;
 	else {
