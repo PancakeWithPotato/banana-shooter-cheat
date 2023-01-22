@@ -80,6 +80,7 @@ void __stdcall Hooks::hRecoilFir(void* thisptr, float x, float y, float z) {
 	return g_Hooks->oRecoil(thisptr, x, y, z);
 }
 
+
 void __stdcall Hooks::hDoAttack(Firearms_o* thisptr) 
 {
 	static Player* player;

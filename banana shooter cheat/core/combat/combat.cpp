@@ -84,3 +84,4 @@ void combat::BulletMultiplier(Firearms_o* self, const int& iBulletcount)
 {
 	self->fields.bulletCount = iBulletcount;
 }
+
