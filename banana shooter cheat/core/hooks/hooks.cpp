@@ -80,32 +80,7 @@ void __stdcall Hooks::hRecoilFir(void* thisptr, float x, float y, float z) {
 	return g_Hooks->oRecoil(thisptr, x, y, z);
 }
 
-<<<<<<< Updated upstream
-void __stdcall Hooks::hDoAttack(Firearms_o* thisptr) {
-	if (g_Config::Combat::Aimbot) {
-		if (!g_Hack->closestPlayer)
-			return g_Hooks->oDoAttack(thisptr);
 
-		
-
-		Vector3 aimPos = g_Sdk.getTransformPosition(g_Hack->closestPlayer->fields.head);
-
-		if (g_Config::Combat::ExplosiveBullets)
-			g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
-		else
-			g_Funcs->pCreateBullet(thisptr, aimPos);
-	}
-	else {
-		Vector3 aimPos = g_Sdk.getTransformPosition(g_Hack->localPlayer->fields.aimTarget);
-
-		if (g_Config::Combat::ExplosiveBullets)
-			g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
-		else
-			g_Funcs->pCreateBullet(thisptr, aimPos);
-	}
-
-	thisptr->fields.bulletCount = g_Config::Combat::BulletsCount;
-=======
 void __stdcall Hooks::hDoAttack(Firearms_o* thisptr) 
 {
 	static Player* player;
@@ -123,7 +98,6 @@ void __stdcall Hooks::hDoAttack(Firearms_o* thisptr)
 	//manual spawning of bullets is done AFTER the aimbot
 	if (g_Config::Combat::ExplosiveBullets)
 		g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
->>>>>>> Stashed changes
 
 	return g_Hooks->oDoAttack(thisptr);
 }

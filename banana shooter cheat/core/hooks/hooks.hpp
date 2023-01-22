@@ -1,6 +1,7 @@
 #pragma once
 #include "../../utilities/includes.hpp"
 #include "../../dependencies/minhook/MinHook.h"
+#include "../combat/combat.h"
 
 class Hooks 
 {

@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 #pragma once
 #include "../../sdk/il2cpp.h"
 #include "../hooks/hooks.hpp"
@@ -17,4 +15,3 @@ public:
 
 }; inline combat g_Combat;
 
->>>>>>> Stashed changes

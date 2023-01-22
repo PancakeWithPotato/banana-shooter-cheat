@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 #include "combat.h"
 
 Player* combat::ClosestPlayer(std::unordered_map<unsigned long long, Multiplayer_Client_ClientPlayer_o*>& players)
@@ -86,4 +84,4 @@ void combat::BulletMultiplier(Firearms_o* self, const int& iBulletcount)
 {
 	self->fields.bulletCount = iBulletcount;
 }
->>>>>>> Stashed changes
+

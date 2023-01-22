@@ -9,7 +9,7 @@ namespace g_Config {
 		inline int BulletsCount = 1;
 
 		inline bool Aimbot = false;
-		inline int AimbotHitbox = 0;
+		inline int AimbotHitbox = 0; //0 head, 1 body
 	}
 
 	namespace Misc {
