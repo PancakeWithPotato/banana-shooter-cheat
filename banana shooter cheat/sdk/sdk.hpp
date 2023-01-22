@@ -77,10 +77,19 @@ struct {
 		return true;
 	}
 
-	Vector3 getTransformPosition(Transform* transform) {
-		if (!transform || sizeof(*transform) != sizeof(UnityEngine_Transform_o) || !transform->fields.m_CachedPtr)
+	Vector3 getTransformPosition(Transform* transform) 
+	{
+
+		//std::cout << "Getting transofmr pos\n";
+		if (transform == nullptr || sizeof(*transform) != sizeof(Transform))
 			return Vector3{};
 
+		//std::cout << "Passed first check//\n";
+
+		if (!transform->fields.m_CachedPtr)
+			return Vector3{};
+
+		//std::cout << "Passed second check\n";
 		return reinterpret_cast<Vector3(__cdecl*)(Transform*)>(Offsets::pAssembly + Offsets::Transform::GetPos)(transform);
 	}
 
