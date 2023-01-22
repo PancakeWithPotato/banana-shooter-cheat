@@ -60,7 +60,7 @@ void __cdecl Hooks::hChatUpdate(Chat_o* self)
 	UnityEngine_Color_o color = { 255,0,0,255};
 	if (g_Funcs->pAddMessage) {
 		if (GetAsyncKeyState(VK_F1) & 1)
-			g_Funcs->pAddMessage(self, "Get this cheat at https://github.com/PancakeWithPotato/banana-shooter-cheat", color);
+			g_Funcs->pAddMessage(self, "Get this cheat at https://github.com/PancakeWithPotato/banana-shooter-cheat\n", color);
 	}
 	return g_Hooks->oChatUpdate(self);
 }
@@ -82,32 +82,21 @@ void __stdcall Hooks::hRecoilFir(void* thisptr, float x, float y, float z) {
 
 void __stdcall Hooks::hDoAttack(Firearms_o* thisptr) 
 {
-	Player* player = g_Combat.ClosestPlayer(g_Hack->players);
-	g_Combat.Aimbot(thisptr, player, g_Config::Combat::ExplosiveBullets, g_Config::Combat::AimbotHitbox);
+	static Player* player;
+	static Vector3 aimPos;
+	aimPos = g_Sdk.getTransformPosition(g_Hack->localPlayer->fields.aimTarget);
+	//modifications to the class are done BEFORE the aimbot
+	if (g_Config::Combat::BulletsCount > 1)
+		g_Combat.BulletMultiplier(thisptr, g_Config::Combat::BulletsCount);
 
-	//if (g_Config::Combat::Aimbot) {
-	//	if (!g_Hack->closestPlayer)
-	//		return g_Hooks->oDoAttack(thisptr);
+	if (g_Config::Combat::Aimbot) {
+		player = g_Combat.ClosestPlayer(g_Hack->players);
+		g_Combat.Aimbot(thisptr, player, g_Config::Combat::ExplosiveBullets, g_Config::Combat::AimbotHitbox);
+	}
 
-	//	
-
-	//	Vector3 aimPos = g_Sdk.getTransformPosition(g_Hack->closestPlayer->fields.head);
-
-	//	if (g_Config::Combat::ExplosiveBullets)
-	//		g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
-	//	else
-	//		g_Funcs->pCreateBullet(thisptr, aimPos);
-	//}
-	//else {
-	//	Vector3 aimPos = g_Sdk.getTransformPosition(g_Hack->localPlayer->fields.aimTarget);
-
-	//	if (g_Config::Combat::ExplosiveBullets)
-	//		g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
-	//	else
-	//		g_Funcs->pCreateBullet(thisptr, aimPos);
-	//}
-
-	//thisptr->fields.bulletCount = g_Config::Combat::BulletsCount;
+	//manual spawning of bullets is done AFTER the aimbot
+	if (g_Config::Combat::ExplosiveBullets)
+		g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
 
 	return g_Hooks->oDoAttack(thisptr);
 }
@@ -117,45 +106,52 @@ void __stdcall Hooks::hReloadGun(Firearms_o* thisptr, float time, int spin) {
 		return g_Hooks->oReloadGun(thisptr, time, spin);
 	
 	thisptr->fields.reloadTime = 0.0f;
-	return g_Hooks->oReloadGun(thisptr, 0.f, 0);
+	return g_Hooks->oReloadGun(thisptr, 0.f, 100);
 }
 
 void __stdcall Hooks::hUpdatePlayer(Player* player) {
 	//update networkmanager
 	g_Sdk.networkManager = g_Sdk.getNetworkManager();
+
 	if (player->fields._IsLocal_k__BackingField)
 		g_Hack->localPlayer = player;
 	else {
 		if (g_Hack->players.find(player->fields._SteamId_k__BackingField) == g_Hack->players.end())
-			if (g_Sdk.IsTeamMode(g_Sdk.networkManager)) {
-				if (g_Hack->localPlayer) {
+		{
+			if (g_Sdk.IsTeamMode(g_Sdk.networkManager))
+			{
+				if (g_Hack->localPlayer)
+				{
 					if (player->fields.team != g_Hack->localPlayer->fields.team)
 						g_Hack->players.insert({ player->fields._SteamId_k__BackingField, player });
 				}
 			}
 			else
 				g_Hack->players.insert({ player->fields._SteamId_k__BackingField, player });
-	}
-
-	float bestDistance = FLT_MAX;
-	
-	for (auto& [steamID, player] : g_Hack->players) {
-		if (!player) {
-			g_Hack->players.erase(steamID);
-			continue;
-		}
-
-		if (g_Hack->localPlayer != nullptr && g_Hack->localPlayer->fields.health > 0 && player->fields.health > 0) {
-			Vector3 localPos = g_Sdk.getTransformPosition(g_Hack->localPlayer->fields.head);
-			Vector3 enemyPos = g_Sdk.getTransformPosition(player->fields.head);
-
-			float distance = g_Sdk.getDistance(localPos, enemyPos);
-			if (distance < bestDistance) {
-				g_Hack->closestPlayer = player;
-				bestDistance = distance;
-			}
 		}
 	}
+
+	if (GetAsyncKeyState(VK_DELETE))
+		std::cout << "The game currently is " << (g_Sdk.IsTeamMode(g_Sdk.networkManager) ? "A TEAM MODE\n" : "NOT A TEAM MODE\n");
+	//float bestDistance = FLT_MAX;
+	//
+	//for (auto& [steamID, player] : g_Hack->players) {
+	//	if (!player) {
+	//		g_Hack->players.erase(steamID);
+	//		continue;
+	//	}
+
+	//	if (g_Hack->localPlayer != nullptr && g_Hack->localPlayer->fields.health > 0 && player->fields.health > 0) {
+	//		Vector3 localPos = g_Sdk.getTransformPosition(g_Hack->localPlayer->fields.head);
+	//		Vector3 enemyPos = g_Sdk.getTransformPosition(player->fields.head);
+
+	//		float distance = g_Sdk.getDistance(localPos, enemyPos);
+	//		if (distance < bestDistance) {
+	//			g_Hack->closestPlayer = player;
+	//			bestDistance = distance;
+	//		}
+	//	}
+	//}
 
 	if (g_Config::Misc::StartGame) {
 		NetworkManager* networkManager = g_Sdk.getNetworkManager();

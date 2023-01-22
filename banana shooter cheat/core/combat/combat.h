@@ -8,11 +8,9 @@ class combat
 public:
 	Player* ClosestPlayer(std::unordered_map<unsigned long long, Multiplayer_Client_ClientPlayer_o*>& );
 
-	void Aimbot(void* this2, Player* player, const bool& bExplosive, const int& iHittarget);
+	void Aimbot(Firearms_o* this2, Player* player, const bool& bExplosive, const int& iHittarget);
 
-	void ExplosiveBullet();
-
-	void BulletMultiplier(const int& iBulletcount);
+	void BulletMultiplier(Firearms_o* self, const int& iBulletcount);
 
 
 }; inline combat g_Combat;

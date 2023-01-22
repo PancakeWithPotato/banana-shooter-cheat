@@ -50,18 +50,20 @@ Player* combat::ClosestPlayer(std::unordered_map<unsigned long long, Multiplayer
 	//}
 }
 
-void combat::Aimbot(void* this2, Player* player, const bool& bExplosive, const int& iHittarget)
+void combat::Aimbot(Firearms_o* this2, Player* player, const bool& bExplosive, const int& iHittarget)
 {
-	if (player == nullptr)
-		return;
+	if (player == nullptr || player->fields.health < 0)
+		return g_Hooks->oDoAttack(this2);
 
 	Vector3 aimPos = player->fields.desiredPos;
-
+	//std::cout << "We set aimpos to desiredpos!\n";
 	switch (iHittarget)
 	{
 	case 0:
+		//std::cout << "Hittarget head\n";
 		//set aimpos to head
 		aimPos = g_Sdk.getTransformPosition(player->fields.head);
+		//std::cout << "GEtTransfromPos end: " << std::format("Vector-> {}, {}, {} \n", aimPos.fields.x, aimPos.fields.y, aimPos.fields.z);
 		if (bExplosive)
 			g_Funcs->pCreateExplosiveBullet(this2, aimPos);
 		else
@@ -74,4 +76,11 @@ void combat::Aimbot(void* this2, Player* player, const bool& bExplosive, const i
 			g_Funcs->pCreateBullet(this2, aimPos);
 		break;
 	}
+
+	return g_Hooks->oDoAttack(this2);
+}
+
+void combat::BulletMultiplier(Firearms_o* self, const int& iBulletcount)
+{
+	self->fields.bulletCount = iBulletcount;
 }
