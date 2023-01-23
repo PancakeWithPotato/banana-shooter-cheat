@@ -39,7 +39,6 @@ void Menu::Render()  {
 
 	SetupStyles();
 	ImGui::Begin("Banana Shooter Hack", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoScrollbar);
-
 	ImGui::Columns(2, nullptr, false);
 	ImGui::SetColumnOffset(1, 125);
 	if (ImGui::Button("Combat", ImVec2(115, 60)))
@@ -52,8 +51,11 @@ void Menu::Render()  {
 	ImGui::SetCursorPos({ ImGui::GetCursorPos().x, ImGui::GetCursorPos().y + 20 });
 	static std::string strRaw;
 	
-	if (!this->bInit)
+	if (!this->bInit) 
+	{	
+		g_Visuals.v2ScreenSize = ImGui::GetIO().DisplaySize;
 		this->FormatDate(strRaw, __DATE__);
+	}
 
 	static const std::string strBuildDate = "Build date: \n" + strRaw;
 	ImGui::Text(strBuildDate.data());
@@ -116,6 +118,7 @@ void Menu::RenderMisc()
 	if (ImGui::Button("Force start game", ImVec2(125, 30)))
 		g_Config::Misc::StartGame = true;
 
+	ImGui::Checkbox("Spotify playback detection", &g_Config::Misc::bSpotifyDetection);
 	ImGui::EndChild();
 }
 

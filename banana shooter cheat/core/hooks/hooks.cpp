@@ -217,7 +217,7 @@ HRESULT Hooks::hPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flag
 			io.ConfigFlags = ImGuiConfigFlags_NoMouseCursorChange;
 			ImGui_ImplWin32_Init(g_Hooks->window);
 			ImGui_ImplDX11_Init(g_Hooks->pDevice, g_Hooks->pContext);
-
+			g_Visuals.Init();
 			init = true;
 		}
 		else
@@ -229,6 +229,9 @@ HRESULT Hooks::hPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flag
 	ImGui::NewFrame();
 
 	g_Menu.Render();
+
+	if(g_Config::Misc::bSpotifyDetection)
+		g_Visuals.RenderSpotifyStatus();
 
 	ImGui::Render();
 

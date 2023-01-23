@@ -16,7 +16,6 @@ private:
 	};
 	TABS TabCount = TAB_COMBAT;
 	bool bInit = false;
-
 	void RenderMisc();
 	void RenderCombat();
 	void RenderVisuals();

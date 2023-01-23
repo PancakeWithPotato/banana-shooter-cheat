@@ -25,6 +25,7 @@ public:
 	Song_t CurrentlyPlaying;
 	EPlayModes CurrentState;
 	Song_t GetCurrentSong();
+	std::string strComplete;
 
 	void Update();
 }; inline Spotify g_Spotify;

@@ -63,7 +63,8 @@ Song_t Spotify::GetCurrentSong()
 		dash = strTitle.find_last_of('-');
 
 		//its running, no song playing tho
-		if (dash == 18446744073709551615) {
+		if (dash == std::string::npos)  //changed the magic number
+		{
 			this->CurrentState = STOPPED;
 			return { "", "" };
 		}
@@ -75,17 +76,20 @@ Song_t Spotify::GetCurrentSong()
 
 void Spotify::Update()
 {
+	if (!g_Config::Misc::bSpotifyDetection)
+		return;
 	this->CurrentlyPlaying = this->GetCurrentSong();
 	switch (this->CurrentState)
 	{
 	case NOT_RUNNING:
-		std::cout << "Spotify is not running!\n";
+		this->strComplete = "Spotify is not running!";
 		break;
 	case STOPPED:
-		std::cout << "Currently nothing is being played!\n";
+		this->strComplete = "Nothing is playing currently!";
 		break;
 	case PLAYING:
-		std::cout << std::format("Currently playing {} by {}\n", this->CurrentlyPlaying.strSongname, this->CurrentlyPlaying.strAuthor);
+		this->strComplete = std::format("Currently playing {} by {}", this->CurrentlyPlaying.strSongname, this->CurrentlyPlaying.strAuthor);
+		//std::cout << std::format("Currently playing {} by {}\n", this->CurrentlyPlaying.strSongname, this->CurrentlyPlaying.strAuthor);
 		break;
 	}
 }

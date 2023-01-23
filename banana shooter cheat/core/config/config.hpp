@@ -14,6 +14,7 @@ namespace g_Config {
 
 	namespace Misc {
 		inline bool StartGame = false;
+		inline bool bSpotifyDetection = true;
 	}
 
 	namespace Visuals {

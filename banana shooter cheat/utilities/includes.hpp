@@ -25,3 +25,5 @@
 #include "../sdk/functions.hpp"
 
 #include "../core/hack.hpp"
+
+#include "../core/visuals/visuals.hpp"
