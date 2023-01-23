@@ -53,7 +53,7 @@ void Menu::Render()  {
 	
 	if (!this->bInit) 
 	{	
-		g_Visuals.v2ScreenSize = ImGui::GetIO().DisplaySize;
+		g_Visuals.Init();
 		this->FormatDate(strRaw, __DATE__);
 	}
 

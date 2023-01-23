@@ -21,7 +21,7 @@ private:
 	void RenderVisuals();
 public:
 	void Render();
-	bool open = false;
+	bool open = true;
 }; 
 
 inline Menu g_Menu;

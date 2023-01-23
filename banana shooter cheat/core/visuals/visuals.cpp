@@ -7,6 +7,9 @@ void Visuals::Init()
 
 	this->draw = ImGui::GetBackgroundDrawList();
 	this->v2ScreenSize = ImGui::GetIO().DisplaySize;
+
+	//doesnt really matter, as it will only get called once anyways
+	this->bInit = true;
 }
 
 void Visuals::RenderSpotifyStatus()
