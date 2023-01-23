@@ -7,6 +7,7 @@
 #include <thread>
 #include <d3d11.h>
 #include <array>
+#include <ctime>
 
 #include "../dependencies/termcolor/termcolor.hpp"
 

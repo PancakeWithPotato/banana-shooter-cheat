@@ -55,6 +55,8 @@
     <ClCompile Include="core\menu\menu.cpp" />
     <ClCompile Include="discord\DiscordRPC.cpp" />
     <ClCompile Include="core\combat\combat.cpp" />
+    <ClCompile Include="core\visuals\visuals.cpp" />
+    <ClCompile Include="utilities\Song\Song.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utilities\includes.hpp">
@@ -118,6 +120,8 @@
     <ClInclude Include="discord\include\discord_register.h" />
     <ClInclude Include="discord\include\discord_rpc.h" />
     <ClInclude Include="core\combat\combat.h" />
+    <ClInclude Include="core\visuals\visuals.hpp" />
+    <ClInclude Include="utilities\Song\Song.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="discord\discord_release.lib" />

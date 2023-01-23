@@ -139,6 +139,7 @@
   <ItemGroup>
     <ClCompile Include="core\combat\combat.cpp" />
     <ClCompile Include="core\menu\menu.cpp" />
+    <ClCompile Include="core\visuals\visuals.cpp" />
     <ClCompile Include="dependencies\imgui\imgui.cpp" />
     <ClCompile Include="dependencies\imgui\imgui_demo.cpp" />
     <ClCompile Include="dependencies\imgui\imgui_draw.cpp" />
@@ -155,12 +156,14 @@
     <ClCompile Include="dependencies\minhook\trampoline.c" />
     <ClCompile Include="core\hack.cpp" />
     <ClCompile Include="core\hooks\hooks.cpp" />
+    <ClCompile Include="utilities\Song\Song.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\combat\combat.h" />
     <ClInclude Include="core\config\config.hpp" />
     <ClInclude Include="core\menu\menu.hpp" />
     <ClInclude Include="core\menu\style.hpp" />
+    <ClInclude Include="core\visuals\visuals.hpp" />
     <ClInclude Include="dependencies\imgui\imconfig.h" />
     <ClInclude Include="dependencies\imgui\imgui.h" />
     <ClInclude Include="dependencies\imgui\imgui_impl_dx11.h" />
@@ -190,6 +193,7 @@
     <ClInclude Include="utilities\offsets.hpp" />
     <ClInclude Include="sdk\il2cpp.h" />
     <ClInclude Include="sdk\sdk.hpp" />
+    <ClInclude Include="utilities\Song\Song.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="discord\discord_debug.lib" />
