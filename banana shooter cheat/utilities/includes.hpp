@@ -8,6 +8,8 @@
 #include <d3d11.h>
 #include <array>
 #include <ctime>
+#include <vector>
+#include <map>
 
 #include "../dependencies/termcolor/termcolor.hpp"
 
@@ -27,3 +29,4 @@
 #include "../core/hack.hpp"
 
 #include "../core/visuals/visuals.hpp"
+

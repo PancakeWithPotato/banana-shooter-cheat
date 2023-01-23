@@ -119,6 +119,11 @@ void Menu::RenderMisc()
 		g_Config::Misc::StartGame = true;
 
 	ImGui::Checkbox("Spotify playback detection", &g_Config::Misc::bSpotifyDetection);
+	if (ImGui::Button("LOAD"))
+		g_Config::Base::Load("TEST.ini");
+
+	if (ImGui::Button("SAVE"))
+		g_Config::Base::Save("TEST.ini");
 	ImGui::EndChild();
 }
 
