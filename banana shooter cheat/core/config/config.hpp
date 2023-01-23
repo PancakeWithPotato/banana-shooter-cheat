@@ -1,6 +1,12 @@
 #pragma once
+#include "../../utilities/includes.hpp"
 
-namespace g_Config {
+namespace g_Config 
+{
+
+	void Init();
+	void Save();
+	void Load();
 	namespace Combat {
 		inline bool NoReload = false;
 		inline bool NoRecoil = false;

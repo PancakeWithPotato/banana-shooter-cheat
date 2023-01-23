@@ -25,6 +25,7 @@ bool Hack::Setup()  {
 		return false;
 
 	g_Funcs->Setup();
+	g_Config::Init();
 	return true;
 }
 

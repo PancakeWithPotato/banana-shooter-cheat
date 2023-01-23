@@ -57,6 +57,9 @@
     <ClCompile Include="core\combat\combat.cpp" />
     <ClCompile Include="core\visuals\visuals.cpp" />
     <ClCompile Include="utilities\Song\Song.cpp" />
+    <ClCompile Include="core\config\config.cpp" />
+    <ClCompile Include="core\config\INIREADER.cpp" />
+    <ClCompile Include="core\config\ini.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utilities\includes.hpp">
@@ -122,6 +125,8 @@
     <ClInclude Include="core\combat\combat.h" />
     <ClInclude Include="core\visuals\visuals.hpp" />
     <ClInclude Include="utilities\Song\Song.hpp" />
+    <ClInclude Include="core\config\INIREADER.h" />
+    <ClInclude Include="core\config\ini.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="discord\discord_release.lib" />

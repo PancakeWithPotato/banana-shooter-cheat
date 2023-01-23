@@ -138,6 +138,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="core\combat\combat.cpp" />
+    <ClCompile Include="core\config\config.cpp" />
+    <ClCompile Include="core\config\ini.cpp" />
+    <ClCompile Include="core\config\INIREADER.cpp" />
     <ClCompile Include="core\menu\menu.cpp" />
     <ClCompile Include="core\visuals\visuals.cpp" />
     <ClCompile Include="dependencies\imgui\imgui.cpp" />
@@ -161,6 +164,8 @@
   <ItemGroup>
     <ClInclude Include="core\combat\combat.h" />
     <ClInclude Include="core\config\config.hpp" />
+    <ClInclude Include="core\config\ini.h" />
+    <ClInclude Include="core\config\INIREADER.h" />
     <ClInclude Include="core\menu\menu.hpp" />
     <ClInclude Include="core\menu\style.hpp" />
     <ClInclude Include="core\visuals\visuals.hpp" />
