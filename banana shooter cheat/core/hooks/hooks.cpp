@@ -3,34 +3,37 @@
 #include "../menu/menu.hpp"
 #include "../config/config.hpp"
 
-bool Hooks::AddHook(std::string hookName, unsigned long long pTarget, void* detour, void* original)  {
-	this->iHooks[0]++;
+#include "../../dependencies/minhook/MinHook.h"
+#include "../combat/combat.hpp"
+
+bool Hooks::addHook(std::string hookName, unsigned long long pTarget, void* detour, void* original)  {
+	iHooks[0]++;
 	if (MH_CreateHook(reinterpret_cast<LPVOID>(pTarget), reinterpret_cast<LPVOID>(detour), reinterpret_cast<LPVOID*>(original)) != MH_OK) {
-		g_Debug.logState(ERROR, "Could not hook %d: %s", this->iHooks[0], hookName.c_str());
+		g_Debug.logState(ERROR, "Could not hook %d: %s", iHooks[0], hookName.c_str());
 		return false;
 	}
 
-	g_Debug.logState(SUCCESS, "Hooked %d: %s", this->iHooks[0], hookName.c_str());
-	this->iHooks[1]++;
+	g_Debug.logState(SUCCESS, "Hooked %d: %s", iHooks[0], hookName.c_str());
+	iHooks[1]++;
 	return true;
 }
 
-bool Hooks::Setup()  {
+bool Hooks::setup()  {
 	if (MH_Initialize() != MH_OK) {
 		g_Debug.logState(ERROR, "Could not initialize MinHook");
 		return false;
 	}
 
-	AddHook("RecoilFire", (Offsets::pAssembly + Offsets::Recoil::RecoilFir), &hRecoilFir, &oRecoil);
-	AddHook("DoAttack", (Offsets::pAssembly + Offsets::Firearms::DoAttack), &hDoAttack, &oDoAttack);
-	AddHook("UpdatePlayer", (Offsets::pAssembly + Offsets::Player::Update), &hUpdatePlayer, &oUpdatePlayer);
-	AddHook("ReloadGun", (Offsets::pAssembly + Offsets::Firearms::Reload), &hReloadGun, &oReloadGun);
-	AddHook("FirearmsUpdate", (Offsets::pAssembly + Offsets::Firearms::Update), &hFirearmsUpdate, &oFirearmsUpdate);
-	AddHook("AntiCheatUpdate", (Offsets::pAssembly + Offsets::AntiCheat::Update), &hUpdateAntiCheat, nullptr); // we dont call the original
-	AddHook("BulletInitialization", (Offsets::pAssembly + Offsets::Bullet::BulletInitialization), &hBulletInitialization, &oBulletInitialization);
-	AddHook("ChatUpdate", (Offsets::pAssembly + Offsets::Chat::Update), &hChatUpdate, &oChatUpdate);
+	addHook("RecoilFire", (Offsets::pAssembly + Offsets::Recoil::RecoilFir), &hRecoilFir, &oRecoil);
+	addHook("DoAttack", (Offsets::pAssembly + Offsets::Firearms::DoAttack), &hDoAttack, &oDoAttack);
+	addHook("UpdatePlayer", (Offsets::pAssembly + Offsets::Player::Update), &hUpdatePlayer, &oUpdatePlayer);
+	addHook("ReloadGun", (Offsets::pAssembly + Offsets::Firearms::Reload), &hReloadGun, &oReloadGun);
+	addHook("FirearmsUpdate", (Offsets::pAssembly + Offsets::Firearms::Update), &hFirearmsUpdate, &oFirearmsUpdate);
+	addHook("AntiCheatUpdate", (Offsets::pAssembly + Offsets::AntiCheat::Update), &hUpdateAntiCheat, nullptr); // we dont call the original
+	addHook("BulletInitialization", (Offsets::pAssembly + Offsets::Bullet::BulletInitialization), &hBulletInitialization, &oBulletInitialization);
+	addHook("ChatUpdate", (Offsets::pAssembly + Offsets::Chat::Update), &hChatUpdate, &oChatUpdate);
 
-	g_Debug.logState((this->iHooks[1] / this->iHooks[0] > 0.50f ? SUCCESS : ERROR), "Managed to hook %d functions out of %d", this->iHooks[1], this->iHooks[0]);
+	g_Debug.logState((iHooks[1] / iHooks[0] > 0.50f ? SUCCESS : ERROR), "Managed to hook %d functions out of %d", iHooks[1], iHooks[0]);
 
 	if (kiero::init(kiero::RenderType::D3D11) != 0) {
 		g_Debug.logState(ERROR, "Could not initialize Kiero");
@@ -50,13 +53,13 @@ bool Hooks::Setup()  {
 	return true;
 }
 
-void Hooks::Destroy() {
+void Hooks::destroy() {
 	MH_DisableHook(MH_ALL_HOOKS);
 	MH_RemoveHook(MH_ALL_HOOKS);
 	MH_Uninitialize();
 }
-void __cdecl Hooks::hChatUpdate(Chat_o* self) 
-{
+
+void __stdcall Hooks::hChatUpdate(Chat_o* self)  {
 	UnityEngine_Color_o color = { 255,0,0,255};
 	if (g_Funcs->pAddMessage) {
 		if (GetAsyncKeyState(VK_F1) & 1)
@@ -80,22 +83,19 @@ void __stdcall Hooks::hRecoilFir(void* thisptr, float x, float y, float z) {
 	return g_Hooks->oRecoil(thisptr, x, y, z);
 }
 
-
-void __stdcall Hooks::hDoAttack(Firearms_o* thisptr) 
-{
+void __stdcall Hooks::hDoAttack(Firearms_o* thisptr)  {
 	static Player* player;
 	static Vector3 aimPos;
 	aimPos = g_Sdk.getTransformPosition(g_Hack->localPlayer->fields.aimTarget);
-	//modifications to the class are done BEFORE the aimbot
+
 	if (g_Config::get<int>("combat,bullet_count,i"))
-		g_Combat.BulletMultiplier(thisptr, g_Config::get<int>("combat,bullet_count,i"));
+		g_Combat.bulletMultiplier(thisptr, g_Config::get<int>("combat,bullet_count,i"));
 
 	if (g_Config::get<bool>("combat,aimbot_enabled,b")) {
-		player = g_Combat.ClosestPlayer(g_Hack->players);
-		g_Combat.Aimbot(thisptr, player, g_Config::get<bool>("combat,explosive_bullets,b"), g_Config::get<int>("combat,aimbot_target,i"));
+		player = g_Combat.closestPlayer(g_Hack->players);
+		g_Combat.aimbot(thisptr, player, g_Config::get<bool>("combat,explosive_bullets,b"), g_Config::get<int>("combat,aimbot_target,i"));
 	}
 
-	//manual spawning of bullets is done AFTER the aimbot
 	if (g_Config::get<bool>("combat,explosive_bullets,b"))
 		g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
 
@@ -111,7 +111,6 @@ void __stdcall Hooks::hReloadGun(Firearms_o* thisptr, float time, int spin) {
 }
 
 void __stdcall Hooks::hUpdatePlayer(Player* player) {
-	//update networkmanager
 	g_Sdk.networkManager = g_Sdk.getNetworkManager();
 
 	if (player->fields._IsLocal_k__BackingField)
@@ -227,10 +226,10 @@ HRESULT Hooks::hPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flag
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
-	g_Menu.Render();
+	g_Menu.render();
 
-	if(g_Config::get<bool>("misc,spotify,b"))
-		g_Visuals.RenderSpotifyStatus();
+	if (g_Config::get<bool>("misc,spotify,b"))
+		g_Visuals.renderSpotifyStatus();
 
 	ImGui::Render();
 

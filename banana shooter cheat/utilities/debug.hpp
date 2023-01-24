@@ -7,7 +7,7 @@
 
 enum eLogs {
 	SUCCESS = 1,
-	ERROR = 2, //do better next time blastbrean
+	ERROR = 2,
 	WARNING = 3
 };
 
@@ -26,7 +26,7 @@ struct {
 			break;
 		}
 
-		printf(format.c_str(), args ...); // std::cout doesnt like args ... wtf !!
+		printf(format.c_str(), args ...);
 		std::cout << RESET << std::endl;
 	}
 
@@ -39,7 +39,7 @@ struct {
 		SetConsoleTitleA(title);
 	}
 
-	void DestroyConsole() {
+	void destroyConsole() {
 		fclose(static_cast<_iobuf*>(__acrt_iob_func(0)));
 		fclose(static_cast<_iobuf*>(__acrt_iob_func(1)));
 

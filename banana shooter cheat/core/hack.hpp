@@ -1,24 +1,19 @@
 #pragma once
-#include "../sdk/il2cpp.h"
-#include <string>
-#include <vector>
-#include <unordered_map>
+#include "../utilities/includes.hpp"
 
-class Hack
-{
+class Hack {
 private:
-	void GetName();
+	void getName();
 	
 public:
-	bool Setup();
-	void Destroy();
-	std::string strName;
+	bool setup();
+	void destroy();
+	std::string username;
 
 	bool shouldUnload = false;
 
-	Multiplayer_Client_ClientPlayer_o* closestPlayer = nullptr;
-	Multiplayer_Client_ClientPlayer_o* localPlayer = nullptr;
-	std::unordered_map<unsigned long long, Multiplayer_Client_ClientPlayer_o*> players;
-
+	Player* closestPlayer = nullptr;
+	Player* localPlayer = nullptr;
+	std::unordered_map<unsigned long long, Player*> players;
 }; inline Hack* g_Hack = new Hack();
 

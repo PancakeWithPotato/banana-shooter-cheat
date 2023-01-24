@@ -1,8 +1,8 @@
 #include "hack.hpp"
 #include "hooks/hooks.hpp"
 
-bool Hack::Setup()  {
-	srand(std::time(0)); //generate new random seed
+bool Hack::setup()  {
+	srand(std::time(0));
 	g_Debug.setupConsole("banana $hooter cheat");
 
 	HWND consoleHWND = GetConsoleWindow();
@@ -10,9 +10,9 @@ bool Hack::Setup()  {
 	SetWindowLong(consoleHWND, GWL_EXSTYLE, GetWindowLong(consoleHWND, GWL_EXSTYLE) | WS_EX_LAYERED);
 	SetLayeredWindowAttributes(consoleHWND, 0, 240, LWA_ALPHA);
 
-	this->GetName();
+	getName();
 
-	std::cout << "Welcome, " << CHANGE << this->strName << std::endl << RESET;
+	std::cout << "Welcome, " << CHANGE << username << std::endl << RESET;
 
 	Offsets::pAssembly = reinterpret_cast<uintptr_t>(GetModuleHandleA("GameAssembly.dll"));
 	
@@ -21,25 +21,24 @@ bool Hack::Setup()  {
 	else
 		return false;
 
-	if (!g_Hooks->Setup())
+	if (!g_Hooks->setup())
 		return false;
 
-	g_Funcs->Setup();
-	g_Config::Init();
+	g_Funcs->setup();
+	g_Config::init();
 	return true;
 }
 
-void Hack::GetName() {
+void Hack::getName() {
 	char tmp[MAX_PATH + 1];
 	DWORD lenght = sizeof(tmp);
 	GetUserNameA(tmp, &lenght);
-
-	strName = (strcmp("Pancake", tmp) == 0 ? "dev" : std::string(&tmp[0]));
+	username = tmp;
 }
 
-void Hack::Destroy()  {
-	g_Hooks->Destroy();
+void Hack::destroy()  {
+	g_Hooks->destroy();
 	delete g_Hooks;
 	delete g_Funcs;
-	g_Debug.DestroyConsole();
+	g_Debug.destroyConsole();
 }

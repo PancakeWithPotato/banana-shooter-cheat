@@ -9,7 +9,13 @@
 #include <array>
 #include <ctime>
 #include <vector>
+#include <unordered_map>
 #include <map>
+#include <variant>
+#include <filesystem>
+#include <fstream>
+
+#include "../dependencies/imgui/imgui.h"
 
 #include "../dependencies/termcolor/termcolor.hpp"
 

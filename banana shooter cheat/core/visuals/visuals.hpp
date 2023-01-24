@@ -1,5 +1,4 @@
 #pragma once
-#include "../../utilities/Song/Song.hpp"
 #include "../../utilities/includes.hpp"
 
 class Visuals 
@@ -7,9 +6,9 @@ class Visuals
 private:
 	bool bInit = false;
 public:
-	ImDrawList* draw; // = ImGui::GetBackgroundDrawList();
-	ImVec2 v2ScreenSize; //= ImGui::GetIO().DisplaySize;
+	ImDrawList* draw;
+	ImVec2 v2ScreenSize;
 
-	void Init();
-	void RenderSpotifyStatus();
+	void init();
+	void renderSpotifyStatus();
 }; inline Visuals g_Visuals;

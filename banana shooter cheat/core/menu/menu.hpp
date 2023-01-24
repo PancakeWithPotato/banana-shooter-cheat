@@ -9,7 +9,7 @@
  
 struct Menu {
 private:
-	void FormatDate(std::string& date, const std::string& rawdate);
+	void formatDate(std::string& date, const std::string& rawdate);
 	enum TABS {
 		TAB_MISC,
 		TAB_COMBAT,
@@ -17,11 +17,11 @@ private:
 	};
 	TABS TabCount = TAB_COMBAT;
 	bool bInit = false;
-	void RenderMisc();
-	void RenderCombat();
-	void RenderVisuals();
+	void renderMisc();
+	void renderCombat();
+	void renderVisuals();
 public:
-	void Render();
+	void render();
 	bool open = true;
 }; 
 

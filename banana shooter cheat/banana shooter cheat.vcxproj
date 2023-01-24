@@ -73,6 +73,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetName>meowware</TargetName>
     <OutDir>..\build\debug</OutDir>
+    <IntDir>intermediates\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetName>meowware</TargetName>
@@ -108,11 +109,12 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>NotSet</SubSystem>
@@ -139,8 +141,6 @@
   <ItemGroup>
     <ClCompile Include="core\combat\combat.cpp" />
     <ClCompile Include="core\config\config.cpp" />
-    <ClCompile Include="core\config\ini.cpp" />
-    <ClCompile Include="core\config\INIREADER.cpp" />
     <ClCompile Include="core\menu\menu.cpp" />
     <ClCompile Include="core\visuals\visuals.cpp" />
     <ClCompile Include="dependencies\imgui\imgui.cpp" />
@@ -151,7 +151,7 @@
     <ClCompile Include="dependencies\imgui\imgui_stdlib.cpp" />
     <ClCompile Include="dependencies\imgui\imgui_widgets.cpp" />
     <ClCompile Include="dependencies\kiero\kiero.cpp" />
-    <ClCompile Include="discord\DiscordRPC.cpp" />
+    <ClCompile Include="utilities\discord\DiscordRPC.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="dependencies\minhook\buffer.c" />
     <ClCompile Include="dependencies\minhook\hde\hde32.c" />
@@ -160,13 +160,12 @@
     <ClCompile Include="dependencies\minhook\trampoline.c" />
     <ClCompile Include="core\hack.cpp" />
     <ClCompile Include="core\hooks\hooks.cpp" />
-    <ClCompile Include="utilities\Song\Song.cpp" />
+    <ClCompile Include="utilities\spotify\spotify.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="core\combat\combat.h" />
+    <ClInclude Include="core\combat\combat.hpp" />
     <ClInclude Include="core\config\config.hpp" />
-    <ClInclude Include="core\config\ini.h" />
-    <ClInclude Include="core\config\INIREADER.h" />
+    <ClInclude Include="core\config\ini.hpp" />
     <ClInclude Include="core\menu\menu.hpp" />
     <ClInclude Include="core\menu\style.hpp" />
     <ClInclude Include="core\visuals\visuals.hpp" />
@@ -189,9 +188,9 @@
     <ClInclude Include="dependencies\minhook\MinHook.h" />
     <ClInclude Include="dependencies\minhook\trampoline.h" />
     <ClInclude Include="dependencies\termcolor\termcolor.hpp" />
-    <ClInclude Include="discord\DiscordRPC.h" />
-    <ClInclude Include="discord\include\discord_register.h" />
-    <ClInclude Include="discord\include\discord_rpc.h" />
+    <ClInclude Include="utilities\discord\DiscordRPC.h" />
+    <ClInclude Include="utilities\discord\include\discord_register.h" />
+    <ClInclude Include="utilities\discord\include\discord_rpc.h" />
     <ClInclude Include="sdk\functions.hpp" />
     <ClInclude Include="core\hack.hpp" />
     <ClInclude Include="core\hooks\hooks.hpp" />
@@ -201,10 +200,11 @@
     <ClInclude Include="sdk\il2cpp.h" />
     <ClInclude Include="sdk\sdk.hpp" />
     <ClInclude Include="utilities\Song\Song.hpp" />
+    <ClInclude Include="utilities\spotify\spotify.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="discord\discord_debug.lib" />
-    <Library Include="discord\discord_release.lib" />
+    <Library Include="utilities\discord\discord_debug.lib" />
+    <Library Include="utilities\discord\discord_release.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

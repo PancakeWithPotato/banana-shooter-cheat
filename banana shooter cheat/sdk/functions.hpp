@@ -22,8 +22,7 @@ public:
 
 	AddMessageFN pAddMessage;
 public:
-	void Setup() 
-	{
+	void setup() {
 		pCreateExplosiveBullet = reinterpret_cast<CreateExplosiveBulletFN>(Offsets::pAssembly + Offsets::Firearms::CreateExplosiveBullet);
 		pCreateBullet = reinterpret_cast<CreateBulletFN>(Offsets::pAssembly + Offsets::Firearms::CreateBullet);
 

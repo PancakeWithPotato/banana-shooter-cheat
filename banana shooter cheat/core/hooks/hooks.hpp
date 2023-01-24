@@ -1,16 +1,15 @@
 #pragma once
 #include "../../utilities/includes.hpp"
-#include "../../dependencies/minhook/MinHook.h"
-#include "../combat/combat.h"
 
 class Hooks 
 {
 private:
-	bool AddHook(std::string hookName, unsigned long long pTarget, void* detour, void* original);
-	std::array<int, 2> iHooks = { 0,0 };
+	bool addHook(std::string hookName, unsigned long long pTarget, void* detour, void* original);
 public:
-	bool Setup();
-	void Destroy();
+	int iHooks[100];
+
+	bool setup();
+	void destroy();
 
 	static void __stdcall hFirearmsUpdate(Firearms_o* thisptr);
 
@@ -25,7 +24,7 @@ public:
 
 	static void __stdcall hBulletInitialization(Bullet_o* bullet, Vector3 dir, float speed, int damage, void* layermask, bool local, bool useGravity);
 
-	static void __cdecl hChatUpdate(Chat_o* self);
+	static void __stdcall hChatUpdate(Chat_o* self);
 
 	HWND window = NULL;
 	WNDPROC oWndProc;
@@ -36,7 +35,6 @@ public:
 	static LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	static HRESULT __stdcall hPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
 private:
-
 	typedef void(__thiscall* RecoilFirFN)(void*, float, float, float);
 
 	typedef void(__thiscall* ReloadGunFN)(Firearms_o*, float, int);
@@ -52,7 +50,7 @@ private:
 
 	typedef void(__thiscall* BulletInitFN)(Bullet_o*, Vector3, float, int, void*, bool, bool);
 
-	typedef void(__cdecl* UpdateChatFN)(Chat_o*);
+	typedef void(__stdcall* UpdateChatFN)(Chat_o*);
 public:
 	RecoilFirFN oRecoil = nullptr;
 	DoAttackFN oDoAttack = nullptr;

@@ -1,20 +1,18 @@
 #include "visuals.hpp"
+#include "../../utilities/spotify/spotify.hpp"
 
-void Visuals::Init()
-{
+void Visuals::init() {
 	if (bInit)
 		return;
 
-	this->draw = ImGui::GetBackgroundDrawList();
-	this->v2ScreenSize = ImGui::GetIO().DisplaySize;
+	draw = ImGui::GetBackgroundDrawList();
+	v2ScreenSize = ImGui::GetIO().DisplaySize;
 
-	//doesnt really matter, as it will only get called once anyways
-	this->bInit = true;
+	bInit = true;
 }
 
-void Visuals::RenderSpotifyStatus()
-{
+void Visuals::renderSpotifyStatus() {
 	float fTextX = ImGui::CalcTextSize(g_Spotify.strComplete.c_str()).x;
-	ImVec2 v2RenderPos = { (this->v2ScreenSize.x * 0.9877777f) - fTextX ,50.f };
+	ImVec2 v2RenderPos = { (v2ScreenSize.x - 30.f) - fTextX, 50.f };
 	draw->AddText(v2RenderPos, ImColor(255, 255, 255, 255), g_Spotify.strComplete.c_str());
 }

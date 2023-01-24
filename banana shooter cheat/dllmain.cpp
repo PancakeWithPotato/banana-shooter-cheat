@@ -1,18 +1,14 @@
 #include "utilities/includes.hpp"
 #include "core/hack.hpp"
-#include "discord/DiscordRPC.h"
-#include "utilities/Song/Song.hpp"
+
+#include "utilities/discord/DiscordRPC.h"
+#include "utilities/spotify/spotify.hpp"
+
 void Main(HMODULE hMod)  {
-	if (!g_Hack->Setup())
+	if (!g_Hack->setup())
 		g_Debug.logState(::ERROR, "Failed to setup!");
 
-	//std::string test = "ABCD";
-	//char stuff[] = { g_Config::ToChar(test) };
-	//std::cout << std::format("STD::STRING: {}, CHAR: {}", stuff, test);
-	//test = g_Config::ToString(stuff);
-	//std::cout << std::format("STD::STRING: {}, CHAR: {}", stuff, test);
-
-	g_Cord.DiscordThread();
+	g_Cord.discordThread();
 
 	while (!GetAsyncKeyState(VK_END)) 
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -20,16 +16,15 @@ void Main(HMODULE hMod)  {
 	g_Hack->shouldUnload = true;
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
-	g_Cord.ShutDown();
+	g_Cord.shutDown();
 	FreeLibraryAndExitThread(hMod, 0); 
 }
 
-void SpotifyUpdate()  //doing this so i dont have to make update static and lose thisptr LMAO
-{
-	while (!GetAsyncKeyState(VK_END)) 
-	{
+void SpotifyUpdate() {
+	while (!g_Hack->shouldUnload) 
 		g_Spotify.Update();
-	}
+
+	ExitThread(0);
 }
 
 BOOL WINAPI DllMain(HMODULE hMod, DWORD reason, void* reserved) {
@@ -37,12 +32,10 @@ BOOL WINAPI DllMain(HMODULE hMod, DWORD reason, void* reserved) {
 	{
 	case DLL_PROCESS_ATTACH:
 		_Post_ _Notnull_ CloseHandle(CreateThread(nullptr, 0, reinterpret_cast<LPTHREAD_START_ROUTINE>(Main), hMod, 0, nullptr));
-		//we LOVE multithreading for 1 featgure!!! (i dont want to sleep main loop anymore LMAO)
 		_Post_ _Notnull_ CloseHandle(CreateThread(0, 0, reinterpret_cast<LPTHREAD_START_ROUTINE>(SpotifyUpdate), NULL, 0, 0));
 		break;
 	case DLL_PROCESS_DETACH:
-		g_Hack->Destroy();
-
+		g_Hack->destroy();
 		delete g_Hack;
 		break;
 	}

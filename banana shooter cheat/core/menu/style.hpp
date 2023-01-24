@@ -3,17 +3,14 @@
 #include "../../dependencies/imgui/imgui_impl_dx11.h"
 #include "../../dependencies/imgui/imgui_impl_win32.h"
 
-//costumhooks theme, a bit modified -> https://github.com/Kajus14/CustomHooks-csgo/blob/main/CSGOSimple/styles.h
 void SetupStyles()
 {
 	ImGuiStyle& style = ImGui::GetStyle();
-	//style.ScrollbarSize = 5.0f;
 	style.WindowTitleAlign = ImVec2{ 0.5f, 0.5f };
 	style.WindowRounding = 1.f;
 	style.FrameBorderSize = 1.f;
 	style.WindowMinSize = ImVec2{ 500,300 };
 	style.ItemInnerSpacing = ImVec2(8.f, 8.f);
-	//style.FramePadding = ImVec2(6, 8);
 
 	ImVec4* colors = ImGui::GetStyle().Colors;
 	colors[ImGuiCol_Separator] = ImVec4(0.23f, 0.23f, 0.23f, 1.00f);
@@ -29,7 +26,7 @@ void SetupStyles()
 	colors[ImGuiCol_FrameBgHovered] = ImVec4(0.23f, 0.23f, 0.23f, 1.00f);
 	colors[ImGuiCol_FrameBgActive] = ImVec4(0.23f, 0.23f, 0.23f, 1.00f);
 	colors[ImGuiCol_TitleBg] = ImVec4(0.04f, 0.04f, 0.04f, 1.00f);
-	colors[ImGuiCol_TitleBgActive] = ImVec4(0.04f, 0.04f, 0.04f, 1.00f);//ImVec4(0.16f, 0.29f, 0.48f, 1.00f);
+	colors[ImGuiCol_TitleBgActive] = ImVec4(0.04f, 0.04f, 0.04f, 1.00f);
 	colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.00f, 0.00f, 0.00f, 0.51f);
 	colors[ImGuiCol_MenuBarBg] = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
 	colors[ImGuiCol_ScrollbarBg] = ImVec4(0.02f, 0.02f, 0.02f, 0.53f);
@@ -44,9 +41,6 @@ void SetupStyles()
 	colors[ImGuiCol_Header] = ImVec4(0.26f, 0.59f, 0.98f, 0.31f);
 	colors[ImGuiCol_HeaderHovered] = ImVec4(0.26f, 0.59f, 0.98f, 0.80f);
 	colors[ImGuiCol_HeaderActive] = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
-	//colors[ImGuiCol_Separator] = ImVec4(0.0f, 0.0f, 0.0f, 1.f);
-	//colors[ImGuiCol_SeparatorHovered] = ImVec4(0.10f, 0.40f, 0.75f, 0.78f);
-	//colors[ImGuiCol_SeparatorActive] = ImVec4(0.10f, 0.40f, 0.75f, 1.00f);
 	colors[ImGuiCol_ResizeGrip] = ImVec4(0.26f, 0.59f, 0.98f, 0.20f);
 	colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.26f, 0.59f, 0.98f, 0.67f);
 	colors[ImGuiCol_ResizeGripActive] = ImVec4(0.26f, 0.59f, 0.98f, 0.95f);
@@ -65,7 +59,5 @@ void SetupStyles()
 	colors[ImGuiCol_NavWindowingHighlight] = ImVec4(1.00f, 1.00f, 1.00f, 0.70f);
 	colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.20f);
 	colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
-
-	colors[ImGuiCol_ChildBg] = ImVec4(0.19f, 0.19f, 0.19f, 1.00f);//ImVec4(0.24f, 0.24f, 0.24f, 1.f);
-	
+	colors[ImGuiCol_ChildBg] = ImVec4(0.19f, 0.19f, 0.19f, 1.00f);
 }

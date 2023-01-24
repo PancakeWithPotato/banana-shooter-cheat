@@ -1,15 +1,12 @@
 #pragma once
 #include "il2cpp.h"
-#include "../core/hack.hpp"
 #include "../utilities/offsets.hpp"
-
-#include "../dependencies/imgui/imgui.h" // for screen size (w2s)
+#include "../dependencies/imgui/imgui.h"
 
 typedef UnityEngine_Vector3_o Vector3;
 typedef UnityEngine_Vector2_o Vector2;
 typedef UnityEngine_Transform_o Transform;
 typedef UnityEngine_Camera_o Camera;
-typedef Multiplayer_Client_ClientPlayer_o Player;
 typedef Multiplayer_NetworkManager_o NetworkManager;
 typedef Multiplayer_LobbyManager_o LobbyManager;
 
@@ -77,19 +74,13 @@ struct {
 		return true;
 	}
 
-	Vector3 getTransformPosition(Transform* transform) 
-	{
-
-		//std::cout << "Getting transofmr pos\n";
+	Vector3 getTransformPosition(Transform* transform) {
 		if (transform == nullptr || sizeof(*transform) != sizeof(Transform))
 			return Vector3{};
-
-		//std::cout << "Passed first check//\n";
 
 		if (!transform->fields.m_CachedPtr)
 			return Vector3{};
 
-		//std::cout << "Passed second check\n";
 		return reinterpret_cast<Vector3(__cdecl*)(Transform*)>(Offsets::pAssembly + Offsets::Transform::GetPos)(transform);
 	}
 
@@ -111,7 +102,7 @@ struct {
 	}
 
 	bool localInGame() {
-		//NetworkManager* networkManager = getNetworkManager();
+		NetworkManager* networkManager = getNetworkManager();
 		LobbyManager* lobbyManager = getLobbyManager();
 
 		if (!networkManager || !networkManager->fields.m_CachedPtr)
@@ -128,3 +119,20 @@ struct {
 
 	NetworkManager* networkManager = nullptr;
 } g_Sdk;
+
+class Player : public Multiplayer_Client_ClientPlayer_o {
+public:
+	int getHealth() {
+		if (!this)
+			return 0;
+		
+		return fields.health;
+	}
+
+	bool isAlive() {
+		if (!this)
+			return false;
+
+		return getHealth() > 0;
+	}
+};
