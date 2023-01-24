@@ -68,14 +68,14 @@ void __cdecl Hooks::hChatUpdate(Chat_o* self)
 void __stdcall Hooks::hFirearmsUpdate(Firearms_o* thisptr) {
 	g_Sdk.localCamera = thisptr->fields.PlayerCam;
 
-	//thisptr->fields.bobSpeed = g_Config::Visuals::fBobSpeed;
+	thisptr->fields.bobSpeed = g_Config::get<float>("visuals,bob_speed,f");
 
 	return g_Hooks->oFirearmsUpdate(thisptr);
 }
 
 void __stdcall Hooks::hRecoilFir(void* thisptr, float x, float y, float z) {
-	/*if (g_Config::Combat::NoRecoil)
-		return g_Hooks->oRecoil(thisptr, 0.f, 0.f, 0.f);*/
+	if (g_Config::get<bool>("combat,norecoil,b"))
+		return g_Hooks->oRecoil(thisptr, 0.f, 0.f, 0.f);
 
 	return g_Hooks->oRecoil(thisptr, x, y, z);
 }
@@ -87,24 +87,24 @@ void __stdcall Hooks::hDoAttack(Firearms_o* thisptr)
 	static Vector3 aimPos;
 	aimPos = g_Sdk.getTransformPosition(g_Hack->localPlayer->fields.aimTarget);
 	//modifications to the class are done BEFORE the aimbot
-	//if (g_Config::Combat::BulletsCount > 1)
-	//	g_Combat.BulletMultiplier(thisptr, g_Config::Combat::BulletsCount);
+	if (g_Config::get<int>("combat,bullet_count,i"))
+		g_Combat.BulletMultiplier(thisptr, g_Config::get<int>("combat,bullet_count,i"));
 
-	//if (g_Config::Combat::Aimbot) {
-	//	player = g_Combat.ClosestPlayer(g_Hack->players);
-	//	g_Combat.Aimbot(thisptr, player, g_Config::Combat::ExplosiveBullets, g_Config::Combat::AimbotHitbox);
-	//}
+	if (g_Config::get<bool>("combat,aimbot_enabled,b")) {
+		player = g_Combat.ClosestPlayer(g_Hack->players);
+		g_Combat.Aimbot(thisptr, player, g_Config::get<bool>("combat,explosive_bullets,b"), g_Config::get<int>("combat,aimbot_target,i"));
+	}
 
-	////manual spawning of bullets is done AFTER the aimbot
-	//if (g_Config::Combat::ExplosiveBullets)
-	//	g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
+	//manual spawning of bullets is done AFTER the aimbot
+	if (g_Config::get<bool>("combat,explosive_bullets,b"))
+		g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
 
 	return g_Hooks->oDoAttack(thisptr);
 }
 
 void __stdcall Hooks::hReloadGun(Firearms_o* thisptr, float time, int spin) {
-	//if (!g_Config::Combat::NoReload)
-	//	return g_Hooks->oReloadGun(thisptr, time, spin);
+	if (!g_Config::get<bool>("combat,noreload,b"))
+		return g_Hooks->oReloadGun(thisptr, time, spin);
 	
 	thisptr->fields.reloadTime = 0.0f;
 	return g_Hooks->oReloadGun(thisptr, 0.f, 100);
@@ -229,8 +229,8 @@ HRESULT Hooks::hPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flag
 
 	g_Menu.Render();
 
-	/*if(g_Config::Misc::bSpotifyDetection)
-		g_Visuals.RenderSpotifyStatus();*/
+	if(g_Config::get<bool>("misc,spotify,b"))
+		g_Visuals.RenderSpotifyStatus();
 
 	ImGui::Render();
 

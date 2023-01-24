@@ -84,7 +84,7 @@ void Menu::Render()  {
 
 void Menu::RenderVisuals() {
 	ImGui::BeginChild("##visuals", { 350,260 }, true);
-	//ImGui::SliderFloat("Movemenet bob speed", &g_Config::get<float>("f:visuals:bob_speed"), 0, 150);
+	ImGui::SliderFloat("Movemenet bob speed", &g_Config::get<float>("visuals,bob_speed,f"), 0, 150);
 	ImGui::HelpMarker("Setting to 0 will result in no movement bob.");
 	ImGui::EndChild();
 }
@@ -98,12 +98,12 @@ void Menu::RenderCombat()
 	ImGui::Combo("Aimbot hitbox", &g_Config::get<int>("combat,aimbot_target,i"), "Head\0Body");
 	//ImGui::PopItemWidth();
 
-	//ImGui::Checkbox("No reload", &g_Config::Combat::NoReload);
-	//ImGui::Checkbox("No recoil", &g_Config::Combat::NoRecoil);
+	ImGui::Checkbox("No reload", &g_Config::get<bool>("combat,noreload,b"));
+	ImGui::Checkbox("No recoil", &g_Config::get<bool>("combat,norecoil,b"));
 
-//	ImGui::Checkbox("Explosive bullets", &g_Config::Combat::ExplosiveBullets);
+	ImGui::Checkbox("Explosive bullets", &g_Config::get<bool>("combat,explosive_bullets,b"));
 	ImGui::SliderFloat("This is atest", &g_Config::get<float>("combat,test,f"), 0, 100);
-	//ImGui::SliderInt("Bullet count", &g_Config::Combat::BulletsCount, 1, 100);
+	ImGui::SliderInt("Bullet count", &g_Config::get<int>("combat,bullet_count,i"), 1, 100);
 	ImGui::HelpMarker("Will shoot x more bullets.");
 	
 	ImGui::SameLine(); 
@@ -115,11 +115,12 @@ void Menu::RenderMisc()
 {
 	ImGui::BeginChild("##configs", { 350, 240 }, true);
 
-	if (ImGui::Button("Force start game", ImVec2(125, 30)))
-		std::cout << "SHIT\n";
-		//g_Config::Misc::StartGame = true;
+	//if (ImGui::Button("Force start game", ImVec2(125, 30)))
+	//	std::cout << "SHIT\n";
+	//	//g_Config::Misc::StartGame = true;
 
-	//ImGui::Checkbox("Spotify playback detection", &g_Config::get<bool>("b:misc:spotify"));
+	ImGui::Checkbox("Spotify playback detection", &g_Config::get<bool>("misc,spotify,b"));
+
 	if (ImGui::Button("LOAD"))
 		g_Config::Load("TEST.ini.meow");
 

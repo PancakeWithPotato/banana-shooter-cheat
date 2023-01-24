@@ -76,8 +76,9 @@ Song_t Spotify::GetCurrentSong()
 
 void Spotify::Update()
 {
-	/*if (!g_Config::Misc::bSpotifyDetection)
-		return;*/
+	Sleep(1500);
+	if (!g_Config::get<bool>("misc,spotify,b"))
+		return;
 	this->CurrentlyPlaying = this->GetCurrentSong();
 	switch (this->CurrentState)
 	{

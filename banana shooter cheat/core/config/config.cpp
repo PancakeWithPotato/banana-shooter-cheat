@@ -18,11 +18,22 @@ void g_Config::Init()
 	g_Config::strConfigs.reserve(1); //surely at least 1 config exists/will be made
 
 	//set up elements
-	
+	// 
+	//misc
+	elements["misc,spotify,b"] = true;
+
 	//combat
 	elements["combat,aimbot_enabled,b"] = false;
 	elements["combat,aimbot_target,i"] = 0;
 	elements["combat,test,f"] = 50.f;
+	elements["combat,explosive_bullets,b"] = false;
+	elements["combat,bullet_count,i"] = 0;
+	elements["combat,norecoil,b"] = false;
+	elements["combat,noreload,b"] = false;
+
+	//visuals
+	elements["visuals,bob_speed,f"] = 17.f;
+
 }
 
 void g_Config::Save(const std::string& strName) 

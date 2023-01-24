@@ -24,7 +24,6 @@ void SpotifyUpdate()  //doing this so i dont have to make update static and lose
 	while (!GetAsyncKeyState(VK_END)) 
 	{
 		g_Spotify.Update();
-		std::this_thread::sleep_for(std::chrono::milliseconds(1500));
 	}
 }
 
