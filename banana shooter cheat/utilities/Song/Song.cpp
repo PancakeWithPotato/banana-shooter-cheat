@@ -40,21 +40,27 @@ Song_t Spotify::GetCurrentSong()
 	//loop through windows
 	for (HWND window = GetTopWindow(0); window; window = GetWindow(window, GW_HWNDNEXT))
 	{
+		//skip window if isnt visible
+		if (!IsWindowVisible(window))
+			continue;
+		iTitlelenght = GetWindowTextLengthA(window);
+
+		//skip if no title
+		if (iTitlelenght == 0)
+			continue;
 
 		//get process id of window
 		GetWindowThreadProcessId(window, &tmpID);
 
-		if (tmpID != this->m_dwPID) 
+		if (tmpID != this->m_dwPID)
 			continue;
-
-		iTitlelenght = GetWindowTextLengthA(window);
 
 		//its spotify
 		GetWindowTextA(window, title, iTitlelenght + 1);
 
 		std::string strTitle{ title };
 		size_t dash = 0;
-		dash = strTitle.find_first_of('-');
+		dash = strTitle.find_last_of('-');
 
 		//its running, no song playing tho
 		if (dash == std::string::npos)  //changed the magic number
@@ -70,8 +76,8 @@ Song_t Spotify::GetCurrentSong()
 
 void Spotify::Update()
 {
-	if (!g_Config::Misc::bSpotifyDetection)
-		return;
+	/*if (!g_Config::Misc::bSpotifyDetection)
+		return;*/
 	this->CurrentlyPlaying = this->GetCurrentSong();
 	switch (this->CurrentState)
 	{

@@ -3,26 +3,8 @@
 
 #include "INIREADER.h"
 
-void g_Config::Base::Update(const int& mode)
-{
-	switch (mode) {
-	case 1:
-		elements["b:combat:aimbot_enabled"] = g_Config::Combat::Aimbot;
-		elements["i:combat:aimbot_target"] = g_Config::Combat::AimbotHitbox;
-		elements["b:combat:noreload"] = g_Config::Combat::NoReload;
-		elements["b:combat:norecoil"] = g_Config::Combat::NoRecoil;
-		break;
-	case 2:
-		g_Config::Combat::Aimbot = std::get<bool>(elements["b:combat:aimbot_enabled"]);
-		g_Config::Combat::AimbotHitbox = std::get<int>(elements["i:combat:aimbot_target"]);
-		g_Config::Combat::NoReload = std::get<bool>(elements["b:combat:noreload"]);
-		g_Config::Combat::NoRecoil = std::get<bool>(elements["b:combat:norecoil"]);
-		break;
-	}
-	
-}
 
-void g_Config::Base::Init()
+void g_Config::Init()
 {
 	std::string strLocaluser = (g_Hack->strName == "dev" ? "Pancake" : g_Hack->strName); //works tho
     strBase = "C:\\Users\\" + strLocaluser + "\\Documents\\meowware";
@@ -33,71 +15,33 @@ void g_Config::Base::Init()
 	if (!_mkdir(strBase.c_str()))
 		g_Debug.logState(::SUCCESS, "Created directory 2!");
 
-	g_Config::Base::strConfigs.reserve(1); //surely at least 1 config exists/will be made
+	g_Config::strConfigs.reserve(1); //surely at least 1 config exists/will be made
 
 	//set up elements
-	elements["b:combat:aimbot_enabled"] = g_Config::Combat::Aimbot;
-	elements["i:combat:aimbot_target"] = g_Config::Combat::AimbotHitbox;
-	elements["b:combat:noreload"] = false;
-	elements["b:combat:norecoil"] = false;
+	
+	//combat
+	elements["combat,aimbot_enabled,b"] = false;
+	elements["combat,aimbot_target,i"] = 0;
+	elements["combat,test,f"] = 50.f;
 }
 
-void g_Config::Base::Save(const std::string& strName) 
+void g_Config::Save(const std::string& strName) 
 {
-	std::ofstream file;
-	file.open(g_Config::Base::strBase + "\\" + strName);
-	if (!file.is_open())
+	if (strName == "") {
+		g_Debug.logState(::ERROR, "[Config] No name found, maybe give it a name?");
 		return;
-
-	Update(1);
-	g_Debug.logState(::SUCCESS, "Succesfully opened config " + strName);
-
-	//thx @stephan
-	static auto split = [](const std::string& s, char delim) {
-		std::vector<std::string> result;
-		std::stringstream ss(s);
-		std::string item;
-	
-		while (getline(ss, item, delim))
-			result.push_back(item);
-	
-		return result;
-	};
-	std::string strCurrentSection = "";
-
-	for (auto& i : g_Config::Base::elements) 
-	{
-		std::vector<std::string> strSplitted = split(i.first, ':');
-		if (strCurrentSection == "" || strCurrentSection != strSplitted[1]) 
-		{
-			strCurrentSection = strSplitted[1];
-			file << "[" << strCurrentSection << "]\n";
-		}
-		switch (strSplitted[0][0])
-		{
-		case 'i':
-			file << strSplitted[2] << " = " << std::to_string(std::get<int>(i.second)) << "\n";
-			break;
-		case 'f':
-			file << strSplitted[2] << " = " << std::to_string(std::get<float>(i.second)) << "\n";
-			break;
-		case 'b':
-			file << strSplitted[2] << " = " << std::to_string(std::get<bool>(i.second)) << "\n";
-			break;
-		default:
-			g_Debug.logState(::WARNING, "Its a color");
-			break;
-		}
-
 	}
 
-	file.close();
-	g_Debug.logState(::SUCCESS, "Loaded in config " + strName);
-}
+	//get config place
+	std::string strFile = g_Config::strBase + "\\" + strName + ".meow";
 
-void g_Config::Base::Load(const std::string& strName) 
-{
-	//thx @stephan again
+	//open/create if it doesnt exist
+	std::ofstream file(strFile);
+	if (!file.is_open()) {
+		g_Debug.logState(::ERROR, "[Config] Failed to open %s for writing", strFile);
+		return;
+	}
+
 	static auto split = [](const std::string& s, char delim) {
 		std::vector<std::string> result;
 		std::stringstream ss(s);
@@ -109,32 +53,88 @@ void g_Config::Base::Load(const std::string& strName)
 		return result;
 	};
 
-	std::string strParser = g_Config::Base::strBase + "\\" +  strName;
-	INIReader parser(strParser);
+	std::string strCurrentSection = "";
 
-	if (parser.ParseError())
+	for (auto& i : elements) {
+		std::vector<std::string> splits = split(i.first, ',');
+		//combat,aimbot_bool,b
+		if (strCurrentSection == "") {
+			strCurrentSection = splits[0];
+			file << "[" << strCurrentSection << "]\n";
+		}
+		else if (strCurrentSection != splits[0]) {
+			file << "\n";
+			strCurrentSection = splits[0];
+			file << "[" << strCurrentSection << "]\n";
+		}
+		switch (splits[2][0]) {
+		case 'b':
+			g_Debug.logState(::WARNING, "Found a bool from " + i.first);
+			//file << splits[1] << " = " << std::to_string(g_Config::get<bool>(i.first)) << "\n";
+			file << std::format("{} = {} \n", splits[1], std::to_string(g_Config::get<bool>(i.first)));
+			break;
+		case 'i':
+			g_Debug.logState(::WARNING, "Found an int from " + i.first);
+			file << std::format("{} = {} \n", splits[1], std::to_string(g_Config::get<int>(i.first)));
+			break;
+		case 'f':
+			g_Debug.logState(::WARNING, "Found a float from " + i.first);
+			file << std::format("{} = {} \n", splits[1], std::to_string(g_Config::get<float>(i.first)));
+			break;
+		}
+	}
+}
+
+void g_Config::Load(const std::string& strName) {
+	if (strName == "") {
+		g_Debug.logState(::ERROR, "[Config] No name found for config, internal error");
 		return;
+	}
+	std::string strFile = g_Config::strBase + "\\" + strName;
+	INIReader configParser(strFile);
+	if (configParser.ParseError()) {
+		g_Debug.logState(::ERROR, "Failed to parse file");
+		return;
+	}
 
-	g_Debug.logState(::SUCCESS, "Opened up config " + strName + " for loading");
+	static auto split = [](const std::string& s, char delim) {
+		std::vector<std::string> result;
+		std::stringstream ss(s);
+		std::string item;
+
+		while (getline(ss, item, delim))
+			result.push_back(item);
+
+		return result;
+	};
 
 	for (auto& i : elements) 
 	{
-		std::vector<std::string> strSplitted = split(i.first, ':');
-		switch (strSplitted[0][0])
+		std::vector<std::string> splits = split(i.first, ',');
+		//combat,aimbot_enabled,b
+		switch (splits[2][0])
 		{
-		case 'i':
-			elements[i.first] = parser.GetInteger(strSplitted[1], strSplitted[2], 0); 
-			break;
-		case 'f':
-			elements[i.first] = parser.GetReal(strSplitted[1], strSplitted[2], 0.f);
-			break;
-		case 'b':
-			elements[i.first] = parser.GetBoolean(strSplitted[1], strSplitted[2], true);
-			break;
-		default:
+		case 'b': {
+			g_Debug.logState(::WARNING, "Found int for " + i.first);
+			auto stuff = configParser.GetBoolean(splits[0], splits[1], false);
+			std::cout << "Got " << (stuff ? "TRUE" : "FALSE") << " from file\n";
+			elements[i.first] = stuff;
 			break;
 		}
+		case 'i':
+		{	g_Debug.logState(::WARNING, "Found a int for " + i.first);
+			auto stuff = configParser.GetInteger(splits[0], splits[1], 0);
+			std::cout << "Got " << stuff << " from file\n";
+			elements[i.first] = stuff;
+			break;
+		}
+		case 'f':
+		{	g_Debug.logState(::WARNING, "Found a float for " + i.first);
+			auto stuff = (float)configParser.GetReal(splits[0], splits[1], 0.f);
+			std::cout << "Got " << stuff << " from file\n";
+			elements[i.first] = stuff;
+			break;
+		}
+		}
 	}
-	Update(2);
-	g_Debug.logState(::SUCCESS, "Loaded in config " + strName);
 }

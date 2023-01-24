@@ -6,8 +6,6 @@
 #include <fstream>
 namespace g_Config 
 {
-	namespace Base 
-	{
 		void Update(const int& mode);
 		void Init();
 		void Save(const std::string& strName);
@@ -16,24 +14,33 @@ namespace g_Config
 		inline std::map<std::string, std::variant<int, bool, float, ImColor>> elements;
 		inline std::string strBase;
 
-	}
-	namespace Combat {
-		inline bool NoReload = false;
-		inline bool NoRecoil = false;
+		template <typename T>
+		inline T& get(std::string name) {
+			if (g_Config::elements.count(name))
+				return std::get<T>(g_Config::elements[name]);
+			else {
+				g_Debug.logState(::ERROR, "[Config] ERROR: Could not find config element: %s", name.c_str());
+				std::this_thread::sleep_for(std::chrono::seconds(5));
+			}
+		}
 
-		inline bool ExplosiveBullets = false;
-		inline int BulletsCount = 1;
+	//namespace Combat {
+	//	inline bool NoReload = false;
+	//	inline bool NoRecoil = false;
 
-		inline bool Aimbot = false;
-		inline int AimbotHitbox = 0; //0 head, 1 body
-	}
+	//	inline bool ExplosiveBullets = false;
+	//	inline int BulletsCount = 1;
 
-	namespace Misc {
-		inline bool StartGame = false;
-		inline bool bSpotifyDetection = true;
-	}
+	//	inline bool Aimbot = false;
+	//	inline int AimbotHitbox = 0; //0 head, 1 body
+	//}
 
-	namespace Visuals {
-		inline float fBobSpeed = 17.f;
-	}
+	//namespace Misc {
+	//	inline bool StartGame = false;
+	//	inline bool bSpotifyDetection = true;
+	//}
+
+	//namespace Visuals {
+	//	inline float fBobSpeed = 17.f;
+	//}
 }
