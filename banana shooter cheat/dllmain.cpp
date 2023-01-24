@@ -6,6 +6,11 @@ void Main(HMODULE hMod)  {
 	if (!g_Hack->Setup())
 		g_Debug.logState(::ERROR, "Failed to setup!");
 
+	//std::string test = "ABCD";
+	//char stuff[] = { g_Config::ToChar(test) };
+	//std::cout << std::format("STD::STRING: {}, CHAR: {}", stuff, test);
+	//test = g_Config::ToString(stuff);
+	//std::cout << std::format("STD::STRING: {}, CHAR: {}", stuff, test);
 
 	g_Cord.DiscordThread();
 

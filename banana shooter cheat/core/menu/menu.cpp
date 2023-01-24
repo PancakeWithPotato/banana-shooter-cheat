@@ -102,7 +102,7 @@ void Menu::RenderCombat()
 	ImGui::Checkbox("No recoil", &g_Config::get<bool>("combat,norecoil,b"));
 
 	ImGui::Checkbox("Explosive bullets", &g_Config::get<bool>("combat,explosive_bullets,b"));
-	ImGui::SliderFloat("This is atest", &g_Config::get<float>("combat,test,f"), 0, 100);
+
 	ImGui::SliderInt("Bullet count", &g_Config::get<int>("combat,bullet_count,i"), 1, 100);
 	ImGui::HelpMarker("Will shoot x more bullets.");
 	
@@ -121,11 +121,53 @@ void Menu::RenderMisc()
 
 	ImGui::Checkbox("Spotify playback detection", &g_Config::get<bool>("misc,spotify,b"));
 
+
 	if (ImGui::Button("LOAD"))
 		g_Config::Load("TEST.ini.meow");
 
 	if (ImGui::Button("SAVE"))
 		g_Config::Save("TEST.ini");
+
+	ImGui::SetCursorPos({ ImGui::GetWindowSize().x - 200, ImGui::GetWindowSize().y - 200 });
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, { 0.33f, 0.34f, 0.37f, 1.f });
+	ImGui::BeginChild("Configs", { 195,187 });
+	ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 5);
+	ImGui::Spacing();
+	ImGui::BeginChild("##configss", { 185, 90 });
+	for (auto& i : g_Config::strConfigs) 
+	{
+		// 175 and 25 looks like a nice ratio
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 10);
+		if (ImGui::Button(i.c_str(), ImVec2(175, 25))) 
+		{
+			g_Config::cstrInput = i.data();
+
+		}
+	}
+	
+	ImGui::EndChild();
+	ImGui::Spacing();
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+	ImGui::InputText("Name", g_Config::cstrInput, 40);
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+	if (ImGui::Button("Save", { 87.5f, 22 }))
+		g_Config::Save(g_Config::cstrInput);
+	ImGui::SameLine();
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+	if (ImGui::Button("Load", { 87.5f, 22 }))
+		g_Config::Load(g_Config::cstrInput);
+	ImGui::Spacing();
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+	if (ImGui::Button("Refresh", { 87.5f,22 }))
+		g_Config::GetConfigs();
+	ImGui::SameLine();
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+	if (ImGui::Button("Open", { 87.5f, 22 }))
+		g_Config::OpenDir();
+	ImGui::EndChild();
+	ImGui::PopStyleColor();
 	ImGui::EndChild();
 }
 

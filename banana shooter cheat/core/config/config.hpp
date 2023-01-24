@@ -6,10 +6,14 @@
 #include <fstream>
 namespace g_Config 
 {
-		void Update(const int& mode);
 		void Init();
 		void Save(const std::string& strName);
 		void Load(const std::string& strName);
+		void GetConfigs();
+		void OpenDir();
+		//extern std::string ToString(char input[]);
+		//extern char ToChar(std::string input);
+
 		inline std::vector<std::string> strConfigs;
 		inline std::map<std::string, std::variant<int, bool, float, ImColor>> elements;
 		inline std::string strBase;
@@ -24,6 +28,8 @@ namespace g_Config
 			}
 		}
 
+		//inline std::string strCurrentconfig;
+		inline char* cstrInput;
 	//namespace Combat {
 	//	inline bool NoReload = false;
 	//	inline bool NoRecoil = false;
