@@ -60,6 +60,7 @@
     <ClCompile Include="core\config\config.cpp" />
     <ClCompile Include="core\config\INIREADER.cpp" />
     <ClCompile Include="core\config\ini.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_stdlib.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utilities\includes.hpp">
@@ -127,6 +128,7 @@
     <ClInclude Include="utilities\Song\Song.hpp" />
     <ClInclude Include="core\config\INIREADER.h" />
     <ClInclude Include="core\config\ini.h" />
+    <ClInclude Include="dependencies\imgui\imgui_stdlib.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="discord\discord_release.lib" />

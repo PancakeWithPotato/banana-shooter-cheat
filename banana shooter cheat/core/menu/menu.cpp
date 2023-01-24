@@ -140,24 +140,23 @@ void Menu::RenderMisc()
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 10);
 		if (ImGui::Button(i.c_str(), ImVec2(175, 25))) 
 		{
-			g_Config::cstrInput = i.data();
+			g_Config::strConfiginput = i;
 
 		}
 	}
-	
 	ImGui::EndChild();
 	ImGui::Spacing();
 	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-	ImGui::InputText("Name", g_Config::cstrInput, 40);
+	ImGui::InputText("Name", &g_Config::strConfiginput);
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 	if (ImGui::Button("Save", { 87.5f, 22 }))
-		g_Config::Save(g_Config::cstrInput);
+		g_Config::Save(g_Config::strConfiginput);
 	ImGui::SameLine();
 	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 	if (ImGui::Button("Load", { 87.5f, 22 }))
-		g_Config::Load(g_Config::cstrInput);
+		g_Config::Load(g_Config::strConfiginput);
 	ImGui::Spacing();
 	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 	if (ImGui::Button("Refresh", { 87.5f,22 }))

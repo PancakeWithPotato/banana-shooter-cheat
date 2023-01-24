@@ -29,7 +29,7 @@ namespace g_Config
 		}
 
 		//inline std::string strCurrentconfig;
-		inline char* cstrInput;
+		inline std::string strConfiginput;
 	//namespace Combat {
 	//	inline bool NoReload = false;
 	//	inline bool NoRecoil = false;
