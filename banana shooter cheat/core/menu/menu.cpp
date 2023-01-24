@@ -121,13 +121,6 @@ void Menu::RenderMisc()
 
 	ImGui::Checkbox("Spotify playback detection", &g_Config::get<bool>("misc,spotify,b"));
 
-
-	if (ImGui::Button("LOAD"))
-		g_Config::Load("TEST.ini.meow");
-
-	if (ImGui::Button("SAVE"))
-		g_Config::Save("TEST.ini");
-
 	ImGui::SetCursorPos({ ImGui::GetWindowSize().x - 200, ImGui::GetWindowSize().y - 200 });
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, { 0.33f, 0.34f, 0.37f, 1.f });
 	ImGui::BeginChild("Configs", { 195,187 });
