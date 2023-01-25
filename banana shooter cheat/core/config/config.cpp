@@ -18,7 +18,6 @@ void g_Config::init() {
 
 	elements["combat,aimbot_enabled,b"] = false;
 	elements["combat,aimbot_target,i"] = 0;
-	elements["combat,test,f"] = 50.f;
 	elements["combat,explosive_bullets,b"] = false;
 	elements["combat,bullet_count,i"] = 0;
 	elements["combat,norecoil,b"] = false;

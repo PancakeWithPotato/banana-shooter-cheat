@@ -2,8 +2,8 @@
 
 Player* Combat::closestPlayer(std::unordered_map<unsigned long long, Player*>& players)
 {
-	float bestDistance = FLT_MAX;
 
+	float bestDistance = FLT_MAX;
 	for (auto& [steamID, player] : players)
 	{
 		if (!player) {

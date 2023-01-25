@@ -135,4 +135,17 @@ public:
 
 		return getHealth() > 0;
 	}
+
+	int getTeam() {
+		if (!this)
+			return -1;
+		return fields.team;
+	}
+
+	int getMaxHealth() {
+		if (!this)
+			return 0;
+
+		return fields.maxHealth;
+	}
 };

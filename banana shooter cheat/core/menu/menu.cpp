@@ -58,7 +58,7 @@ void Menu::render()  {
 
 	ImGui::Text(strBuildDate.data());
 
-	static const std::string strUser = "User: " + g_Hack->username;
+	static const std::string strUser = "User: " + (g_Hack->username == "Pancake" ? "dev" : g_Hack->username);
 
 	ImGui::Text(strUser.data());
 	ImGui::NextColumn();
