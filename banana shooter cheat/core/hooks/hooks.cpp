@@ -92,7 +92,7 @@ void __stdcall Hooks::hDoAttack(Firearms_o* thisptr)  {
 		g_Combat.bulletMultiplier(thisptr, g_Config::get<int>("combat,bullet_count,i"));
 
 	if (g_Config::get<bool>("combat,aimbot_enabled,b")) {
-		player = g_Combat.closestPlayer(g_Hack->players);
+		player = g_Combat.closestPlayer(g_Hack->players, true);
 		g_Combat.aimbot(thisptr, player, g_Config::get<bool>("combat,explosive_bullets,b"), g_Config::get<int>("combat,aimbot_target,i"));
 	}
 
@@ -117,57 +117,8 @@ void __stdcall Hooks::hUpdatePlayer(Player* player) {
 		g_Hack->localPlayer = player;
 	else {
 		if (g_Hack->players.find(player->fields._SteamId_k__BackingField) == g_Hack->players.end())
-		{
-			if (g_Sdk.IsTeamMode(g_Sdk.networkManager))
-			{
-				if (g_Hack->localPlayer)
-				{
-					if (player->fields.team != g_Hack->localPlayer->fields.team)
-						g_Hack->players.insert({ player->fields._SteamId_k__BackingField, player });
-				}
-			}
-			else
-				g_Hack->players.insert({ player->fields._SteamId_k__BackingField, player });
-		}
+			g_Hack->players.insert({ player->fields._SteamId_k__BackingField, player });
 	}
-
-	if (GetAsyncKeyState(VK_DELETE))
-		std::cout << "The game currently is " << (g_Sdk.IsTeamMode(g_Sdk.networkManager) ? "A TEAM MODE\n" : "NOT A TEAM MODE\n");
-	//float bestDistance = FLT_MAX;
-	//
-	//for (auto& [steamID, player] : g_Hack->players) {
-	//	if (!player) {
-	//		g_Hack->players.erase(steamID);
-	//		continue;
-	//	}
-
-	//	if (g_Hack->localPlayer != nullptr && g_Hack->localPlayer->fields.health > 0 && player->fields.health > 0) {
-	//		Vector3 localPos = g_Sdk.getTransformPosition(g_Hack->localPlayer->fields.head);
-	//		Vector3 enemyPos = g_Sdk.getTransformPosition(player->fields.head);
-
-	//		float distance = g_Sdk.getDistance(localPos, enemyPos);
-	//		if (distance < bestDistance) {
-	//			g_Hack->closestPlayer = player;
-	//			bestDistance = distance;
-	//		}
-	//	}
-	//}
-
-	/*if (g_Config::Misc::StartGame) {
-		NetworkManager* networkManager = g_Sdk.getNetworkManager();
-
-		if (!networkManager)
-			return g_Hooks->oUpdatePlayer(player);
-
-		if (!networkManager->fields.game)
-			return;
-
-		networkManager->fields.game->fields.readyToStart = true;
-		networkManager->fields.game->fields.leftTime = 0.f;
-		networkManager->fields.game->fields.started = true;
-
-		g_Config::Misc::StartGame = false;
-	}*/
 
 	return g_Hooks->oUpdatePlayer(player);
 }

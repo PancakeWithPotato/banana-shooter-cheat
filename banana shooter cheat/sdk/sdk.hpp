@@ -96,8 +96,7 @@ struct {
 		return reinterpret_cast<LobbyManager*(__cdecl*)()>(Offsets::pAssembly + Offsets::Multiplayer::GetLobbyManager)();
 	}
 
-	bool IsTeamMode(NetworkManager* self)
-	{
+	bool isTeamMode(NetworkManager* self) {
 		return reinterpret_cast<bool(__cdecl*)(NetworkManager*)>(Offsets::pAssembly + Offsets::Multiplayer::IsTeamMode)(self);
 	}
 
@@ -147,5 +146,17 @@ public:
 			return 0;
 
 		return fields.maxHealth;
+	}
+
+	bool isEnemyWith(Player* player) {
+		NetworkManager* networkManager = g_Sdk.getNetworkManager();
+
+		if (!this)
+			return false;
+
+		if (!g_Sdk.isTeamMode(networkManager))
+			return true;
+
+		return !(player->getTeam() == this->getTeam());
 	}
 };

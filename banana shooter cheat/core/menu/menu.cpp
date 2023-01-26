@@ -4,14 +4,14 @@
 #include "style.hpp"
 
 namespace ImGui {
-	static void HelpMarker(const char* desc) {
+	static void HelpMarker(const char* format, ...) {
 		ImGui::SameLine();
 		ImGui::TextDisabled("(?)");
 		if (ImGui::IsItemHovered())
 		{
 			ImGui::BeginTooltip();
 			ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
-			ImGui::TextUnformatted(desc);
+			ImGui::Text(format);
 			ImGui::PopTextWrapPos();
 			ImGui::EndTooltip();
 		}
@@ -35,14 +35,17 @@ void Menu::render()  {
 	if (!open)
 		return;
 
-	SetupStyles();
+	ImGui::SetupStyles();
 	ImGui::Begin("Banana Shooter Hack", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoScrollbar);
 	ImGui::Columns(2, nullptr, false);
+
 	ImGui::SetColumnOffset(1, 125);
 	if (ImGui::Button("Combat", ImVec2(115, 60)))
 		TabCount = TAB_COMBAT;
+
 	if (ImGui::Button("Visuals", ImVec2(115, 60)))
 		TabCount = TAB_VISUALS;
+
 	if (ImGui::Button("Misc", ImVec2(115, 60)))
 		TabCount = TAB_MISC;
 
@@ -58,7 +61,7 @@ void Menu::render()  {
 
 	ImGui::Text(strBuildDate.data());
 
-	static const std::string strUser = "User: " + (g_Hack->username == "Pancake" ? "dev" : g_Hack->username);
+	static const std::string strUser = g_Hack->username;
 
 	ImGui::Text(strUser.data());
 	ImGui::NextColumn();
@@ -73,9 +76,6 @@ void Menu::render()  {
 		break;
 	case TAB_VISUALS:
 		renderVisuals();
-		break;
-	default:
-		ImGui::Text("Something went wrong :(");
 		break;
 	}
 
@@ -102,7 +102,7 @@ void Menu::renderCombat()
 	ImGui::Checkbox("Explosive bullets", &g_Config::get<bool>("combat,explosive_bullets,b"));
 
 	ImGui::SliderInt("Bullet count", &g_Config::get<int>("combat,bullet_count,i"), 1, 100);
-	ImGui::HelpMarker("Will shoot x more bullets.");
+	ImGui::HelpMarker("Will shoot %d more bullets", g_Config::get<int>("combat,bullet_count,i"));
 	
 	ImGui::SameLine(); 
 	

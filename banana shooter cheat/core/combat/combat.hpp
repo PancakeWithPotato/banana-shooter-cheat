@@ -6,9 +6,9 @@
 class Combat
 {
 public:
-	Player* closestPlayer(std::unordered_map<unsigned long long, Player*>& );
+	Player* closestPlayer(std::unordered_map<unsigned long long, Player*>& playerList, bool skipIfTeammate);
 
-	void aimbot(Firearms_o* this2, Player* player, const bool& bExplosive, const int& iHittarget);
+	void aimbot(Firearms_o* this2, Player* player, const bool& bExplosive, const int& iHitTarget);
 
 	void bulletMultiplier(Firearms_o* self, const int& iBulletcount);
 }; inline Combat g_Combat;

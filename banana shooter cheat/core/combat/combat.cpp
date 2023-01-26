@@ -1,17 +1,16 @@
 #include "combat.hpp"
 
-Player* Combat::closestPlayer(std::unordered_map<unsigned long long, Player*>& players)
-{
-
+Player* Combat::closestPlayer(std::unordered_map<unsigned long long, Player*>& playerList, bool skipIfTeammate) {
 	float bestDistance = FLT_MAX;
-	for (auto& [steamID, player] : players)
+
+	for (auto& [steamID, player] : playerList)
 	{
 		if (!player) {
-			players.erase(steamID);
+			playerList.erase(steamID);
 			continue;
 		}
 
-		if (g_Hack->localPlayer != nullptr && g_Hack->localPlayer->fields.health > 0 && player->fields.health > 0) { 
+		if (g_Hack->localPlayer != nullptr && g_Hack->localPlayer->isAlive() && (player->isEnemyWith(g_Hack->localPlayer) && skipIfTeammate)) {
 			Vector3 local = g_Sdk.getTransformPosition(g_Hack->localPlayer->fields.head);
 			Vector3 enemy = g_Sdk.getTransformPosition(player->fields.head);
 
@@ -21,7 +20,6 @@ Player* Combat::closestPlayer(std::unordered_map<unsigned long long, Player*>& p
 				bestDistance = distance;
 				return player;
 			}
-			
 		}
 	}
 
