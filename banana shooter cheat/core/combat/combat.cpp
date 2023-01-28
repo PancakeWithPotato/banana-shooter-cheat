@@ -29,7 +29,7 @@ Player* Combat::closestPlayer(std::unordered_map<unsigned long long, Player*>& p
 
 void Combat::aimbot(Firearms_o* self, Player* player, const bool& bExplosive, const int& iHittarget)
 {
-	if (player == nullptr || player->fields.health < 0)
+	if (player == nullptr || player->fields.health <= 0)
 		return g_Hooks->oDoAttack(self);
 
 	Vector3 aimPos = player->fields.desiredPos;
