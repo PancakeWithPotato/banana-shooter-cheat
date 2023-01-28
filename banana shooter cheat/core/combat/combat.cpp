@@ -2,6 +2,7 @@
 
 Player* Combat::closestPlayer(std::unordered_map<unsigned long long, Player*>& playerList, bool skipIfTeammate) {
 	float bestDistance = FLT_MAX;
+	Player* bestPlayer = nullptr;
 
 	for (auto& [steamID, player] : playerList)
 	{
@@ -18,12 +19,12 @@ Player* Combat::closestPlayer(std::unordered_map<unsigned long long, Player*>& p
 
 			if (distance < bestDistance) {
 				bestDistance = distance;
-				return player;
+				bestPlayer = player;
 			}
 		}
 	}
 
-	return nullptr;
+	return bestPlayer;
 }
 
 void Combat::aimbot(Firearms_o* self, Player* player, const bool& bExplosive, const int& iHittarget)
