@@ -9,6 +9,7 @@
  
 struct Menu {
 private:
+
 	void formatDate(std::string& date, const std::string& rawdate);
 	enum TABS {
 		TAB_MISC,
@@ -21,6 +22,12 @@ private:
 	void renderCombat();
 	void renderVisuals();
 public:
+	ImFont* robotoFont = nullptr;
+	ImFont* monsterratFont = nullptr;
+	ImFont* verdanaFont = nullptr;
+
+	ImFont* helveticaNormal = nullptr;
+	ImFont* helveticaLight = nullptr;
 	void render();
 	bool open = true;
 }; 

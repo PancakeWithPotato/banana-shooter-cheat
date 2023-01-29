@@ -6,13 +6,14 @@
 
 void meowpicker(const char* label, ImVec4& color)
 {
+	ImGui::SameLine();
 	ImGui::PushID(label);
 
 	ImGui::Text("%s", label);
 	ImGui::SameLine();
 
 	ImVec2 button_size(17.f, 0.0f);
-	button_size.y = ImGui::GetTextLineHeight();
+	button_size.y = ImGui::CalcTextSize(label).y;
 
 	ImGui::PushStyleColor(ImGuiCol_Button, color);
 	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(color.x + 0.1f, color.y + 0.1f, color.z + 0.1f, 1.0f));
@@ -112,7 +113,8 @@ void Menu::render()  {
 	ImGui::SetCursorPos({ ImGui::GetCursorPos().x, ImGui::GetCursorPos().y + 20 });
 	static std::string strRaw;
 	
-	if (!bInit) {	
+	if (!bInit) 
+	{	
 		g_Visuals.init();
 		formatDate(strRaw, __DATE__);
 	}
@@ -147,10 +149,8 @@ void Menu::renderVisuals() {
 	ImGui::SliderFloat("Movemenet bob speed", &g_Config::get<float>("visuals,bob_speed,f"), 0, 150);
 	ImGui::HelpMarker("Setting to 0 will result in no movement bob.");
 	ImGui::Checkbox("Enemy box", &g_Config::get<bool>("visuals,enemy_box,b"));
-	if (g_Config::get<bool>("visuals,enemy_box,b")) {
-		ImGui::SameLine();
-		meowpicker(" ", g_Config::get<ImVec4>("visuals,enemy_box_color,c"));
-	}
+	if (g_Config::get<bool>("visuals,enemy_box,b")) 
+		meowpicker("##colorpickier", g_Config::get<ImVec4>("visuals,enemy_box_color,c"));
 		
 	ImGui::EndChild();
 }
@@ -168,7 +168,7 @@ void Menu::renderCombat()
 	ImGui::Checkbox("Explosive bullets", &g_Config::get<bool>("combat,explosive_bullets,b"));
 
 	ImGui::SliderInt("Bullet count", &g_Config::get<int>("combat,bullet_count,i"), 1, 100);
-	ImGui::HelpMarker("Will shoot %d more bullets", g_Config::get<int>("combat,bullet_count,i"));
+	ImGui::HelpMarker("Will shoot more bullets");
 	
 	ImGui::SameLine(); 
 	

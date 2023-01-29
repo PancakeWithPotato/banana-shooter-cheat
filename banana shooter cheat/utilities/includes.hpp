@@ -36,5 +36,11 @@
 
 #include "../core/visuals/visuals.hpp"
 
+//fonts
+#include "font/roboto.hpp"
+#include "font/monsterrat.hpp"
+#include "font/verdana.hpp"
+#include "font/helvetica.hpp"
+
 #define WHITE ImVec4(1.f, 1.f, 1.f, 1.f);
 

@@ -165,6 +165,12 @@ HRESULT Hooks::hPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flag
 			ImGui::CreateContext();
 			ImGuiIO& io = ImGui::GetIO();
 			io.ConfigFlags = ImGuiConfigFlags_NoMouseCursorChange;
+			g_Menu.robotoFont = io.Fonts->AddFontFromMemoryTTF(Roboto::font, Roboto::size, 15);
+			g_Menu.monsterratFont = io.Fonts->AddFontFromMemoryTTF(Monsterrat::font, Monsterrat::size, 17);
+			g_Menu.verdanaFont = io.Fonts->AddFontFromMemoryTTF(Verdana::font, Verdana::size, 12);
+
+			g_Menu.helveticaLight = io.Fonts->AddFontFromMemoryTTF(Helvetica::fontLight, Helvetica::lightSize, 15);
+			g_Menu.helveticaNormal = io.Fonts->AddFontFromMemoryTTF(Helvetica::fontNormal, Helvetica::normalSize, 15);
 			ImGui_ImplWin32_Init(g_Hooks->window);
 			ImGui_ImplDX11_Init(g_Hooks->pDevice, g_Hooks->pContext);
 			init = true;

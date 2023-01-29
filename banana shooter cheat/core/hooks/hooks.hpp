@@ -6,7 +6,7 @@ class Hooks
 private:
 	bool addHook(std::string hookName, unsigned long long pTarget, void* detour, void* original);
 public:
-	int iHooks[100];
+	int iHooks[2];
 
 	bool setup();
 	void destroy();

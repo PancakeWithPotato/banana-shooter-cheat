@@ -195,6 +195,10 @@
     <ClInclude Include="core\hack.hpp" />
     <ClInclude Include="core\hooks\hooks.hpp" />
     <ClInclude Include="utilities\debug.hpp" />
+    <ClInclude Include="utilities\font\helvetica.hpp" />
+    <ClInclude Include="utilities\font\monsterrat.hpp" />
+    <ClInclude Include="utilities\font\roboto.hpp" />
+    <ClInclude Include="utilities\font\verdana.hpp" />
     <ClInclude Include="utilities\includes.hpp" />
     <ClInclude Include="utilities\offsets.hpp" />
     <ClInclude Include="sdk\il2cpp.h" />
