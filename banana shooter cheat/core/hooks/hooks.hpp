@@ -1,15 +1,15 @@
 #pragma once
 #include "../../utilities/includes.hpp"
-#include "../../dependencies/minhook/MinHook.h"
 
 class Hooks 
 {
 private:
-	bool AddHook(std::string hookName, unsigned long long pTarget, void* detour, void* original);
-	std::array<int, 2> iHooks = { 0,0 };
+	bool addHook(std::string hookName, unsigned long long pTarget, void* detour, void* original);
 public:
-	bool Setup();
-	void Destroy();
+	int iHooks[2];
+
+	bool setup();
+	void destroy();
 
 	static void __stdcall hFirearmsUpdate(Firearms_o* thisptr);
 
@@ -22,6 +22,10 @@ public:
 
 	static void __stdcall hUpdateAntiCheat(Manager_AntiCheatDectect_o* ptr);
 
+	static void __stdcall hBulletInitialization(Bullet_o* bullet, Vector3 dir, float speed, int damage, void* layermask, bool local, bool useGravity);
+
+	static void __stdcall hChatUpdate(Chat_o* self);
+
 	HWND window = NULL;
 	WNDPROC oWndProc;
 	ID3D11Device* pDevice = NULL;
@@ -31,7 +35,6 @@ public:
 	static LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	static HRESULT __stdcall hPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
 private:
-
 	typedef void(__thiscall* RecoilFirFN)(void*, float, float, float);
 
 	typedef void(__thiscall* ReloadGunFN)(Firearms_o*, float, int);
@@ -44,6 +47,10 @@ private:
 	typedef void(__thiscall* UpdatePlayerFN)(Player*);
 
 	typedef void(__thiscall* UpdateAntiCheatFN)(Manager_AntiCheatDectect_o*);
+
+	typedef void(__thiscall* BulletInitFN)(Bullet_o*, Vector3, float, int, void*, bool, bool);
+
+	typedef void(__stdcall* UpdateChatFN)(Chat_o*);
 public:
 	RecoilFirFN oRecoil = nullptr;
 	DoAttackFN oDoAttack = nullptr;
@@ -53,6 +60,10 @@ public:
 	UpdatePlayerFN oUpdatePlayer = nullptr;
 
 	UpdateAntiCheatFN oUpdateAntiCheat = nullptr;
+
+	BulletInitFN oBulletInitialization = nullptr;
+
+	UpdateChatFN oChatUpdate = nullptr;
 
 	PresentFN oPresent = nullptr;
 }; inline Hooks* g_Hooks = new Hooks();

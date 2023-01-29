@@ -1,28 +1,32 @@
 #pragma once
 #include "includes.hpp"
 
+#ifdef ERROR
+#undef ERROR
+#endif
+
 enum eLogs {
-	success = 1,
-	error = 2, // pancake: lowercase enum names are generally bad practice, but wingdi.h already defines ERROR to 0
-	warning = 3
+	SUCCESS = 1,
+	ERROR = 2,
+	WARNING = 3
 };
 
 struct {
 	template <typename ... Args>
 	void logState(eLogs level, std::string format, Args const& ... args) {
 		switch (level) {
-		case eLogs::success:
+		case eLogs::SUCCESS:
 			std::cout << SUCCES << "[+] ";
 			break;
-		case eLogs::error:
+		case eLogs::ERROR:
 			std::cout << ERR << "[-] ";
 			break;
-		case eLogs::warning:
+		case eLogs::WARNING:
 			std::cout << WAIT << "[*] ";
 			break;
 		}
 
-		printf(format.c_str(), args ...); // std::cout doesnt like args ... wtf !!
+		printf(format.c_str(), args ...);
 		std::cout << RESET << std::endl;
 	}
 
@@ -35,7 +39,7 @@ struct {
 		SetConsoleTitleA(title);
 	}
 
-	void DestroyConsole() {
+	void destroyConsole() {
 		fclose(static_cast<_iobuf*>(__acrt_iob_func(0)));
 		fclose(static_cast<_iobuf*>(__acrt_iob_func(1)));
 

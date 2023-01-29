@@ -1,15 +1,12 @@
 #pragma once
 #include "il2cpp.h"
-#include "../core/hack.hpp"
 #include "../utilities/offsets.hpp"
-
-#include "../dependencies/imgui/imgui.h" // for screen size (w2s)
+#include "../dependencies/imgui/imgui.h"
 
 typedef UnityEngine_Vector3_o Vector3;
 typedef UnityEngine_Vector2_o Vector2;
 typedef UnityEngine_Transform_o Transform;
 typedef UnityEngine_Camera_o Camera;
-typedef Multiplayer_Client_ClientPlayer_o Player;
 typedef Multiplayer_NetworkManager_o NetworkManager;
 typedef Multiplayer_LobbyManager_o LobbyManager;
 
@@ -78,7 +75,10 @@ struct {
 	}
 
 	Vector3 getTransformPosition(Transform* transform) {
-		if (!transform || !transform->fields.m_CachedPtr)
+		if (transform == nullptr || sizeof(*transform) != sizeof(Transform))
+			return Vector3{};
+
+		if (!transform->fields.m_CachedPtr)
 			return Vector3{};
 
 		return reinterpret_cast<Vector3(__cdecl*)(Transform*)>(Offsets::pAssembly + Offsets::Transform::GetPos)(transform);
@@ -96,15 +96,67 @@ struct {
 		return reinterpret_cast<LobbyManager*(__cdecl*)()>(Offsets::pAssembly + Offsets::Multiplayer::GetLobbyManager)();
 	}
 
+	bool isTeamMode(NetworkManager* self) {
+		return reinterpret_cast<bool(__cdecl*)(NetworkManager*)>(Offsets::pAssembly + Offsets::Multiplayer::IsTeamMode)(self);
+	}
+
 	bool localInGame() {
 		NetworkManager* networkManager = getNetworkManager();
+		LobbyManager* lobbyManager = getLobbyManager();
 
-		if (!networkManager)
+		if (!networkManager || !networkManager->fields.m_CachedPtr)
 			return false;
 
-		if (networkManager->fields.connecting || !networkManager->fields.game)
+		if (!networkManager->fields.connecting || !networkManager->fields.game)
+			return false;
+
+		if (!lobbyManager)
 			return false;
 
 		return true;
 	}
+
+	NetworkManager* networkManager = nullptr;
 } g_Sdk;
+
+class Player : public Multiplayer_Client_ClientPlayer_o {
+public:
+	int getHealth() {
+		if (!this)
+			return 0;
+		
+		return fields.health;
+	}
+
+	bool isAlive() {
+		if (!this)
+			return false;
+
+		return getHealth() > 0;
+	}
+
+	int getTeam() {
+		if (!this)
+			return -1;
+		return fields.team;
+	}
+
+	int getMaxHealth() {
+		if (!this)
+			return 0;
+
+		return fields.maxHealth;
+	}
+
+	bool isEnemyWith(Player* player) {
+		NetworkManager* networkManager = g_Sdk.getNetworkManager();
+
+		if (!this)
+			return false;
+
+		if (!g_Sdk.isTeamMode(networkManager))
+			return true;
+
+		return !(player->getTeam() == this->getTeam());
+	}
+};

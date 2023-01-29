@@ -73,6 +73,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetName>meowware</TargetName>
     <OutDir>..\build\debug</OutDir>
+    <IntDir>intermediates\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetName>meowware</TargetName>
@@ -108,11 +109,12 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>NotSet</SubSystem>
@@ -137,14 +139,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="core\combat\combat.cpp" />
+    <ClCompile Include="core\config\config.cpp" />
     <ClCompile Include="core\menu\menu.cpp" />
+    <ClCompile Include="core\visuals\visuals.cpp" />
     <ClCompile Include="dependencies\imgui\imgui.cpp" />
     <ClCompile Include="dependencies\imgui\imgui_demo.cpp" />
     <ClCompile Include="dependencies\imgui\imgui_draw.cpp" />
     <ClCompile Include="dependencies\imgui\imgui_impl_dx11.cpp" />
     <ClCompile Include="dependencies\imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_stdlib.cpp" />
     <ClCompile Include="dependencies\imgui\imgui_widgets.cpp" />
     <ClCompile Include="dependencies\kiero\kiero.cpp" />
+    <ClCompile Include="utilities\discord\DiscordRPC.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="dependencies\minhook\buffer.c" />
     <ClCompile Include="dependencies\minhook\hde\hde32.c" />
@@ -153,16 +160,21 @@
     <ClCompile Include="dependencies\minhook\trampoline.c" />
     <ClCompile Include="core\hack.cpp" />
     <ClCompile Include="core\hooks\hooks.cpp" />
+    <ClCompile Include="utilities\spotify\spotify.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="core\combat\combat.hpp" />
     <ClInclude Include="core\config\config.hpp" />
+    <ClInclude Include="core\config\ini.hpp" />
     <ClInclude Include="core\menu\menu.hpp" />
     <ClInclude Include="core\menu\style.hpp" />
+    <ClInclude Include="core\visuals\visuals.hpp" />
     <ClInclude Include="dependencies\imgui\imconfig.h" />
     <ClInclude Include="dependencies\imgui\imgui.h" />
     <ClInclude Include="dependencies\imgui\imgui_impl_dx11.h" />
     <ClInclude Include="dependencies\imgui\imgui_impl_win32.h" />
     <ClInclude Include="dependencies\imgui\imgui_internal.h" />
+    <ClInclude Include="dependencies\imgui\imgui_stdlib.h" />
     <ClInclude Include="dependencies\imgui\imstb_rectpack.h" />
     <ClInclude Include="dependencies\imgui\imstb_textedit.h" />
     <ClInclude Include="dependencies\imgui\imstb_truetype.h" />
@@ -176,14 +188,27 @@
     <ClInclude Include="dependencies\minhook\MinHook.h" />
     <ClInclude Include="dependencies\minhook\trampoline.h" />
     <ClInclude Include="dependencies\termcolor\termcolor.hpp" />
+    <ClInclude Include="utilities\discord\DiscordRPC.h" />
+    <ClInclude Include="utilities\discord\include\discord_register.h" />
+    <ClInclude Include="utilities\discord\include\discord_rpc.h" />
     <ClInclude Include="sdk\functions.hpp" />
     <ClInclude Include="core\hack.hpp" />
     <ClInclude Include="core\hooks\hooks.hpp" />
     <ClInclude Include="utilities\debug.hpp" />
+    <ClInclude Include="utilities\font\helvetica.hpp" />
+    <ClInclude Include="utilities\font\monsterrat.hpp" />
+    <ClInclude Include="utilities\font\roboto.hpp" />
+    <ClInclude Include="utilities\font\verdana.hpp" />
     <ClInclude Include="utilities\includes.hpp" />
     <ClInclude Include="utilities\offsets.hpp" />
     <ClInclude Include="sdk\il2cpp.h" />
     <ClInclude Include="sdk\sdk.hpp" />
+    <ClInclude Include="utilities\Song\Song.hpp" />
+    <ClInclude Include="utilities\spotify\spotify.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="utilities\discord\discord_debug.lib" />
+    <Library Include="utilities\discord\discord_release.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,3 +1,5 @@
+
+#define MEOW_SLIDER_X 115
 // dear imgui, v1.75 WIP
 // (widgets code)
 
@@ -1609,6 +1611,9 @@ bool ImGui::Combo(const char* label, int* current_item, const char* const items[
 // Combo box helper allowing to pass all items in a single string literal holding multiple zero-terminated items "item1\0item2\0"
 bool ImGui::Combo(const char* label, int* current_item, const char* items_separated_by_zeros, int height_in_items)
 {
+    auto stuff = *current_item;
+    auto textx = ImGui::CalcTextSize(items_separated_by_zeros).x;
+    ImGui::PushItemWidth(textx + 45);
     int items_count = 0;
     const char* p = items_separated_by_zeros;       // FIXME-OPT: Avoid computing this, or at least only when combo is open
     while (*p)
@@ -1617,8 +1622,11 @@ bool ImGui::Combo(const char* label, int* current_item, const char* items_separa
         items_count++;
     }
     bool value_changed = Combo(label, current_item, Items_SingleStringGetter, (void*)items_separated_by_zeros, items_count, height_in_items);
+    ImGui::PopItemWidth();
     return value_changed;
 }
+
+
 
 //-------------------------------------------------------------------------
 // [SECTION] Data Type and Data Formatting Helpers [Internal]
@@ -2626,7 +2634,10 @@ bool ImGui::SliderScalarN(const char* label, ImGuiDataType data_type, void* v, i
 
 bool ImGui::SliderFloat(const char* label, float* v, float v_min, float v_max, const char* format, float power)
 {
-    return SliderScalar(label, ImGuiDataType_Float, v, &v_min, &v_max, format, power);
+    ImGui::PushItemWidth(MEOW_SLIDER_X);
+    auto meow =  SliderScalar(label, ImGuiDataType_Float, v, &v_min, &v_max, format, power);
+    ImGui::PopItemWidth();
+    return meow;
 }
 
 bool ImGui::SliderFloat2(const char* label, float v[2], float v_min, float v_max, const char* format, float power)
@@ -2656,7 +2667,10 @@ bool ImGui::SliderAngle(const char* label, float* v_rad, float v_degrees_min, fl
 
 bool ImGui::SliderInt(const char* label, int* v, int v_min, int v_max, const char* format)
 {
-    return SliderScalar(label, ImGuiDataType_S32, v, &v_min, &v_max, format);
+    ImGui::PushItemWidth(MEOW_SLIDER_X);
+    auto meow = SliderScalar(label, ImGuiDataType_S32, v, &v_min, &v_max, format);
+    ImGui::PopItemWidth();
+    return meow;
 }
 
 bool ImGui::SliderInt2(const char* label, int v[2], int v_min, int v_max, const char* format)
@@ -4473,6 +4487,9 @@ static void RenderArrowsForVerticalBar(ImDrawList* draw_list, ImVec2 pos, ImVec2
     ImGui::RenderArrowPointingAt(draw_list, ImVec2(pos.x + bar_w - half_sz.x - 1, pos.y), ImVec2(half_sz.x + 2, half_sz.y + 1), ImGuiDir_Left,  IM_COL32(0,0,0,alpha8));
     ImGui::RenderArrowPointingAt(draw_list, ImVec2(pos.x + bar_w - half_sz.x,     pos.y), half_sz,                              ImGuiDir_Left,  IM_COL32(255,255,255,alpha8));
 }
+
+
+
 
 // Note: ColorPicker4() only accesses 3 floats if ImGuiColorEditFlags_NoAlpha flag is set.
 // (In C++ the 'float col[4]' notation for a function argument is equivalent to 'float* col', we only specify a size to facilitate understanding of the code.)

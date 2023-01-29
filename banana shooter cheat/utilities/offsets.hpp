@@ -9,6 +9,10 @@ namespace Offsets
 		constexpr uintptr_t RecoilFir = 0x3B8C60;
 	}
 
+	namespace Bullet {
+		constexpr uintptr_t BulletInitialization = 0x3AB3B0;	
+	}
+
 	namespace Firearms {
 		constexpr uintptr_t CreateBullet = 0x3ADF90;
 		constexpr uintptr_t CreateExplosiveBullet = 0x3AE4F0;
@@ -38,9 +42,16 @@ namespace Offsets
 	namespace Multiplayer {
 		constexpr uintptr_t GetNetworkManager = 0x3EC930;
 		constexpr uintptr_t GetLobbyManager = 0x3E21E0;
+		constexpr uintptr_t IsTeamMode = 0x3E7440;
 	}
 
 	namespace AntiCheat {
 		constexpr uintptr_t Update = 0x440400;
+	}
+	namespace Chat {
+		constexpr uintptr_t Update = 0x33E6E0;
+		constexpr uintptr_t SwearCheck = 0x33E470;
+		constexpr uintptr_t AddMessage = 0x33D110;
+		constexpr uintptr_t SetSteamID = 0x33DE60;
 	}
 }

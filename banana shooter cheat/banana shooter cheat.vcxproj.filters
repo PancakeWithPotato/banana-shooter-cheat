@@ -53,6 +53,12 @@
     <ClCompile Include="dependencies\imgui\imgui_widgets.cpp" />
     <ClCompile Include="dependencies\kiero\kiero.cpp" />
     <ClCompile Include="core\menu\menu.cpp" />
+    <ClCompile Include="core\combat\combat.cpp" />
+    <ClCompile Include="core\visuals\visuals.cpp" />
+    <ClCompile Include="core\config\config.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_stdlib.cpp" />
+    <ClCompile Include="utilities\discord\DiscordRPC.cpp" />
+    <ClCompile Include="utilities\spotify\spotify.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utilities\includes.hpp">
@@ -111,6 +117,23 @@
     <ClInclude Include="dependencies\imgui\imstb_truetype.h" />
     <ClInclude Include="dependencies\kiero\kiero.hpp" />
     <ClInclude Include="core\menu\menu.hpp" />
-    <ClInclude Include="core\menu\style.h" />
+    <ClInclude Include="core\menu\style.hpp" />
+    <ClInclude Include="core\visuals\visuals.hpp" />
+    <ClInclude Include="utilities\Song\Song.hpp" />
+    <ClInclude Include="dependencies\imgui\imgui_stdlib.h" />
+    <ClInclude Include="core\combat\combat.hpp" />
+    <ClInclude Include="core\config\ini.hpp" />
+    <ClInclude Include="utilities\discord\DiscordRPC.h" />
+    <ClInclude Include="utilities\discord\include\discord_register.h" />
+    <ClInclude Include="utilities\discord\include\discord_rpc.h" />
+    <ClInclude Include="utilities\spotify\spotify.hpp" />
+    <ClInclude Include="utilities\font\roboto.hpp" />
+    <ClInclude Include="utilities\font\monsterrat.hpp" />
+    <ClInclude Include="utilities\font\verdana.hpp" />
+    <ClInclude Include="utilities\font\helvetica.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="utilities\discord\discord_debug.lib" />
+    <Library Include="utilities\discord\discord_release.lib" />
   </ItemGroup>
 </Project>
