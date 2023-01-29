@@ -3,6 +3,48 @@
 #include "../hooks/hooks.hpp"
 #include "style.hpp"
 
+
+void meowpicker(const char* label, ImVec4& color)
+{
+	ImGui::PushID(label);
+	if (color.w > 255)
+		color.w = 255;
+
+	ImGui::Text("%s", label);
+	ImGui::SameLine();
+
+	ImVec2 button_size(15.f, 0.0f);
+	button_size.y = ImGui::GetTextLineHeight();
+
+	ImGui::PushStyleColor(ImGuiCol_Button, color);
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(color.x + 0.1f, color.y + 0.1f, color.z + 0.1f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(color.x + 0.2f, color.y + 0.2f, color.z + 0.2f, 1.0f));
+
+	if (ImGui::Button("##colorpicker", button_size))
+	{
+		ImGui::OpenPopup("picker");
+	}
+
+	ImGui::PopStyleColor(3);
+
+	if (ImGui::BeginPopup("picker"))
+	{
+		ImGui::Text("Color");
+		ImGui::Separator();
+
+		ImGui::ColorEdit4("##edit", (float*)&color, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_NoSidePreview);
+
+		if (ImGui::Button("Close"))
+		{
+			ImGui::CloseCurrentPopup();
+		}
+
+		ImGui::EndPopup();
+	}
+
+	ImGui::PopID();
+}
+
 namespace ImGui {
 	static void HelpMarker(const char* format, ...) {
 		ImGui::SameLine();
@@ -86,6 +128,8 @@ void Menu::renderVisuals() {
 	ImGui::BeginChild("##visuals", { 350,260 }, true);
 	ImGui::SliderFloat("Movemenet bob speed", &g_Config::get<float>("visuals,bob_speed,f"), 0, 150);
 	ImGui::HelpMarker("Setting to 0 will result in no movement bob.");
+	static auto meow = ImVec4(255, 255, 255, 255);
+	meowpicker("TEST", meow);
 	ImGui::EndChild();
 }
 
