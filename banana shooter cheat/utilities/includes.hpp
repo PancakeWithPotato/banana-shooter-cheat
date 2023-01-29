@@ -36,3 +36,5 @@
 
 #include "../core/visuals/visuals.hpp"
 
+#define WHITE ImVec4(1.f, 1.f, 1.f, 1.f);
+

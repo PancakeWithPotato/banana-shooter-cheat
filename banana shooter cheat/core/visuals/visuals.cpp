@@ -16,3 +16,7 @@ void Visuals::renderSpotifyStatus() {
 	ImVec2 v2RenderPos = { (v2ScreenSize.x - 30.f) - fTextX, 50.f };
 	draw->AddText(v2RenderPos, ImColor(255, 255, 255, 255), g_Spotify.strComplete.c_str());
 }
+void Visuals::renderEnemyBoxes(const ImVec2& pos, const ImVec2& pos2, const ImVec4& color)
+{
+	draw->AddRect(pos, pos2, g_Config::convertColor(color));
+}

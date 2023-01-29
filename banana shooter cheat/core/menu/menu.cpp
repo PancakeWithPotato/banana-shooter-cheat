@@ -11,7 +11,7 @@ void meowpicker(const char* label, ImVec4& color)
 	ImGui::Text("%s", label);
 	ImGui::SameLine();
 
-	ImVec2 button_size(15.f, 0.0f);
+	ImVec2 button_size(17.f, 0.0f);
 	button_size.y = ImGui::GetTextLineHeight();
 
 	ImGui::PushStyleColor(ImGuiCol_Button, color);
@@ -46,16 +46,14 @@ void meowpicker(const char* label, ImVec4& color)
 
 	if (ImGui::BeginPopup("context_menu"))
 	{
-		static ImVec4 copied_color;
-
 		if (ImGui::MenuItem("Copy"))
 		{
-			copied_color = color;
+			g_Config::elements["global,copied_color,n"] = color;
 		}
 
 		if (ImGui::MenuItem("Paste"))
 		{
-			color = copied_color;
+			color = g_Config::get<ImVec4>("global,copied_color,n");
 		}
 
 		ImGui::EndPopup();
@@ -148,8 +146,12 @@ void Menu::renderVisuals() {
 	ImGui::BeginChild("##visuals", { 350,260 }, true);
 	ImGui::SliderFloat("Movemenet bob speed", &g_Config::get<float>("visuals,bob_speed,f"), 0, 150);
 	ImGui::HelpMarker("Setting to 0 will result in no movement bob.");
-	static auto meow = ImVec4(1.f, 1.f,1.f,1.f);
-	meowpicker("TEST", meow);
+	ImGui::Checkbox("Enemy box", &g_Config::get<bool>("visuals,enemy_box,b"));
+	if (g_Config::get<bool>("visuals,enemy_box,b")) {
+		ImGui::SameLine();
+		meowpicker(" ", g_Config::get<ImVec4>("visuals,enemy_box_color,c"));
+	}
+		
 	ImGui::EndChild();
 }
 

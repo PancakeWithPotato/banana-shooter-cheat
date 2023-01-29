@@ -11,4 +11,5 @@ public:
 
 	void init();
 	void renderSpotifyStatus();
+	void renderEnemyBoxes(const ImVec2& pos, const ImVec2& pos2, const ImVec4& color);
 }; inline Visuals g_Visuals;

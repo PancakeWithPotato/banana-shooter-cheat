@@ -24,6 +24,11 @@ void g_Config::init() {
 	elements["combat,noreload,b"] = false;
 
 	elements["visuals,bob_speed,f"] = 17.f;
+	elements["visuals,enemy_box_color,c"] = WHITE;
+	elements["visuals,enemy_box,b"] = false;
+
+	//global shit
+	elements["global,copied_color,n"] = WHITE;
 }
 
 void g_Config::save(const std::string& strName)  {

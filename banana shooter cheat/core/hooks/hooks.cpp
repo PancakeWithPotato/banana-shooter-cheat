@@ -181,6 +181,8 @@ HRESULT Hooks::hPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flag
 
 	if (g_Config::get<bool>("misc,spotify,b"))
 		g_Visuals.renderSpotifyStatus();
+	if (g_Config::get<bool>("visuals,enemy_box,b"))
+		g_Visuals.renderEnemyBoxes({ 100,100 }, { 200,200 }, g_Config::get<ImVec4>("visuals,enemy_box_color,c"));
 
 	ImGui::Render();
 
