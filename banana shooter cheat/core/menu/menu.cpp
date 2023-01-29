@@ -2,13 +2,11 @@
 #include "../../utilities/includes.hpp"
 #include "../hooks/hooks.hpp"
 #include "style.hpp"
-
+#include <algorithm>
 
 void meowpicker(const char* label, ImVec4& color)
 {
 	ImGui::PushID(label);
-	if (color.w > 255)
-		color.w = 255;
 
 	ImGui::Text("%s", label);
 	ImGui::SameLine();
@@ -23,6 +21,10 @@ void meowpicker(const char* label, ImVec4& color)
 	if (ImGui::Button("##colorpicker", button_size))
 	{
 		ImGui::OpenPopup("picker");
+	}
+	else if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
+	{
+		ImGui::OpenPopup("context_menu");
 	}
 
 	ImGui::PopStyleColor(3);
@@ -42,8 +44,26 @@ void meowpicker(const char* label, ImVec4& color)
 		ImGui::EndPopup();
 	}
 
+	if (ImGui::BeginPopup("context_menu"))
+	{
+		static ImVec4 copied_color;
+
+		if (ImGui::MenuItem("Copy"))
+		{
+			copied_color = color;
+		}
+
+		if (ImGui::MenuItem("Paste"))
+		{
+			color = copied_color;
+		}
+
+		ImGui::EndPopup();
+	}
+
 	ImGui::PopID();
 }
+
 
 namespace ImGui {
 	static void HelpMarker(const char* format, ...) {
@@ -128,7 +148,7 @@ void Menu::renderVisuals() {
 	ImGui::BeginChild("##visuals", { 350,260 }, true);
 	ImGui::SliderFloat("Movemenet bob speed", &g_Config::get<float>("visuals,bob_speed,f"), 0, 150);
 	ImGui::HelpMarker("Setting to 0 will result in no movement bob.");
-	static auto meow = ImVec4(255, 255, 255, 255);
+	static auto meow = ImVec4(1.f, 1.f,1.f,1.f);
 	meowpicker("TEST", meow);
 	ImGui::EndChild();
 }
