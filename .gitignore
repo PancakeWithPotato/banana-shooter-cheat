@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/banana shooter cheat/x64
+/build/debug/meowware.dll
+/build/debug/meowware.pdb
+/banana shooter cheat/intermediates/*

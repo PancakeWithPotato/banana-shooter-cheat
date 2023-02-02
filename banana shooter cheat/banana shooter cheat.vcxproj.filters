@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{c00f5cf8-5c4c-4bb9-bce3-429daf36eb6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\headers">
+      <UniqueIdentifier>{1b613e12-9823-44b5-bddc-21ca7247a428}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\sources">
+      <UniqueIdentifier>{1aadaac3-cd27-4686-850a-67a8232f3b9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ext">
+      <UniqueIdentifier>{1bc6a9fb-da9a-4f50-8442-bafc1e6643fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ext\minhook">
+      <UniqueIdentifier>{73347c4b-df02-418a-bed5-b8f1d5612fca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ext\termcolor">
+      <UniqueIdentifier>{87ee575f-9aae-4756-bbec-e656dee75402}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>src\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\minhook\buffer.c">
+      <Filter>ext\minhook</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\minhook\hook.c">
+      <Filter>ext\minhook</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\minhook\trampoline.c">
+      <Filter>ext\minhook</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\minhook\hde\hde32.c">
+      <Filter>ext\minhook</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\minhook\hde\hde64.c">
+      <Filter>ext\minhook</Filter>
+    </ClCompile>
+    <ClCompile Include="core\hooks\hooks.cpp">
+      <Filter>src\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="core\hack.cpp">
+      <Filter>src\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\imgui\imgui.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_demo.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_draw.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="dependencies\kiero\kiero.cpp" />
+    <ClCompile Include="core\menu\menu.cpp" />
+    <ClCompile Include="core\combat\combat.cpp" />
+    <ClCompile Include="core\visuals\visuals.cpp" />
+    <ClCompile Include="core\config\config.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_stdlib.cpp" />
+    <ClCompile Include="utilities\discord\DiscordRPC.cpp" />
+    <ClCompile Include="utilities\spotify\spotify.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="utilities\includes.hpp">
+      <Filter>src\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="core\hooks\hooks.hpp">
+      <Filter>src\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\minhook\buffer.h">
+      <Filter>ext\minhook</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\minhook\MinHook.h">
+      <Filter>ext\minhook</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\minhook\trampoline.h">
+      <Filter>ext\minhook</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\minhook\hde\hde32.h">
+      <Filter>ext\minhook</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\minhook\hde\hde64.h">
+      <Filter>ext\minhook</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\minhook\hde\pstdint.h">
+      <Filter>ext\minhook</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\minhook\hde\table32.h">
+      <Filter>ext\minhook</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\minhook\hde\table64.h">
+      <Filter>ext\minhook</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\termcolor\termcolor.hpp">
+      <Filter>ext\termcolor</Filter>
+    </ClInclude>
+    <ClInclude Include="core\hack.hpp">
+      <Filter>src\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="utilities\offsets.hpp">
+      <Filter>src\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\functions.hpp">
+      <Filter>src\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\il2cpp.h" />
+    <ClInclude Include="sdk\sdk.hpp" />
+    <ClInclude Include="utilities\debug.hpp" />
+    <ClInclude Include="core\config\config.hpp" />
+    <ClInclude Include="dependencies\imgui\imconfig.h" />
+    <ClInclude Include="dependencies\imgui\imgui.h" />
+    <ClInclude Include="dependencies\imgui\imgui_impl_dx11.h" />
+    <ClInclude Include="dependencies\imgui\imgui_impl_win32.h" />
+    <ClInclude Include="dependencies\imgui\imgui_internal.h" />
+    <ClInclude Include="dependencies\imgui\imstb_rectpack.h" />
+    <ClInclude Include="dependencies\imgui\imstb_textedit.h" />
+    <ClInclude Include="dependencies\imgui\imstb_truetype.h" />
+    <ClInclude Include="dependencies\kiero\kiero.hpp" />
+    <ClInclude Include="core\menu\menu.hpp" />
+    <ClInclude Include="core\menu\style.hpp" />
+    <ClInclude Include="core\visuals\visuals.hpp" />
+    <ClInclude Include="utilities\Song\Song.hpp" />
+    <ClInclude Include="dependencies\imgui\imgui_stdlib.h" />
+    <ClInclude Include="core\combat\combat.hpp" />
+    <ClInclude Include="core\config\ini.hpp" />
+    <ClInclude Include="utilities\discord\DiscordRPC.h" />
+    <ClInclude Include="utilities\discord\include\discord_register.h" />
+    <ClInclude Include="utilities\discord\include\discord_rpc.h" />
+    <ClInclude Include="utilities\spotify\spotify.hpp" />
+    <ClInclude Include="utilities\font\roboto.hpp" />
+    <ClInclude Include="utilities\font\monsterrat.hpp" />
+    <ClInclude Include="utilities\font\verdana.hpp" />
+    <ClInclude Include="utilities\font\helvetica.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="utilities\discord\discord_release.lib" />
+    <Library Include="utilities\discord\discord_debug.lib" />
+  </ItemGroup>
+</Project>
