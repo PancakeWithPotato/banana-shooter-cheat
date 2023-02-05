@@ -3,7 +3,11 @@
 Player* Combat::closestPlayer(std::unordered_map<unsigned long long, Player*>& playerList, bool skipIfTeammate) {
 	float bestDistance = FLT_MAX;
 	Player* bestPlayer = nullptr;
-
+	if (playerList.size() == 1) 
+	{
+		std::cout << "Only 1 enemy\n";
+		return playerList[0];
+	}
 	for (auto& [steamID, player] : playerList)
 	{
 		if (!player) {
@@ -39,15 +43,15 @@ void Combat::aimbot(Firearms_o* self, Player* player, const bool& bExplosive, co
 
 	switch (iHittarget)
 	{
-	case 0:
-		aimPos = g_Sdk.getTransformPosition(player->fields.head);
+	case 0: //head, bone 5 is head
+		aimPos = g_Sdk.bone_position_at_index(player->fields.bones, 5);
 		std::cout << std::format("AIMPOS: {}, {}, {}\n", aimPos.fields.x, aimPos.fields.y, aimPos.fields.z);
 		if (bExplosive)
 			g_Funcs->pCreateExplosiveBullet(self, aimPos);
 		else
 			g_Funcs->pCreateBullet(self, aimPos);
 		break;
-	case 1:
+	case 1: //body
 		if (bExplosive)
 			g_Funcs->pCreateExplosiveBullet(self, aimPos);
 		else

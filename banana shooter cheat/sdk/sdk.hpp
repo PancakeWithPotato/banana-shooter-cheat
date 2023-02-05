@@ -179,7 +179,9 @@ public:
 		if (!transform->fields.m_CachedPtr)
 			return Vector3{};
 
-		static il2cpp::il2cppAssembly* coremodule = nullptr;
+		return reinterpret_cast<Vector3(__cdecl*)(Transform*)>(Offsets::pAssembly + Offsets::Transform::GetPos)(transform);
+
+		/*static il2cpp::il2cppAssembly* coremodule = nullptr;
 
 		if (!coremodule) {
 			for (const auto& assembly : assemblies) {
@@ -188,7 +190,25 @@ public:
 			}
 		}
 
-		return reinterpret_cast<Vector3(__cdecl*)(UnityEngine_Transform_o*)>(get_method(coremodule, "UnityEngine", "Transform", "get_position")->methodPointer)(transform);
+		return reinterpret_cast<Vector3(__cdecl*)(UnityEngine_Transform_o*)>(get_method(coremodule, "UnityEngine", "Transform", "get_position")->methodPointer)(transform);*/
+	}
+
+	Vector3 bone_position_at_index(System_Collections_Generic_List_Transform__o* bones, int index)
+	{
+
+		if (!bones || !bones->fields._items || !bones->fields._items->m_Items)
+			return Vector3{};
+
+		if (sizeof(*bones) != sizeof(System_Collections_Generic_List_Transform__o))
+			return Vector3{};
+
+		Transform* transform = bones->fields._items->m_Items[index];
+
+		if (!transform)
+			return Vector3{};
+
+		return getTransformPosition(transform);
+
 	}
 
 	Vector3 getTransformLocalPosition(Transform* transform) {

@@ -91,6 +91,7 @@ void __stdcall Hooks::hDoAttack(Firearms_o* thisptr)  {
 	if (g_Config::get<int>("combat,bullet_count,i"))
 		g_Combat.bulletMultiplier(thisptr, g_Config::get<int>("combat,bullet_count,i"));
 
+	thisptr->fields.damage = INT_MAX;
 	if (g_Config::get<bool>("combat,aimbot_enabled,b")) {
 		player = g_Combat.closestPlayer(g_Hack->players, true);
 		g_Combat.aimbot(thisptr, player, g_Config::get<bool>("combat,explosive_bullets,b"), g_Config::get<int>("combat,aimbot_target,i"));
