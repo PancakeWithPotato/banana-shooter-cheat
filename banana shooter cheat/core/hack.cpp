@@ -1,7 +1,9 @@
 #include "hack.hpp"
 #include "hooks/hooks.hpp"
 
-bool Hack::setup()  {
+bool Hack::setup()  
+{
+	g_Sdk.getAllExports();
 	srand(std::time(0));
 	g_Debug.setupConsole("banana $hooter cheat");
 

@@ -188,6 +188,7 @@
     <ClInclude Include="dependencies\minhook\MinHook.h" />
     <ClInclude Include="dependencies\minhook\trampoline.h" />
     <ClInclude Include="dependencies\termcolor\termcolor.hpp" />
+    <ClInclude Include="sdk\structures.h" />
     <ClInclude Include="utilities\discord\DiscordRPC.h" />
     <ClInclude Include="utilities\discord\include\discord_register.h" />
     <ClInclude Include="utilities\discord\include\discord_rpc.h" />
@@ -209,6 +210,9 @@
   <ItemGroup>
     <Library Include="utilities\discord\discord_debug.lib" />
     <Library Include="utilities\discord\discord_release.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="sdk\thx_nerdie.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

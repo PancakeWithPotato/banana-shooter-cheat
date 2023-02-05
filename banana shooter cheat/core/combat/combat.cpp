@@ -32,17 +32,15 @@ Player* Combat::closestPlayer(std::unordered_map<unsigned long long, Player*>& p
 
 void Combat::aimbot(Firearms_o* self, Player* player, const bool& bExplosive, const int& iHittarget)
 {
-	std::cout << "AIMY\n";
 	if (player == nullptr || !player->isValid())
 		return g_Hooks->oDoAttack(self);
 
-	std::cout << "AIMY2\n";
 	Vector3 aimPos = player->fields.desiredPos;
 
 	switch (iHittarget)
 	{
 	case 0:
-		g_Sdk.getTransformPosInjected(player->fields.head, aimPos);
+		aimPos = g_Sdk.getTransformPosition(player->fields.head);
 		std::cout << std::format("AIMPOS: {}, {}, {}\n", aimPos.fields.x, aimPos.fields.y, aimPos.fields.z);
 		if (bExplosive)
 			g_Funcs->pCreateExplosiveBullet(self, aimPos);

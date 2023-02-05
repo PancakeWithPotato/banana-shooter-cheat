@@ -131,9 +131,13 @@
     <ClInclude Include="utilities\font\monsterrat.hpp" />
     <ClInclude Include="utilities\font\verdana.hpp" />
     <ClInclude Include="utilities\font\helvetica.hpp" />
+    <ClInclude Include="sdk\structures.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="utilities\discord\discord_release.lib" />
     <Library Include="utilities\discord\discord_debug.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="sdk\thx_nerdie.txt" />
   </ItemGroup>
 </Project>
