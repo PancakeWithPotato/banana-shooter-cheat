@@ -212,6 +212,7 @@
     <ClInclude Include="sdk\il2cpp.h" />
     <ClInclude Include="sdk\sdk.hpp" />
     <ClInclude Include="utilities\Song\Song.hpp" />
+    <ClInclude Include="utilities\spotify\inject_sound.hpp" />
     <ClInclude Include="utilities\spotify\spotify.hpp" />
   </ItemGroup>
   <ItemGroup>
