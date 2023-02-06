@@ -59,6 +59,7 @@
     <ClCompile Include="dependencies\imgui\imgui_stdlib.cpp" />
     <ClCompile Include="utilities\discord\DiscordRPC.cpp" />
     <ClCompile Include="utilities\spotify\spotify.cpp" />
+    <ClCompile Include="lua\meowLua.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utilities\includes.hpp">
@@ -132,10 +133,17 @@
     <ClInclude Include="utilities\font\verdana.hpp" />
     <ClInclude Include="utilities\font\helvetica.hpp" />
     <ClInclude Include="sdk\structures.h" />
+    <ClInclude Include="lua\include\lauxlib.h" />
+    <ClInclude Include="lua\include\lua.h" />
+    <ClInclude Include="lua\include\lua.hpp" />
+    <ClInclude Include="lua\include\luaconf.h" />
+    <ClInclude Include="lua\include\lualib.h" />
+    <ClInclude Include="lua\meowLua.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="utilities\discord\discord_release.lib" />
     <Library Include="utilities\discord\discord_debug.lib" />
+    <Library Include="lua\lua54.lib" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="sdk\thx_nerdie.txt" />

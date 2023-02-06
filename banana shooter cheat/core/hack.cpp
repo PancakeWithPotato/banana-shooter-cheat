@@ -28,6 +28,7 @@ bool Hack::setup()
 
 	g_Funcs->setup();
 	g_Config::init();
+	g_Lua.setup();
 	return true;
 }
 
@@ -42,5 +43,6 @@ void Hack::destroy()  {
 	g_Hooks->destroy();
 	delete g_Hooks;
 	delete g_Funcs;
+	g_Lua.destroy();
 	g_Debug.destroyConsole();
 }

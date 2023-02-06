@@ -37,6 +37,9 @@
 
 #include "../core/visuals/visuals.hpp"
 
+//lua
+#include "../lua/meowLua.hpp"
+
 //fonts
 #include "font/roboto.hpp"
 #include "font/monsterrat.hpp"

@@ -3,14 +3,20 @@
 
 #include "ini.hpp"
 
-void g_Config::init() {
+void g_Config::init() 
+{
     strBase = "C:\\Users\\" + g_Hack->username + "\\Documents\\meowware";
-	if (!std::filesystem::create_directory(strBase.c_str()))
-		g_Debug.logState(::SUCCESS, "Created directory 1!");
+	if (std::filesystem::create_directory(strBase.c_str())) std::cout << "Created dir!\n";
 
 	strBase.append("\\banana_shooter");
-	if (!std::filesystem::create_directory(strBase.c_str()))
-		g_Debug.logState(::SUCCESS, "Created directory 2!");
+	if (std::filesystem::create_directory(strBase.c_str())) std::cout << "Created dir!\n";
+
+	luaStrBase = strBase;
+	strBase.append("\\configs");
+	if (std::filesystem::create_directory(strBase.c_str()))std::cout << "Created dir!\n";
+
+	luaStrBase.append("\\luas");
+	if (std::filesystem::create_directory(luaStrBase.c_str())) std::cout << "Created dir!\n";
 
 	getConfigs();
 

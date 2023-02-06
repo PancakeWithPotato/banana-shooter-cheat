@@ -11,6 +11,7 @@ namespace g_Config  {
 	inline std::vector<std::string> strConfigs;
 	inline std::map<std::string, std::variant<int, bool, float, ImVec4>> elements;
 	inline std::string strBase;
+	inline std::string luaStrBase;
 
 	template <typename T>
 	inline T& get(std::string name) {
