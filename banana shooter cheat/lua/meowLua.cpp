@@ -85,7 +85,6 @@ void meowLua::registerTables()
 //visuals
 int luaVisuals::RenderText(lua_State* L)
 {
-	std::cout << "RenderText is called!\n";
 	int top = lua_gettop(L);
 	if (top != 3) {
 		luaL_error(L, "Incorrect amount of arguments!");
@@ -105,7 +104,6 @@ int luaVisuals::RenderText(lua_State* L)
 //utils
 int luaUtils::vec2New(lua_State* L) 
 {
-	std::cout << "vec2New called\n";
 	luaL_argcheck(L, lua_isnumber(L, 1), 1, "Expected number! (1)");
 	luaL_argcheck(L, lua_isnumber(L, 2), 2, "Expected number! (1)");
 
@@ -116,7 +114,7 @@ int luaUtils::vec2New(lua_State* L)
 
 int luaUtils::vec4New(lua_State* L) 
 {
-	std::cout << "vec4New called\n";
+
 	luaL_argcheck(L, lua_isnumber(L, 1), 1, "Expected number! (1)");
 	luaL_argcheck(L, lua_isnumber(L, 2), 2, "Expected number! (1)");
 	luaL_argcheck(L, lua_isnumber(L, 3), 3, "Expected number! (1)");
@@ -131,7 +129,6 @@ int luaUtils::vec4New(lua_State* L)
 //"hack"
 int luaHack::AddCallback(lua_State* L)
 {
-	std::cout << "AddCallback is called!\n";
 	luaL_argcheck(L, lua_isstring(L, 1), 1, "Expected a string! (1)");
 	luaL_argcheck(L, lua_isstring(L, 2), 2, "Expected a string! (1)");
 
@@ -141,11 +138,11 @@ int luaHack::AddCallback(lua_State* L)
 	std::pair<const char*, const char*> callBackFunction = { callback, function };
 	std::cout << "Function: " << function << ", callback: " << callback << ".\n";
 	//i may implement fnv hash soon, and then i can make this a switch statement, till then, it stays if else hell lol
-	if (callback == "render") {
+	if (strcmp(callback, "render") == 0) {
 		g_Lua.renderCallbacks.emplace_back(callBackFunction);
 		g_Debug.logState(::SUCCESS, "Render Callback on function %s", function);
 	}
-	else if (callback == "playerUpdate")
+	else if (strcmp(callback, "playerUpdate") == 0)
 	{
 		g_Lua.playerUpdateCallbacks.emplace_back(callBackFunction);
 		g_Debug.logState(::SUCCESS, "PlayerUpdate Callback on function %s", function);
@@ -158,7 +155,6 @@ int luaHack::AddCallback(lua_State* L)
 //extra utils (i hate this already)
 static int luaUtils::vec2::vec2New(lua_State* L, ImVec2 vec)
 {
-	std::cout << "vec2NewUNDER called\n";
 	int x, y;
 	x = vec.x; y = vec.y;
 
@@ -179,7 +175,6 @@ static int luaUtils::vec2::vec2New(lua_State* L, ImVec2 vec)
 
 static int luaUtils::vec2::vec4New(lua_State* L, ImVec4 vector)
 {
-	std::cout << "vec4NewUNDER called\n";
 	int x, y, z, w;
 	x = vector.x; y = vector.y; z = vector.z; w = vector.w;
 
