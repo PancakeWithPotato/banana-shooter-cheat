@@ -35,3 +35,9 @@ void Visuals::renderEnemyBoxes(const ImVec2& pos, const ImVec2& pos2, const ImVe
 	ImGui::PopFont();
 	draw->AddRect(pos, pos2, g_Config::convertColor(color));
 }
+
+void Visuals::renderText(const char* text, const ImVec2& pos, const ImVec4& color)
+{
+	draw->AddText(pos, g_Config::convertColor(color), text);
+}
+

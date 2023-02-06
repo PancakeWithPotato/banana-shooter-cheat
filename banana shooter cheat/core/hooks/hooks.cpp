@@ -196,6 +196,15 @@ HRESULT Hooks::hPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flag
 	if (g_Config::get<bool>("visuals,enemy_box,b"))
 		g_Visuals.renderEnemyBoxes({ 100,100 }, { 200,200 }, g_Config::get<ImVec4>("visuals,enemy_box_color,c"));
 
+	g_Visuals.renderText("this is from c++", { 500,500 }, { 0,0,0,1 });
+	if (g_Lua.state && !g_Lua.renderCallbacks.empty()) {
+		for (size_t i = 0; i < g_Lua.renderCallbacks.size(); i++)
+		{
+			lua_getglobal(g_Lua.state, g_Lua.renderCallbacks[i].second);
+			lua_pcall(g_Lua.state, 0, 0, 0);
+		}
+	}
+
 	ImGui::Render();
 
 	g_Hooks->pContext->OMSetRenderTargets(1, &g_Hooks->mainRenderTargetView, NULL);
