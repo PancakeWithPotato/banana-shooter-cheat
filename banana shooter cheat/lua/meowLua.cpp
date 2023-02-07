@@ -95,14 +95,6 @@ void meowLua::registerTables(lua_State* L)
 		lua_pushcfunction(L, luaHack::AddCallback);
 		lua_settable(L, -3);
 
-		lua_pushstring(L, "testFunction");
-		lua_pushcfunction(L, luaHack::testFunction);
-		lua_settable(L, -3);
-
-		lua_pushstring(L, "getInstance");
-		lua_pushcfunction(L, luaHack::getInstance);
-		lua_settable(L, -3);
-
 		lua_setglobal(L, "hack");
 	}
 
@@ -111,27 +103,6 @@ void meowLua::registerTables(lua_State* L)
 
 	}
 }
-
-void meowLua::registerMetaTables(lua_State* L)
-{
-	//hack
-	{
-		luaL_newmetatable(L, "hacktable");
-		lua_pushvalue(L, -1);
-		lua_setfield(L, -2, "__index");
-		luaL_Reg hackFunctions[] =
-		{
-			{"testFunc", luaHack::testFunction2},
-			{NULL, NULL}
-		};
-		luaL_setfuncs(L, hackFunctions, 0);
-		lua_setmetatable(L, -3);
-
-		lua_setglobal(L, "hacktable");
-	}
-	std::cout << "table,\n";
-}
-
 
 //visuals
 int luaVisuals::RenderText(lua_State* L)
@@ -201,30 +172,6 @@ int luaHack::AddCallback(lua_State* L)
 
 	return 0;
 }
-
-int luaHack::testFunction(lua_State* L)
-{
-	std::cout << "[LUA] Called testFunction!\n";
-	std::string arg = lua_tostring(L, 1);
-	lua_pushstring(L, g_Hack->testFunction(arg).c_str());
-	return 1;
-}
-
-int luaHack::testFunction2(lua_State* L)
-{
-	Hack** ptr = (Hack**)luaL_checkudata(L, 1, "HackTable");
-	std::string returnstring = (*ptr)->testFunction("thhis call is from testfunction 2");
-	lua_pushstring(L, returnstring.c_str());
-	return 1;
-}
-
-int luaHack::getInstance(lua_State* L)
-{
-	std::cout << "Called getInstnace!\n";
-	lua_pushlightuserdata(L, g_Hack);
-	return 1;
-}
-
 
 //extra utils (i hate this already)
 static int luaUtils::vec2::vec2New(lua_State* L, ImVec2 vec)
