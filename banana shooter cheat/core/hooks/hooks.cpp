@@ -90,12 +90,17 @@ void __stdcall Hooks::hDoAttack(Firearms_o* thisptr)  {
 
 	if (g_Config::get<int>("combat,bullet_count,i"))
 		g_Combat.bulletMultiplier(thisptr, g_Config::get<int>("combat,bullet_count,i"));
-
 	thisptr->fields.damage = INT_MAX;
-	if (g_Config::get<bool>("combat,aimbot_enabled,b")) {
-		player = g_Combat.closestPlayer(g_Hack->players, true);
-		g_Combat.aimbot(thisptr, player, g_Config::get<bool>("combat,explosive_bullets,b"), g_Config::get<int>("combat,aimbot_target,i"));
+	player = g_Combat.closestPlayer(g_Hack->players, true);
+	if (g_Lua.state && !g_Lua.attackUpdateCallbacks.empty()) {
+		for (size_t i = 0; i < g_Lua.attackUpdateCallbacks.size(); i++)
+		{
+			lua_getglobal(g_Lua.state, g_Lua.attackUpdateCallbacks[i].second);
+			lua_pcall(g_Lua.state, 0, 0, 0);
+		}
 	}
+	if (g_Config::get<bool>("combat,aimbot_enabled,b")) 
+		g_Combat.aimbot(thisptr, player, g_Config::get<bool>("combat,explosive_bullets,b"), g_Config::get<int>("combat,aimbot_target,i"));
 
 	if (g_Config::get<bool>("combat,explosive_bullets,b"))
 		g_Funcs->pCreateExplosiveBullet(thisptr, aimPos);
@@ -120,7 +125,13 @@ void __stdcall Hooks::hUpdatePlayer(Player* player) {
 		if (g_Hack->players.find(player->fields._SteamId_k__BackingField) == g_Hack->players.end())
 			g_Hack->players.insert({ player->fields._SteamId_k__BackingField, player });
 	}
-
+	if (g_Lua.state && !g_Lua.playerUpdateCallbacks.empty()) {
+		for (size_t i = 0; i < g_Lua.playerUpdateCallbacks.size(); i++)
+		{
+			lua_getglobal(g_Lua.state, g_Lua.playerUpdateCallbacks[i].second);
+			lua_pcall(g_Lua.state, 0, 0, 0);
+		}
+	}
 	return g_Hooks->oUpdatePlayer(player);
 }
 

@@ -15,6 +15,7 @@ public:
 	std::string baseFolder = "";
 	std::vector<std::pair<const char*, const char*>> renderCallbacks;
 	std::vector<std::pair<const char*, const char*>> playerUpdateCallbacks;
+	std::vector<std::pair<const char*, const char*>> attackUpdateCallbacks;
 	Player* currentPlayer = nullptr;
 }; inline meowLua g_Lua;
 

@@ -169,7 +169,11 @@ int luaHack::AddCallback(lua_State* L)
 		g_Lua.playerUpdateCallbacks.emplace_back(callBackFunction);
 		g_Debug.logState(::SUCCESS, "PlayerUpdate Callback on function %s", function);
 	}
-
+	else if (strcmp(callback, "attackUpdate") == 0)
+	{
+		g_Lua.attackUpdateCallbacks.emplace_back(callBackFunction);
+		g_Debug.logState(::SUCCESS, "AttackUpdate Callback on function %s", function);
+	}
 	return 0;
 }
 
