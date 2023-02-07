@@ -30,7 +30,7 @@ bool Hack::setup()
 	g_Funcs->setup();
 	g_Config::init();
 	g_Lua.setup();
-	PlaySoundA(reinterpret_cast<LPCSTR>(injectSound), NULL, SND_ASYNC | SND_MEMORY); //inject sound
+	//PlaySoundA(reinterpret_cast<LPCSTR>(injectSound), NULL, SND_ASYNC | SND_MEMORY); //inject sound
 	return true;
 }
 
@@ -45,6 +45,15 @@ void Hack::destroy()  {
 	g_Hooks->destroy();
 	delete g_Hooks;
 	delete g_Funcs;
-	g_Lua.destroy();
 	g_Debug.destroyConsole();
+
+	//this has to be the last thing to "destroy"
+	g_Lua.destroy();
+}
+
+std::string Hack::testFunction(std::string testString) 
+{
+	std::cout << "[C++] Called testFunction " << testString << std::endl;
+
+	return testString;
 }

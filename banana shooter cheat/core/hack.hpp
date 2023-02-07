@@ -15,5 +15,7 @@ public:
 	Player* closestPlayer = nullptr;
 	Player* localPlayer = nullptr;
 	std::unordered_map<unsigned long long, Player*> players;
+
+	std::string testFunction(std::string testString);
 }; inline Hack* g_Hack = new Hack();
 

@@ -10,9 +10,9 @@ public:
 	void getLuas();
 	void openDir();
 	//setup stuff as well
-	void registerTables();
+	void registerTables(lua_State* L);
+	void registerMetaTables(lua_State* L);
 
-	//vars
 	std::string baseFolder = "";
 	std::vector<std::pair<const char*, const char*>> renderCallbacks;
 	std::vector<std::pair<const char*, const char*>> playerUpdateCallbacks;
@@ -41,6 +41,9 @@ namespace luaUtils
 namespace luaHack 
 {
 	int AddCallback(lua_State* L);
+	int testFunction(lua_State* L);
+	int testFunction2(lua_State* L);
+	int getInstance(lua_State* L);
 }
 namespace tableutils {
 	inline int GetInt(lua_State* L, int table_index, const char* var_name) {

@@ -55,7 +55,7 @@ Song_t Spotify::GetCurrentSong()
 
 		std::string strTitle{ title };
 		size_t dash = 0;
-		dash = strTitle.find_first_of('-');
+		dash = strTitle.find_last_of('-');
 
 		if (dash == std::string::npos) {
 			this->CurrentState = STOPPED;

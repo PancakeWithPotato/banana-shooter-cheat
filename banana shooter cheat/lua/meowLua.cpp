@@ -6,17 +6,22 @@ bool meowLua::setup()
 	this->state = luaL_newstate();
 	
 	this->baseFolder = g_Config::luaStrBase;
-	luaL_openlibs(this->state);
+	luaL_openlibs(state);
 
-	this->registerTables();
+	this->registerTables(state);
+	//this->registerMetaTables(state);
 
-	luaL_dofile(state, "C:\\Users\\Pancake\\Documents\\meowware\\banana_shooter\\luas\\first.lua");
+	int x = luaL_dofile(state, "C:\\Users\\Pancake\\Documents\\meowware\\banana_shooter\\luas\\first.lua");
+	if (x != LUA_OK)
+	{
+		std::string errorMSG = lua_tostring(state, -1);
+		std::cout << errorMSG << std::endl;
+	}
 	return true;
 }
 
 void meowLua::destroy()
 {
-	state = nullptr;
 	lua_close(state);
 }
 
@@ -31,54 +36,100 @@ void meowLua::openDir()
 	}
 }
 
-void meowLua::registerTables() 
+void meowLua::registerTables(lua_State* L) 
 {
 	//vector
 	{
-		lua_newtable(state);
-		lua_pushstring(state, "new");
-		lua_pushcfunction(state, luaUtils::vec2New);
-		lua_settable(state, -3);
-		lua_setglobal(state, "vec2");
+		lua_newtable(L);
+		lua_pushstring(L, "new");
+		lua_pushcfunction(L, luaUtils::vec2New);
+		lua_settable(L, -3);
+		lua_setglobal(L, "vec2");
 
-		//lua_newtable(state);
-		//lua_pushstring(state, "new");
-		//lua_settable(state, -3);
-		//lua_setglobal(state, "vec3");
+		//lua_newtable(L);
+		//lua_pushstring(L, "new");
+		//lua_settable(L, -3);
+		//lua_setglobal(L, "vec3");
 
-		lua_newtable(state);
-		lua_pushstring(state, "new");
-		lua_pushcfunction(state, luaUtils::vec4New);
-		lua_settable(state, -3);
-		lua_setglobal(state, "vec4");
+		lua_newtable(L);
+		lua_pushstring(L, "new");
+		lua_pushcfunction(L, luaUtils::vec4New);
+		lua_settable(L, -3);
+		lua_setglobal(L, "vec4");
 	}
 
 	//render
 	{
-		lua_newtable(state);
+		lua_newtable(L);
 
-		lua_pushstring(state, "text");
-		lua_pushcfunction(state, luaVisuals::RenderText);
-		lua_settable(state, -3);
+		lua_pushstring(L, "text");
+		lua_pushcfunction(L, luaVisuals::RenderText);
+		lua_settable(L, -3);
 
-		lua_setglobal(state, "render");
+		lua_setglobal(L, "render");
 	}
 
 	//hack
 	{
-		lua_newtable(state);
+		lua_newtable(L);
+		/*int hackTableIDX = lua_gettop(L);
+		lua_pushvalue(L, hackTableIDX);
+		lua_setglobal(L, "hack");
 
-		lua_pushstring(state, "AddCallback");
-		lua_pushcfunction(state, luaHack::AddCallback);
-		lua_settable(state, -3);
+		lua_pushcfunction(L, luaHack::AddCallback);
+		lua_setfield(L, -2, "addCallback");
 
-		lua_setglobal(state, "hack");
+		lua_pushcfunction(L, luaHack::testFunction);
+		lua_setfield(L, -2, "testFunction");
+
+		lua_pushcfunction(L, luaHack::getInstance);
+		lua_setfield(L, -2, "getInstance");
+
+		luaL_newmetatable(L, "hackTable");
+
+		lua_pushstring(L, "__index");
+		lua_pushvalue(L, hackTableIDX);
+		lua_settable(L, -3);*/
+
+		lua_pushstring(L, "addCallback");
+		lua_pushcfunction(L, luaHack::AddCallback);
+		lua_settable(L, -3);
+
+		lua_pushstring(L, "testFunction");
+		lua_pushcfunction(L, luaHack::testFunction);
+		lua_settable(L, -3);
+
+		lua_pushstring(L, "getInstance");
+		lua_pushcfunction(L, luaHack::getInstance);
+		lua_settable(L, -3);
+
+		lua_setglobal(L, "hack");
 	}
 
 	//globals
 	{
 
 	}
+}
+
+void meowLua::registerMetaTables(lua_State* L)
+{
+	//hack
+	{
+		luaL_newmetatable(L, "hacktable");
+		lua_pushvalue(L, -1);
+		lua_setfield(L, -2, "__index");
+		luaL_Reg hackFunctions[] =
+		{
+			{"testFunc", luaHack::testFunction2},
+			{NULL, NULL}
+		};
+		luaL_setfuncs(L, hackFunctions, 0);
+		lua_setmetatable(L, -3);
+
+		lua_setglobal(L, "hacktable");
+	}
+	std::cout << "table,\n";
 }
 
 
@@ -151,6 +202,29 @@ int luaHack::AddCallback(lua_State* L)
 	return 0;
 }
 
+int luaHack::testFunction(lua_State* L)
+{
+	std::cout << "[LUA] Called testFunction!\n";
+	std::string arg = lua_tostring(L, 1);
+	lua_pushstring(L, g_Hack->testFunction(arg).c_str());
+	return 1;
+}
+
+int luaHack::testFunction2(lua_State* L)
+{
+	Hack** ptr = (Hack**)luaL_checkudata(L, 1, "HackTable");
+	std::string returnstring = (*ptr)->testFunction("thhis call is from testfunction 2");
+	lua_pushstring(L, returnstring.c_str());
+	return 1;
+}
+
+int luaHack::getInstance(lua_State* L)
+{
+	std::cout << "Called getInstnace!\n";
+	lua_pushlightuserdata(L, g_Hack);
+	return 1;
+}
+
 
 //extra utils (i hate this already)
 static int luaUtils::vec2::vec2New(lua_State* L, ImVec2 vec)
@@ -200,4 +274,3 @@ static int luaUtils::vec2::vec4New(lua_State* L, ImVec4 vector)
 
 	return 1;
 }
-
