@@ -6,7 +6,8 @@
 #include "../../dependencies/imgui/imgui_impl_win32.h"
 #include "../../dependencies/imgui/imgui_stdlib.h"
 #include <string>
- 
+#include <D3DX11tex.h>
+#include "meowware_cover.hpp"
 struct Menu {
 private:
 
@@ -29,7 +30,9 @@ public:
 	ImFont* helveticaNormal = nullptr;
 	ImFont* helveticaLight = nullptr;
 	void render();
+	void renderLua();
 	bool open = true;
+	ID3D11ShaderResourceView* image = nullptr;
 }; 
 
 inline Menu g_Menu;

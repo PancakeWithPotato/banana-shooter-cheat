@@ -96,6 +96,21 @@ void Menu::render()  {
 	if (!open)
 		return;
 
+	static const std::string strUser = g_Hack->username;
+
+	static std::string strRaw;
+
+	if (!bInit)
+	{
+		//ugly implementation, but idrc
+		D3DX11_IMAGE_LOAD_INFO info;
+		ID3DX11ThreadPump* pump{ nullptr };
+		D3DX11CreateShaderResourceViewFromMemory(g_Hooks->pDevice, sillyCatPNG, sizeof(sillyCatPNG), &info,
+			pump, &image, 0);
+		g_Visuals.init();
+		formatDate(strRaw, __DATE__);
+	}
+	static const std::string strBuildDate = "Build date: \n" + strRaw;
 	ImGui::SetupStyles();
 	ImGui::Begin("Banana Shooter Hack", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoScrollbar);
 	ImGui::Columns(2, nullptr, false);
@@ -111,19 +126,8 @@ void Menu::render()  {
 		TabCount = TAB_MISC;
 
 	ImGui::SetCursorPos({ ImGui::GetCursorPos().x, ImGui::GetCursorPos().y + 20 });
-	static std::string strRaw;
-	
-	if (!bInit) 
-	{	
-		g_Visuals.init();
-		formatDate(strRaw, __DATE__);
-	}
-
-	static const std::string strBuildDate = "Build date: \n" + strRaw;
 
 	ImGui::Text(strBuildDate.data());
-
-	static const std::string strUser = g_Hack->username;
 
 	ImGui::Text(strUser.data());
 	ImGui::NextColumn();
@@ -142,6 +146,23 @@ void Menu::render()  {
 	}
 
 	ImGui::End();
+
+	//picture
+	auto style = ImGui::GetStyle();
+	style.Colors[ImGuiCol_FrameBg] = ImColor(0, 0, 0, 0);
+	style.Colors[ImGuiCol_FrameBgHovered] = ImColor(0, 0, 0, 0);
+	style.Colors[ImGuiCol_FrameBgActive] = ImColor(0, 0, 0, 0);
+	ImGui::Begin("dummy", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoInputs);
+	ImGui::SetWindowPos({ g_Visuals.v2ScreenSize.x - 150, g_Visuals.v2ScreenSize.y - 150 });
+	ImGui::Image((void*)image, {150,150});
+	ImGui::End();
+
+	style.Colors[ImGuiCol_FrameBg] = ImVec4(0.23f, 0.23f, 0.23f, 1.00f);
+	style.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.23f, 0.23f, 0.23f, 1.00f);
+	style.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.23f, 0.23f, 0.23f, 1.00f);
+
+	//lua window
+	this->renderLua();
 }
 
 void Menu::renderVisuals() {
@@ -241,4 +262,15 @@ void Menu::formatDate(std::string& date, const std::string& raw)  {
 		date = raw;
 	
 	bInit = true;
+}
+
+void Menu::renderLua() 
+{
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, { 430.f, 200.f });
+	//lua stuff (separate window)
+	ImGui::Begin("Meowware - LUA", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoScrollbar);
+
+	ImGui::End();
+
+	ImGui::PopStyleVar();
 }

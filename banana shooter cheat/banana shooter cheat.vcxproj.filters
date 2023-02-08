@@ -140,6 +140,7 @@
     <ClInclude Include="lua\include\lualib.h" />
     <ClInclude Include="lua\meowLua.hpp" />
     <ClInclude Include="utilities\spotify\inject_sound.hpp" />
+    <ClInclude Include="core\menu\meowware_cover.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="utilities\discord\discord_release.lib" />

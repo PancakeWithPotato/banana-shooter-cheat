@@ -47,7 +47,6 @@ void Hack::destroy()  {
 	delete g_Funcs;
 	g_Debug.destroyConsole();
 
-	//this has to be the last thing to "destroy"
 	g_Lua.destroy();
 }
 

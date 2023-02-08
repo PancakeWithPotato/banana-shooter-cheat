@@ -74,10 +74,12 @@
     <TargetName>meowware</TargetName>
     <OutDir>..\build\debug</OutDir>
     <IntDir>intermediates\</IntDir>
+    <IncludePath>$(IncludePath);$(DXSDK_DIR)include</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetName>meowware</TargetName>
     <OutDir>..\build\release</OutDir>
+    <IncludePath>$(IncludePath);$(DXSDK_DIR)include</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -119,6 +121,7 @@
     <Link>
       <SubSystem>NotSet</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);D:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64\d3dx11.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -136,6 +139,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);D:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64\d3dx11.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -168,6 +172,7 @@
     <ClInclude Include="core\config\config.hpp" />
     <ClInclude Include="core\config\ini.hpp" />
     <ClInclude Include="core\menu\menu.hpp" />
+    <ClInclude Include="core\menu\meowware_cover.hpp" />
     <ClInclude Include="core\menu\style.hpp" />
     <ClInclude Include="core\visuals\visuals.hpp" />
     <ClInclude Include="dependencies\imgui\imconfig.h" />

@@ -2,9 +2,20 @@
 #include "include/lua.hpp"
 #include "../utilities/includes.hpp"
 
+
+struct LUA_t 
+{
+	std::vector<std::pair<const char*, const char*>> renderCallbacks;
+	std::vector<std::pair<const char*, const char*>> playerUpdateCallbacks;
+	std::vector<std::pair<const char*, const char*>> attackUpdateCallbacks;
+
+	lua_State* state;
+	std::string luaName;
+};
 class meowLua {
 public:
 	lua_State* state;
+	void openLua(std::string name);
 	bool setup();
 	void destroy();
 	void getLuas();
@@ -16,6 +27,9 @@ public:
 	std::vector<std::pair<const char*, const char*>> renderCallbacks;
 	std::vector<std::pair<const char*, const char*>> playerUpdateCallbacks;
 	std::vector<std::pair<const char*, const char*>> attackUpdateCallbacks;
+	std::vector<LUA_t> luas;
+
+	int currentLuas = 0;
 	Player* currentPlayer = nullptr;
 }; inline meowLua g_Lua;
 
