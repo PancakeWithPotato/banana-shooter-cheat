@@ -28,8 +28,9 @@ public:
 	std::vector<std::pair<const char*, const char*>> playerUpdateCallbacks;
 	std::vector<std::pair<const char*, const char*>> attackUpdateCallbacks;
 	std::vector<LUA_t> luas;
-
+	std::vector<std::string> allLuas;
 	int currentLuas = 0;
+	std::string selectedLua = "none";
 	Player* currentPlayer = nullptr;
 }; inline meowLua g_Lua;
 

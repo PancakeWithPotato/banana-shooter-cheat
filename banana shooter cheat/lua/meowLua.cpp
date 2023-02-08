@@ -9,6 +9,7 @@ bool meowLua::setup()
 	this->baseFolder = g_Config::luaStrBase;
 	//luaL_openlibs(state);
 	this->registerTables(state);
+	this->getLuas();
 	//this->registerMetaTables(state);
 
 	/*int x = luaL_dofile(state, "C:\\Users\\Pancake\\Documents\\meowware\\banana_shooter\\luas\\first.lua");
@@ -28,7 +29,23 @@ bool meowLua::setup()
 }
 void meowLua::openLua(std::string name) 
 {
-	this->luas.at(this->currentLuas).state = luaL_newstate();
+	if (name == "")
+		return;
+	LUA_t newlua;
+	newlua.state = luaL_newstate();
+	newlua.luaName = name;
+	luaL_openlibs(newlua.state);
+	this->registerTables(newlua.state);
+	std::string file = this->baseFolder + "\\" + name + ".lua";
+	int errorCode = luaL_dofile(newlua.state, file.c_str());
+	if (errorCode != LUA_OK)
+	{
+		std::string errorMSG = lua_tostring(newlua.state, -1);
+		std::cout << ERR << std::format("Failed to load in lua {} due to: {}\n", name, errorMSG);
+	}
+	else
+		std::cout << SUCCES << std::format("Loaded lua {}\n", name); 
+	/*this->luas.at(this->currentLuas).state = luaL_newstate();
 	this->luas.at(this->currentLuas).luaName = name;
 	std::string file = this->baseFolder + "\\" + name;
 	int errorCode = luaL_dofile(this->luas.at(this->currentLuas).state, file.c_str());
@@ -38,12 +55,26 @@ void meowLua::openLua(std::string name)
 		std::cout << ERR << std::format("Failed to load in lua {} due to: {}\n", name, errorMSG);
 	}
 	else
-		std::cout << SUCCES << std::format("Loaded lua {}\n", name);
+		std::cout << SUCCES << std::format("Loaded lua {}\n", name);*/
+
+	this->luas.emplace_back(newlua);
+	this->currentLuas++;
 }
 
 void meowLua::destroy()
 {
 	//std::cout << "bye lua\n";
+}
+
+void meowLua::getLuas() 
+{
+	//i love this function
+	this->allLuas.clear();
+	for (const auto& dirEntry : std::filesystem::recursive_directory_iterator(this->baseFolder)) {
+		auto slash = dirEntry.path().generic_string().find_last_of('/');
+		std::string strMeowname = dirEntry.path().generic_string().substr(slash + 1, dirEntry.path().generic_string().length());
+		this->allLuas.emplace_back(strMeowname.substr(0, strMeowname.length() - 4));
+	}
 }
 
 void meowLua::openDir()

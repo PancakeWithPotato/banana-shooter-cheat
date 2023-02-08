@@ -148,18 +148,10 @@ void Menu::render()  {
 	ImGui::End();
 
 	//picture
-	auto style = ImGui::GetStyle();
-	style.Colors[ImGuiCol_FrameBg] = ImColor(0, 0, 0, 0);
-	style.Colors[ImGuiCol_FrameBgHovered] = ImColor(0, 0, 0, 0);
-	style.Colors[ImGuiCol_FrameBgActive] = ImColor(0, 0, 0, 0);
 	ImGui::Begin("dummy", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoInputs);
 	ImGui::SetWindowPos({ g_Visuals.v2ScreenSize.x - 150, g_Visuals.v2ScreenSize.y - 150 });
 	ImGui::Image((void*)image, {150,150});
 	ImGui::End();
-
-	style.Colors[ImGuiCol_FrameBg] = ImVec4(0.23f, 0.23f, 0.23f, 1.00f);
-	style.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.23f, 0.23f, 0.23f, 1.00f);
-	style.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.23f, 0.23f, 0.23f, 1.00f);
 
 	//lua window
 	this->renderLua();
@@ -269,6 +261,31 @@ void Menu::renderLua()
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, { 430.f, 200.f });
 	//lua stuff (separate window)
 	ImGui::Begin("Meowware - LUA", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoScrollbar);
+	if (ImGui::Button("Open folder", ImVec2({ 100.f, 35 })))
+		g_Lua.openDir();
+
+	ImGui::SameLine();
+	ImGui::SetCursorPosX(235);
+
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.23f, 0.23f, 0.23f, 1.00f));
+	ImGui::BeginChild("##luas", { 185, 125 });
+	for (auto& i : g_Lua.allLuas)
+	{
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 10);
+		if (ImGui::Button(i.c_str(), ImVec2(175, 25)))
+		{
+			std::cout << "Selecetd lua: " << i << std::endl;
+			g_Lua.selectedLua = i;
+		}
+	}
+	ImGui::EndChild();
+	ImGui::PopStyleColor();
+
+	if (ImGui::Button("Refresh", ImVec2({ 100.f, 35 })))
+		g_Lua.getLuas();
+	if (ImGui::Button("Load", ImVec2({ 100.f, 35 })))
+		g_Lua.openLua(g_Lua.selectedLua);
+	ImGui::Text("Selected LUA: %s, loaded in luas: %i", g_Lua.selectedLua.c_str(), (int)g_Lua.luas.size());
 
 	ImGui::End();
 
