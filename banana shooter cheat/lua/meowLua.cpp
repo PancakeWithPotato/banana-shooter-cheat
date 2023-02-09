@@ -13,13 +13,14 @@ void meowLua::openLua(std::string name)
 	LUA_t newlua;
 	newlua.state = luaL_newstate();
 	newlua.luaName = name;
-	luaL_openlibs(newlua.state);
-	this->registerTables(newlua.state);
+	this->luas.emplace_back(newlua);
+	luaL_openlibs(this->luas.at(this->currentLuas).state);
+	this->registerTables(this->luas.at(this->currentLuas).state);
 	std::string file = this->baseFolder + "\\" + name + ".lua";
-	int errorCode = luaL_dofile(newlua.state, file.c_str());
+	int errorCode = luaL_dofile(this->luas.at(this->currentLuas).state, file.c_str());
 	if (errorCode != LUA_OK)
 	{
-		std::string errorMSG = lua_tostring(newlua.state, -1);
+		std::string errorMSG = lua_tostring(this->luas.at(this->currentLuas).state, -1);
 		std::cout << ERR << std::format("Failed to load in lua {} due to: {}\n", name, errorMSG);
 	}
 	else
@@ -36,7 +37,6 @@ void meowLua::openLua(std::string name)
 	else
 		std::cout << SUCCES << std::format("Loaded lua {}\n", name);*/
 
-	this->luas.emplace_back(newlua);
 	this->currentLuas++;
 }
 
@@ -187,22 +187,21 @@ int luaHack::AddCallback(lua_State* L)
 
 	const char* function = lua_tostring(L, 2);
 	const char* callback = lua_tostring(L, 1);
-	char meow = 'f';
 	std::pair<const char*, const char*> callBackFunction = { callback, function };
 	std::cout << "Function: " << function << ", callback: " << callback << ".\n";
 	//i may implement fnv hash soon, and then i can make this a switch statement, till then, it stays if else hell lol
 	if (strcmp(callback, "render") == 0) {
-		g_Lua.renderCallbacks.emplace_back(callBackFunction);
+		g_Lua.luas.at(g_Lua.currentLuas ).renderCallbacks.emplace_back(callBackFunction);
 		g_Debug.logState(::SUCCESS, "Render Callback on function %s", function);
 	}
 	else if (strcmp(callback, "playerUpdate") == 0)
 	{
-		g_Lua.playerUpdateCallbacks.emplace_back(callBackFunction);
+		g_Lua.luas.at(g_Lua.currentLuas ).playerUpdateCallbacks.emplace_back(callBackFunction);
 		g_Debug.logState(::SUCCESS, "PlayerUpdate Callback on function %s", function);
 	}
 	else if (strcmp(callback, "attackUpdate") == 0)
 	{
-		g_Lua.attackUpdateCallbacks.emplace_back(callBackFunction);
+		g_Lua.luas.at(g_Lua.currentLuas ).attackUpdateCallbacks.emplace_back(callBackFunction);
 		g_Debug.logState(::SUCCESS, "AttackUpdate Callback on function %s", function);
 	}
 	return 0;

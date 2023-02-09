@@ -92,13 +92,24 @@ void __stdcall Hooks::hDoAttack(Firearms_o* thisptr)  {
 		g_Combat.bulletMultiplier(thisptr, g_Config::get<int>("combat,bullet_count,i"));
 	thisptr->fields.damage = INT_MAX;
 	player = g_Combat.closestPlayer(g_Hack->players, true);
-	if (g_Lua.state && !g_Lua.attackUpdateCallbacks.empty()) {
-		for (size_t i = 0; i < g_Lua.attackUpdateCallbacks.size(); i++)
+	for (auto& i : g_Lua.luas)
+	{
+		if (i.state || i.attackUpdateCallbacks.empty())
+			continue;
+		for (auto& k : i.attackUpdateCallbacks)
 		{
-			lua_getglobal(g_Lua.state, g_Lua.attackUpdateCallbacks[i].second);
-			lua_pcall(g_Lua.state, 0, 0, 0);
+			lua_getglobal(i.state, k.second);
+			if (lua_iscfunction(i.state, -1))
+				lua_pcall(i.state, 0, 0, 0);
 		}
 	}
+	//if (g_Lua.state && !g_Lua.attackUpdateCallbacks.empty()) {
+	//	for (size_t i = 0; i < g_Lua.attackUpdateCallbacks.size(); i++)
+	//	{
+	//		lua_getglobal(g_Lua.state, g_Lua.attackUpdateCallbacks[i].second);
+	//		lua_pcall(g_Lua.state, 0, 0, 0);
+	//	}
+	//}
 	if (g_Config::get<bool>("combat,aimbot_enabled,b")) 
 		g_Combat.aimbot(thisptr, player, g_Config::get<bool>("combat,explosive_bullets,b"), g_Config::get<int>("combat,aimbot_target,i"));
 
@@ -125,13 +136,26 @@ void __stdcall Hooks::hUpdatePlayer(Player* player) {
 		if (g_Hack->players.find(player->fields._SteamId_k__BackingField) == g_Hack->players.end())
 			g_Hack->players.insert({ player->fields._SteamId_k__BackingField, player });
 	}
-	if (g_Lua.state && !g_Lua.playerUpdateCallbacks.empty()) {
-		for (size_t i = 0; i < g_Lua.playerUpdateCallbacks.size(); i++)
+
+	for (auto& i : g_Lua.luas)
+	{
+		if (i.state || i.renderCallbacks.empty())
+			continue;
+		for (auto& k : i.renderCallbacks)
 		{
-			lua_getglobal(g_Lua.state, g_Lua.playerUpdateCallbacks[i].second);
-			lua_pcall(g_Lua.state, 0, 0, 0);
+			lua_getglobal(i.state, k.second);
+			if (lua_iscfunction(i.state, -1))
+				lua_pcall(i.state, 0, 0, 0);
 		}
 	}
+
+	//if (g_Lua.state && !g_Lua.playerUpdateCallbacks.empty()) {
+	//	for (size_t i = 0; i < g_Lua.playerUpdateCallbacks.size(); i++)
+	//	{
+	//		lua_getglobal(g_Lua.state, g_Lua.playerUpdateCallbacks[i].second);
+	//		lua_pcall(g_Lua.state, 0, 0, 0);
+	//	}
+	//}
 	return g_Hooks->oUpdatePlayer(player);
 }
 
@@ -181,7 +205,7 @@ HRESULT Hooks::hPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flag
 
 			ImFontConfig RoBoToFoNtCoNfIG;
 			RoBoToFoNtCoNfIG.RasterizerFlags = ImGuiFreeType::ForceAutoHint;
-			g_Menu.robotoFont = io.Fonts->AddFontFromMemoryTTF(Roboto::font, Roboto::size, 15, &RoBoToFoNtCoNfIG, io.Fonts->GetGlyphRangesCyrillic());
+			g_Menu.robotoFont = io.Fonts->AddFontFromMemoryTTF(Roboto::font, Roboto::size, 15, &RoBoToFoNtCoNfIG, io.Fonts->GetGlyphRangesDefault());
 
 			g_Menu.monsterratFont = io.Fonts->AddFontFromMemoryTTF(Monsterrat::font, Monsterrat::size, 17);
 			g_Menu.verdanaFont = io.Fonts->AddFontFromMemoryTTF(Verdana::font, Verdana::size, 12);
@@ -208,13 +232,28 @@ HRESULT Hooks::hPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flag
 		g_Visuals.renderEnemyBoxes({ 100,100 }, { 200,200 }, g_Config::get<ImVec4>("visuals,enemy_box_color,c"));
 
 	g_Visuals.renderText("this is from c++", { 500,500 }, { 0,0,0,1 });
-	if (g_Lua.state && !g_Lua.renderCallbacks.empty()) {
-		for (size_t i = 0; i < g_Lua.renderCallbacks.size(); i++)
+	for (auto& i : g_Lua.luas)
+	{
+		if (!i.state || i.renderCallbacks.empty())
+			continue;
+		for (auto& k : i.renderCallbacks)
 		{
-			lua_getglobal(g_Lua.state, g_Lua.renderCallbacks[i].second);
-			lua_pcall(g_Lua.state, 0, 0, 0);
+			lua_getglobal(i.state, k.second);
+			std::cout << std::format("The lua is {}, current callback is render, and function is {}\n", i.luaName, k.second);
+			auto stuff = lua_pcall(i.state, 0, 0, 0);
+			if (stuff != LUA_OK) {
+				std::string error = lua_tostring(i.state, -1);
+				std::cout << error << std::endl;
+			}
 		}
 	}
+	//if (g_Lua.state && !g_Lua.renderCallbacks.empty()) {
+	//	for (size_t i = 0; i < g_Lua.renderCallbacks.size(); i++)
+	//	{
+	//		lua_getglobal(g_Lua.state, g_Lua.renderCallbacks[i].second);
+	//		lua_pcall(g_Lua.state, 0, 0, 0);
+	//	}
+	//}
 
 	ImGui::Render();
 

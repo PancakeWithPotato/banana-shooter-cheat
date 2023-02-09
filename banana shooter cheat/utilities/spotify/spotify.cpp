@@ -63,6 +63,7 @@ Song_t Spotify::GetCurrentSong()
 		}
 
 		this->CurrentState = PLAYING;
+		//TODO: playing a song with an umlaut (or probably any special charachter really) will fuck up the whole thing
 		return { strTitle.substr(0, dash - 1), strTitle.substr(dash + 2, strTitle.size()) };
 	}
 	return Song_t();
