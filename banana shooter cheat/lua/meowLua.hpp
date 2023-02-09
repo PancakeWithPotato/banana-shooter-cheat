@@ -17,7 +17,7 @@ public:
 	lua_State* state;
 	void openLua(std::string name);
 	bool setup();
-	void destroy();
+	void destroy(std::string name); //unload
 	void getLuas();
 	void openDir();
 	//setup stuff as well
@@ -32,6 +32,7 @@ public:
 	int currentLuas = 0;
 	std::string selectedLua = "none";
 	Player* currentPlayer = nullptr;
+	std::vector<std::string> loadedLuas;
 }; inline meowLua g_Lua;
 
 

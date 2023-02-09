@@ -46,8 +46,6 @@ void Hack::destroy()  {
 	delete g_Hooks;
 	delete g_Funcs;
 	g_Debug.destroyConsole();
-
-	g_Lua.destroy();
 }
 
 std::string Hack::testFunction(std::string testString) 

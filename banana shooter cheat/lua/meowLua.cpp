@@ -25,13 +25,22 @@ void meowLua::openLua(std::string name)
 	}
 	else
 		std::cout << SUCCES << std::format("Loaded lua {}\n", name); 
-
+	this->loadedLuas.emplace_back(name);
 	this->currentLuas++;
 }
 
-void meowLua::destroy()
+void meowLua::destroy(std::string name)
 {
-	//std::cout << "bye lua\n";
+	g_Debug.logState(::SUCCESS, "Unloading lua %s", name);
+	for (auto& i : this->luas) {
+		if (i.luaName == name) {
+			lua_close(i.state);
+			i.attackUpdateCallbacks.clear();
+			i.renderCallbacks.clear();
+			i.playerUpdateCallbacks.clear();
+		}
+	}
+	this->currentLuas--;
 }
 
 void meowLua::getLuas() 

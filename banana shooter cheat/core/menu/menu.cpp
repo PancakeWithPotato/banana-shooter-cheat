@@ -258,12 +258,13 @@ void Menu::formatDate(std::string& date, const std::string& raw)  {
 
 void Menu::renderLua() 
 {
-	ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, { 430.f, 200.f });
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, { 430.f, 165 });
 	//lua stuff (separate window)
 	ImGui::Begin("Meowware - LUA", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoScrollbar);
 	if (ImGui::Button("Open folder", ImVec2({ 100.f, 35 })))
 		g_Lua.openDir();
 	static const auto cursor = ImGui::GetCursorPosY();
+	static std::string buttonText = "Load";
 	ImGui::SameLine();
 	ImGui::SetCursorPosX(275); //size - childsize - 10
 
@@ -290,8 +291,13 @@ void Menu::renderLua()
 	if (ImGui::Button("Refresh", ImVec2({ 100.f, 35 })))
 		g_Lua.getLuas();
 
-	if (ImGui::Button("Load", ImVec2({ 100.f, 35 })))
-		g_Lua.openLua(g_Lua.selectedLua);
+	if (ImGui::Button(buttonText.c_str(), ImVec2({ 100.f, 35 })))
+	{
+		if (buttonText == "Load")
+			g_Lua.openLua(g_Lua.selectedLua);
+		else
+			g_Lua.destroy(g_Lua.selectedLua);
+	}
 	ImGui::Text("Selected LUA: %s, loaded in luas: %i", g_Lua.selectedLua.c_str(), (int)g_Lua.luas.size());
 
 	ImGui::End();
