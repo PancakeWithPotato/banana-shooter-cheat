@@ -103,13 +103,7 @@ void __stdcall Hooks::hDoAttack(Firearms_o* thisptr)  {
 				lua_pcall(i.state, 0, 0, 0);
 		}
 	}
-	//if (g_Lua.state && !g_Lua.attackUpdateCallbacks.empty()) {
-	//	for (size_t i = 0; i < g_Lua.attackUpdateCallbacks.size(); i++)
-	//	{
-	//		lua_getglobal(g_Lua.state, g_Lua.attackUpdateCallbacks[i].second);
-	//		lua_pcall(g_Lua.state, 0, 0, 0);
-	//	}
-	//}
+
 	if (g_Config::get<bool>("combat,aimbot_enabled,b")) 
 		g_Combat.aimbot(thisptr, player, g_Config::get<bool>("combat,explosive_bullets,b"), g_Config::get<int>("combat,aimbot_target,i"));
 
@@ -149,13 +143,6 @@ void __stdcall Hooks::hUpdatePlayer(Player* player) {
 		}
 	}
 
-	//if (g_Lua.state && !g_Lua.playerUpdateCallbacks.empty()) {
-	//	for (size_t i = 0; i < g_Lua.playerUpdateCallbacks.size(); i++)
-	//	{
-	//		lua_getglobal(g_Lua.state, g_Lua.playerUpdateCallbacks[i].second);
-	//		lua_pcall(g_Lua.state, 0, 0, 0);
-	//	}
-	//}
 	return g_Hooks->oUpdatePlayer(player);
 }
 
@@ -247,13 +234,6 @@ HRESULT Hooks::hPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flag
 			}
 		}
 	}
-	//if (g_Lua.state && !g_Lua.renderCallbacks.empty()) {
-	//	for (size_t i = 0; i < g_Lua.renderCallbacks.size(); i++)
-	//	{
-	//		lua_getglobal(g_Lua.state, g_Lua.renderCallbacks[i].second);
-	//		lua_pcall(g_Lua.state, 0, 0, 0);
-	//	}
-	//}
 
 	ImGui::Render();
 

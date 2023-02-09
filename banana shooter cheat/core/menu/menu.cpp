@@ -263,26 +263,33 @@ void Menu::renderLua()
 	ImGui::Begin("Meowware - LUA", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoScrollbar);
 	if (ImGui::Button("Open folder", ImVec2({ 100.f, 35 })))
 		g_Lua.openDir();
-
+	static const auto cursor = ImGui::GetCursorPosY();
 	ImGui::SameLine();
-	ImGui::SetCursorPosX(235);
+	ImGui::SetCursorPosX(275); //size - childsize - 10
 
-	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.23f, 0.23f, 0.23f, 1.00f));
-	ImGui::BeginChild("##luas", { 185, 125 });
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.10, 0.10, 0.10, 1.00f));
+	ImGui::BeginChild("##luas", { 145, 150 });
 	for (auto& i : g_Lua.allLuas)
 	{
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 10);
-		if (ImGui::Button(i.c_str(), ImVec2(175, 25)))
-		{
-			std::cout << "Selecetd lua: " << i << std::endl;
+		if (ImGui::Button(i.c_str(), ImVec2(135, 25)))
 			g_Lua.selectedLua = i;
-		}
+	}
+	ImGui::EndChild();
+	ImGui::SameLine();
+	ImGui::SetCursorPosX(120); //earlier pos - childsize
+	ImGui::BeginChild("##loadedluas", { 145, 150 });
+	for (auto& i : g_Lua.luas)
+	{
+		if (ImGui::Button(i.luaName.c_str(), ImVec2(135, 25)))
+			g_Lua.selectedLua = i.luaName;
 	}
 	ImGui::EndChild();
 	ImGui::PopStyleColor();
-
+	ImGui::SetCursorPosY(cursor);
 	if (ImGui::Button("Refresh", ImVec2({ 100.f, 35 })))
 		g_Lua.getLuas();
+
 	if (ImGui::Button("Load", ImVec2({ 100.f, 35 })))
 		g_Lua.openLua(g_Lua.selectedLua);
 	ImGui::Text("Selected LUA: %s, loaded in luas: %i", g_Lua.selectedLua.c_str(), (int)g_Lua.luas.size());

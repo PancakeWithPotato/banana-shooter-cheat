@@ -25,17 +25,6 @@ void meowLua::openLua(std::string name)
 	}
 	else
 		std::cout << SUCCES << std::format("Loaded lua {}\n", name); 
-	/*this->luas.at(this->currentLuas).state = luaL_newstate();
-	this->luas.at(this->currentLuas).luaName = name;
-	std::string file = this->baseFolder + "\\" + name;
-	int errorCode = luaL_dofile(this->luas.at(this->currentLuas).state, file.c_str());
-	if (errorCode != LUA_OK)
-	{
-		std::string errorMSG = lua_tostring(this->luas.at(this->currentLuas).state, -1);
-		std::cout << ERR << std::format("Failed to load in lua {} due to: {}\n", name, errorMSG);
-	}
-	else
-		std::cout << SUCCES << std::format("Loaded lua {}\n", name);*/
 
 	this->currentLuas++;
 }
