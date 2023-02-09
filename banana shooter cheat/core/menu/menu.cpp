@@ -265,25 +265,48 @@ void Menu::renderLua()
 		g_Lua.openDir();
 	static const auto cursor = ImGui::GetCursorPosY();
 	static std::string buttonText = "Load";
+
+	//1 to skip, 0 to not skip
+	static int shouldSkip = 0; 
+	//this is very bad but oh well
 	ImGui::SameLine();
 	ImGui::SetCursorPosX(275); //size - childsize - 10
 
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.10, 0.10, 0.10, 1.00f));
-	ImGui::BeginChild("##luas", { 145, 150 });
+	ImGui::BeginChild("##luas", { 145, 110 });
 	for (auto& i : g_Lua.allLuas)
 	{
+		//this is still horrible, I'm almost crying ;C.. blastbrean, cmon, fix my code
+		shouldSkip = 0;
+		for (const auto& k : g_Lua.luas)
+		{
+			if (k.luaName == i) {
+				shouldSkip = 1;
+				break;
+			}
+
+		}
+		if (shouldSkip == 1)
+			continue;
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 10);
-		if (ImGui::Button(i.c_str(), ImVec2(135, 25)))
+		if (ImGui::Button(i.c_str(), ImVec2(135, 25))) {
 			g_Lua.selectedLua = i;
+			buttonText = "Load";
+		}
+			
 	}
 	ImGui::EndChild();
 	ImGui::SameLine();
 	ImGui::SetCursorPosX(120); //earlier pos - childsize
-	ImGui::BeginChild("##loadedluas", { 145, 150 });
+	ImGui::BeginChild("##loadedluas", { 145, 110 });
 	for (auto& i : g_Lua.luas)
 	{
-		if (ImGui::Button(i.luaName.c_str(), ImVec2(135, 25)))
+		if (ImGui::Button(i.luaName.c_str(), ImVec2(135, 25))) 
+		{
 			g_Lua.selectedLua = i.luaName;
+			buttonText = "Unload";
+		}
+			
 	}
 	ImGui::EndChild();
 	ImGui::PopStyleColor();

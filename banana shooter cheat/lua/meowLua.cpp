@@ -29,15 +29,24 @@ void meowLua::openLua(std::string name)
 	this->currentLuas++;
 }
 
+//void meowLua::destroy(std::string name)
+//{
+//	g_Debug.logState(::SUCCESS, "Unloading lua %s", name);
+//	this->luas.erase(std::remove_if(this->luas.begin(), this->luas.end(),
+//		[&name](const LUA_t& lua) { return lua.luaName == name; }), this->luas.end());
+//	this->currentLuas--;
+//}
+
+
 void meowLua::destroy(std::string name)
 {
 	g_Debug.logState(::SUCCESS, "Unloading lua %s", name);
-	for (auto& i : this->luas) {
-		if (i.luaName == name) {
-			lua_close(i.state);
-			i.attackUpdateCallbacks.clear();
-			i.renderCallbacks.clear();
-			i.playerUpdateCallbacks.clear();
+	for (int i = 0; i < this->luas.size(); i++)
+	{
+		//we found the lua to unload
+		if (this->luas.at(i).luaName == name) {
+			this->luas.erase(this->luas.begin() + i);
+			break;
 		}
 	}
 	this->currentLuas--;

@@ -99,8 +99,11 @@ void __stdcall Hooks::hDoAttack(Firearms_o* thisptr)  {
 		for (auto& k : i.attackUpdateCallbacks)
 		{
 			lua_getglobal(i.state, k.second);
-			if (lua_iscfunction(i.state, -1))
-				lua_pcall(i.state, 0, 0, 0);
+			auto stuff = lua_pcall(i.state, 0, 0, 0);
+			if (stuff != LUA_OK) {
+				std::string error = lua_tostring(i.state, -1);
+				std::cout << error << std::endl;
+			}
 		}
 	}
 
@@ -138,8 +141,11 @@ void __stdcall Hooks::hUpdatePlayer(Player* player) {
 		for (auto& k : i.renderCallbacks)
 		{
 			lua_getglobal(i.state, k.second);
-			if (lua_iscfunction(i.state, -1))
-				lua_pcall(i.state, 0, 0, 0);
+			auto stuff = lua_pcall(i.state, 0, 0, 0);
+			if (stuff != LUA_OK) {
+				std::string error = lua_tostring(i.state, -1);
+				std::cout << error << std::endl;
+			}
 		}
 	}
 
@@ -226,7 +232,6 @@ HRESULT Hooks::hPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flag
 		for (auto& k : i.renderCallbacks)
 		{
 			lua_getglobal(i.state, k.second);
-			std::cout << std::format("The lua is {}, current callback is render, and function is {}\n", i.luaName, k.second);
 			auto stuff = lua_pcall(i.state, 0, 0, 0);
 			if (stuff != LUA_OK) {
 				std::string error = lua_tostring(i.state, -1);
