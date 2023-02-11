@@ -205,6 +205,7 @@ int luaConfig::getConfig(lua_State* L)
 		return result;
 	};
 	auto stuff = split(configKey, ',');
+	//this is a test comment!
 	switch (stuff[2][0])
 	{
 	case 'b': {
