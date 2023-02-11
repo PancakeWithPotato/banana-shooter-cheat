@@ -10,37 +10,45 @@ void meowLua::openLua(std::string name)
 {
 	if (name == "")
 		return;
+	//create and push back new lua
 	LUA_t newlua;
 	newlua.state = luaL_newstate();
 	newlua.luaName = name;
 	this->luas.emplace_back(newlua);
+
+	//open "default" libs
 	luaL_openlibs(this->luas.at(this->currentLuas).state);
+
+	//register tables and metatables
 	this->registerTables(this->luas.at(this->currentLuas).state);
+	this->registerMetaTables(this->luas.at(this->currentLuas).state);
+
+	//open the lua
 	std::string file = this->baseFolder + "\\" + name + ".lua";
 	int errorCode = luaL_dofile(this->luas.at(this->currentLuas).state, file.c_str());
+
+	//do error checking
+	//also waiting on sounds lol (reccomend me some good error sound, and good succes sound)
 	if (errorCode != LUA_OK)
 	{
 		std::string errorMSG = lua_tostring(this->luas.at(this->currentLuas).state, -1);
 		std::cout << ERR << std::format("Failed to load in lua {} due to: {}\n", name, errorMSG);
+
 	}
-	else
-		std::cout << SUCCES << std::format("Loaded lua {}\n", name); 
+	else 
+	{
+		std::cout << SUCCES << std::format("Loaded lua {}\n", name);
+
+	}
+
+	//emplace loaded lua name
 	this->loadedLuas.emplace_back(name);
 	this->currentLuas++;
 }
 
-//void meowLua::destroy(std::string name)
-//{
-//	g_Debug.logState(::SUCCESS, "Unloading lua %s", name);
-//	this->luas.erase(std::remove_if(this->luas.begin(), this->luas.end(),
-//		[&name](const LUA_t& lua) { return lua.luaName == name; }), this->luas.end());
-//	this->currentLuas--;
-//}
-
-
 void meowLua::destroy(std::string name)
 {
-	g_Debug.logState(::SUCCESS, "Unloading lua %s", name);
+	g_Debug.logState(::SUCCESS, "Unloading lua %s", name.c_str());
 	for (int i = 0; i < this->luas.size(); i++)
 	{
 		//we found the lua to unload
@@ -110,24 +118,6 @@ void meowLua::registerTables(lua_State* L)
 	//hack
 	{
 		lua_newtable(L);
-		/*int hackTableIDX = lua_gettop(L);
-		lua_pushvalue(L, hackTableIDX);
-		lua_setglobal(L, "hack");
-
-		lua_pushcfunction(L, luaHack::AddCallback);
-		lua_setfield(L, -2, "addCallback");
-
-		lua_pushcfunction(L, luaHack::testFunction);
-		lua_setfield(L, -2, "testFunction");
-
-		lua_pushcfunction(L, luaHack::getInstance);
-		lua_setfield(L, -2, "getInstance");
-
-		luaL_newmetatable(L, "hackTable");
-
-		lua_pushstring(L, "__index");
-		lua_pushvalue(L, hackTableIDX);
-		lua_settable(L, -3);*/
 
 		lua_pushstring(L, "addCallback");
 		lua_pushcfunction(L, luaHack::AddCallback);
@@ -139,6 +129,37 @@ void meowLua::registerTables(lua_State* L)
 	//globals
 	{
 
+	}
+
+	//players
+	{
+		lua_newtable(L);
+
+		lua_pushstring(L, "get");
+		lua_pushcfunction(L, luaHack::AddCallback);
+		lua_settable(L, -3);
+
+		lua_setglobal(L, "players");
+	}
+}
+
+void meowLua::registerMetaTables(lua_State* L)
+{
+	//players
+	{
+		luaL_newmetatable(L, "players");
+
+		lua_pushstring(L, "getHealth");
+		lua_pushcfunction(L, luaHack::AddCallback);
+		lua_settable(L, -3);
+	}
+
+	//vectors
+	{
+		luaL_newmetatable(L, "vec2");
+		lua_pushstring(L, "__add");
+		lua_pushcfunction(L, luaUtils::vec2::addVec2);
+		lua_settable(L, -3);
 	}
 }
 
@@ -169,6 +190,20 @@ int luaUtils::vec2New(lua_State* L)
 
 	ImVec2 vector = { (float)lua_tonumber(L, 1), (float)lua_tonumber(L, 2)};
 	luaUtils::vec2::vec2New(L, vector);
+	return 1;
+}
+
+int luaUtils::vec2::addVec2(lua_State* L)
+{
+	luaL_argcheck(L, lua_istable(L, 1), 1, "expected vec2 table (2)");
+	luaL_argcheck(L, lua_istable(L, 2), 2, "expected vec2 table (2)");
+
+	ImVec2 vector = {tableutils::GetFloat(L, 1, "x"), tableutils::GetFloat(L, 1, "y") };
+	ImVec2 vector2 = { tableutils::GetFloat(L, 2, "x"), tableutils::GetFloat(L, 2, "y") };
+
+	ImVec2 vectorAdded = {(vector.x + vector2.x), (vector.y, vector2.y)};
+
+	luaUtils::vec2::vec2New(L, vectorAdded);
 	return 1;
 }
 

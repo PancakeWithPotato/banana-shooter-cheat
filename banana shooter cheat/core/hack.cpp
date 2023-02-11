@@ -30,7 +30,7 @@ bool Hack::setup()
 	g_Funcs->setup();
 	g_Config::init();
 	g_Lua.setup();
-	//PlaySoundA(reinterpret_cast<LPCSTR>(injectSound), NULL, SND_ASYNC | SND_MEMORY); //inject sound
+	PlaySoundA(reinterpret_cast<LPCSTR>(injectSound), NULL, SND_ASYNC | SND_MEMORY); //inject sound
 	return true;
 }
 

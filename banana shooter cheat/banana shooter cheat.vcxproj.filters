@@ -144,8 +144,8 @@
   </ItemGroup>
   <ItemGroup>
     <Library Include="utilities\discord\discord_release.lib" />
-    <Library Include="utilities\discord\discord_debug.lib" />
     <Library Include="lua\lua54.lib" />
+    <Library Include="utilities\discord\discord_debug.lib" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="sdk\thx_nerdie.txt" />

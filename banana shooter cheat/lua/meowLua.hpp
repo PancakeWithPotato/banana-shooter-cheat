@@ -22,6 +22,7 @@ public:
 	void openDir();
 	//setup stuff as well
 	void registerTables(lua_State* L);
+	void registerMetaTables(lua_State* L);
 
 	std::string baseFolder = "";
 	std::vector<std::pair<const char*, const char*>> renderCallbacks;
@@ -47,6 +48,7 @@ namespace luaUtils
 	{
 		static int vec2New(lua_State* L, ImVec2 vec);
 		static int vec4New(lua_State* L, ImVec4 vec);
+		int addVec2(lua_State* L);
 	}
 	int vec2New(lua_State* L);
 	int vec3New(lua_State* L);
