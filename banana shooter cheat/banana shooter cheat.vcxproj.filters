@@ -141,6 +141,7 @@
     <ClInclude Include="lua\meowLua.hpp" />
     <ClInclude Include="utilities\spotify\inject_sound.hpp" />
     <ClInclude Include="core\menu\meowware_cover.hpp" />
+    <ClInclude Include="utilities\font\pixel7.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="utilities\discord\discord_release.lib" />

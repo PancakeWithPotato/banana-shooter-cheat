@@ -210,6 +210,7 @@
     <ClInclude Include="utilities\debug.hpp" />
     <ClInclude Include="utilities\font\helvetica.hpp" />
     <ClInclude Include="utilities\font\monsterrat.hpp" />
+    <ClInclude Include="utilities\font\pixel7.hpp" />
     <ClInclude Include="utilities\font\roboto.hpp" />
     <ClInclude Include="utilities\font\verdana.hpp" />
     <ClInclude Include="utilities\includes.hpp" />

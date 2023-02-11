@@ -198,13 +198,16 @@ HRESULT Hooks::hPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flag
 
 			ImFontConfig RoBoToFoNtCoNfIG;
 			RoBoToFoNtCoNfIG.RasterizerFlags = ImGuiFreeType::ForceAutoHint;
+			g_Menu.smallest7 = io.Fonts->AddFontFromMemoryTTF(pixel7::font, pixel7::size, 14, &RoBoToFoNtCoNfIG);
+			g_Menu.helveticaNormal = io.Fonts->AddFontFromMemoryTTF(Helvetica::fontNormal, Helvetica::normalSize, 15, &RoBoToFoNtCoNfIG);
 			g_Menu.robotoFont = io.Fonts->AddFontFromMemoryTTF(Roboto::font, Roboto::size, 15, &RoBoToFoNtCoNfIG, io.Fonts->GetGlyphRangesDefault());
 
 			g_Menu.monsterratFont = io.Fonts->AddFontFromMemoryTTF(Monsterrat::font, Monsterrat::size, 17);
-			g_Menu.verdanaFont = io.Fonts->AddFontFromMemoryTTF(Verdana::font, Verdana::size, 12);
 
-			g_Menu.helveticaLight = io.Fonts->AddFontFromMemoryTTF(Helvetica::fontLight, Helvetica::lightSize, 15);
-			g_Menu.helveticaNormal = io.Fonts->AddFontFromMemoryTTF(Helvetica::fontNormal, Helvetica::normalSize, 15);
+			g_Menu.verdanaFont = io.Fonts->AddFontFromMemoryTTF(Verdana::font, Verdana::size, 12);
+			g_Menu.helveticaLight = io.Fonts->AddFontFromMemoryTTF(Helvetica::fontLight, Helvetica::lightSize, 15, &RoBoToFoNtCoNfIG, io.Fonts->GetGlyphRangesDefault());
+			
+
 			ImGui_ImplWin32_Init(g_Hooks->window);
 			ImGui_ImplDX11_Init(g_Hooks->pDevice, g_Hooks->pContext);
 			init = true;

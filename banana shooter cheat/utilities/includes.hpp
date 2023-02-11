@@ -45,6 +45,7 @@
 #include "font/monsterrat.hpp"
 #include "font/verdana.hpp"
 #include "font/helvetica.hpp"
+#include "font/pixel7.hpp"
 
 #define WHITE ImVec4(1.f, 1.f, 1.f, 1.f);
 

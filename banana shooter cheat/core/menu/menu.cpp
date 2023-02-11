@@ -9,16 +9,18 @@ void meowpicker(const char* label, ImVec4& color)
 	ImGui::SameLine();
 	ImGui::PushID(label);
 
-	ImGui::Text("%s", label);
-	ImGui::SameLine();
+	//ImGui::Text("%s", label);
+	//ImGui::SameLine();
 
-	ImVec2 button_size(17.f, 0.0f);
-	button_size.y = ImGui::CalcTextSize(label).y;
+	ImVec2 button_size(20.f, 0.0f);
+	button_size.y = ImGui::GetFrameHeight();
 
 	ImGui::PushStyleColor(ImGuiCol_Button, color);
 	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(color.x + 0.1f, color.y + 0.1f, color.z + 0.1f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(color.x + 0.2f, color.y + 0.2f, color.z + 0.2f, 1.0f));
-
+	//since in this case, every single child has the same width, we can hardcode our setcursorposx, and it will look fine (315)
+	constexpr float availWeWant = 315.f;
+	ImGui::SetCursorPosX(availWeWant);
 	if (ImGui::Button("##colorpicker", button_size))
 	{
 		ImGui::OpenPopup("picker");
