@@ -126,9 +126,15 @@ void meowLua::registerTables(lua_State* L)
 		lua_setglobal(L, "hack");
 	}
 
-	//globals
+	//config
 	{
+		lua_newtable(L);
 
+		lua_pushstring(L, "get");
+		lua_pushcfunction(L, luaConfig::getConfig);
+		lua_settable(L, -3);
+
+		lua_setglobal(L, "config");
 	}
 
 	//players
@@ -166,9 +172,10 @@ void meowLua::registerMetaTables(lua_State* L)
 //visuals
 int luaVisuals::RenderText(lua_State* L)
 {
+	//i could also do this in every function, but maybe later lol
 	int top = lua_gettop(L);
 	if (top != 3) {
-		luaL_error(L, "Incorrect amount of arguments!");
+		luaL_error(L, "Incorrect amount of arguments! 3 expected, got %i", top);
 		return 0;
 	}
 	luaL_argcheck(L, lua_isstring(L, 1), 1, "Expected a string! (1)");
@@ -180,6 +187,45 @@ int luaVisuals::RenderText(lua_State* L)
 
 	g_Visuals.renderText(lua_tostring(L, 1), vector, color);
 	return 0;
+}
+
+//config
+int luaConfig::getConfig(lua_State* L)
+{
+	luaL_argcheck(L, lua_isstring(L, 1), 1, "Expected string (1)!"); //lua_isstring accepts numbers as well, so I will make a strict check later, for now, this works fine
+	std::string configKey = lua_tostring(L, 1);
+	static auto split = [](const std::string& s, char delim) {
+		std::vector<std::string> result;
+		std::stringstream ss(s);
+		std::string item;
+
+		while (getline(ss, item, delim))
+			result.push_back(item);
+
+		return result;
+	};
+	auto stuff = split(configKey, ',');
+	switch (stuff[2][0])
+	{
+	case 'b': {
+		bool configBool = g_Config::get<bool>(configKey);
+		lua_pushboolean(L, configBool);
+		return 1;
+	}
+	case 'f': {
+		float configFloat = g_Config::get<float>(configKey);
+		lua_pushnumber(L, configFloat);
+		return 1;
+	}
+	case 'i': {
+		int configInt = g_Config::get<int>(configKey);
+		lua_pushinteger(L, configInt);
+		return 1;
+	}
+	}
+	std::string errorMessage = "Could not find config item " + (std::string)lua_tostring(L, 1);
+	luaL_argerror(L, 1, errorMessage.data());
+	return 1;
 }
 
 //utils
@@ -201,7 +247,7 @@ int luaUtils::vec2::addVec2(lua_State* L)
 	ImVec2 vector = {tableutils::GetFloat(L, 1, "x"), tableutils::GetFloat(L, 1, "y") };
 	ImVec2 vector2 = { tableutils::GetFloat(L, 2, "x"), tableutils::GetFloat(L, 2, "y") };
 
-	ImVec2 vectorAdded = {(vector.x + vector2.x), (vector.y, vector2.y)};
+	ImVec2 vectorAdded = {(vector.x + vector2.x), (vector.y + vector2.y)};
 
 	luaUtils::vec2::vec2New(L, vectorAdded);
 	return 1;

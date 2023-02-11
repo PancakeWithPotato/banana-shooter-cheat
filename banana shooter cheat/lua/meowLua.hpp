@@ -60,6 +60,11 @@ namespace luaHack
 {
 	int AddCallback(lua_State* L);
 }
+
+namespace luaConfig 
+{
+	int getConfig(lua_State* L);
+}
 namespace tableutils {
 	inline int GetInt(lua_State* L, int table_index, const char* var_name) {
 		lua_pushstring(L, var_name);
