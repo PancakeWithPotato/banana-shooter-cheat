@@ -24,9 +24,10 @@ DWORD Spotify::GetProcessID()
 
 Song_t Spotify::GetCurrentSong()
 {
-	static int iTitlelenght = 0;
-	static char title[300];
-	static DWORD tmpID = 0;
+	static int iTitleLength = 0;
+	static std::string szTitle;
+	static DWORD dwTmpID = 0;
+
 	this->m_dwPID = this->GetProcessID();
 
 	if (this->m_dwPID == 0)
@@ -35,27 +36,26 @@ Song_t Spotify::GetCurrentSong()
 		return{ "", "" };
 	}
 
-	for (HWND window = GetTopWindow(0); window; window = GetWindow(window, GW_HWNDNEXT))
+	for (HWND hWindow = GetTopWindow(0); hWindow; hWindow = GetWindow(window, GW_HWNDNEXT))
 	{
-		if (!IsWindowVisible(window))
+		if (!IsWindowVisible(hWindow))
 			continue;
 
-		iTitlelenght = GetWindowTextLengthA(window);
+		iTitleLength = GetWindowTextLengthA(hWindow);
 
 
-		if (iTitlelenght == 0)
+		if (iTitleLength == 0)
 			continue;
 
-		GetWindowThreadProcessId(window, &tmpID);
+		GetWindowThreadProcessId(hWindow, &dwTmpID);
 
-		if (tmpID != this->m_dwPID)
+		if (dwTmpID != this->m_dwPID)
 			continue;
 
-		GetWindowTextA(window, title, iTitlelenght + 1);
+		GetWindowTextA(hWindow, szTitle.data(), iTitleLength + 1);
 
-		std::string strTitle{ title };
 		size_t dash = 0;
-		dash = strTitle.find_last_of('-');
+		dash = szTitle.find_last_of('-');
 
 		if (dash == std::string::npos) {
 			this->CurrentState = STOPPED;
@@ -64,7 +64,7 @@ Song_t Spotify::GetCurrentSong()
 
 		this->CurrentState = PLAYING;
 		//TODO: playing a song with an umlaut (or probably any special charachter really) will fuck up the whole thing
-		return { strTitle.substr(0, dash - 1), strTitle.substr(dash + 2, strTitle.size()) };
+		return { szTitle.substr(0, dash - 1), szTitle.substr(dash + 2, szTitle.size()) };
 	}
 	return Song_t();
 }
