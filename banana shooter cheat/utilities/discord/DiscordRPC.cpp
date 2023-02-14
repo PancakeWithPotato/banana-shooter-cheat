@@ -1,13 +1,13 @@
 #include "DiscordRPC.h"
 
-void DiscordRPC::handler()
+void CDiscordRPC::Handler()
 {
 	DiscordEventHandlers handler;
 	memset(&handler, 0, sizeof(handler));
 	Discord_Initialize("1065319308063948810", &handler, 1, NULL);
 }
 
-void DiscordRPC::update()
+void CDiscordRPC::Update()
 {
     DiscordRichPresence discordPresence;
     memset(&discordPresence, 0, sizeof(discordPresence));
@@ -18,13 +18,13 @@ void DiscordRPC::update()
     Discord_UpdatePresence(&discordPresence);
 }
 
-void DiscordRPC::shutDown()
+void CDiscordRPC::Shutdown()
 {
     Discord_Shutdown();
 }
 
-void DiscordRPC::discordThread()
+void CDiscordRPC::Initalize()
 {
-    handler();
-    update();
+    Handler();
+    Update();
 }
