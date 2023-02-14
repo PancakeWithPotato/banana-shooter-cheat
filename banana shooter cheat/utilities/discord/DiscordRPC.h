@@ -11,14 +11,14 @@
 #pragma comment(lib, "discord_release.lib")
 #endif
 
-class DiscordRPC
+class CDiscordRPC
 {
 private:
-	void handler();
-	void update();
+	void Handler();
+	void Update();
 
 public:
-	void discordThread();
-	void shutDown();
-}; inline DiscordRPC g_Cord;
+	void Initalize();
+	void Shutdown();
+}; inline CDiscordRPC g_Cord;
 

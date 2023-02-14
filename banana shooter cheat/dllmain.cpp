@@ -8,7 +8,7 @@ void Main(HMODULE hMod)  {
 	if (!g_Hack->setup()) 
 		g_Debug.logState(::ERROR, "Failed to setup!");
 
-	g_Cord.discordThread();
+	g_Cord.Initalize();
 
 	while (!GetAsyncKeyState(VK_END)) 
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -16,7 +16,7 @@ void Main(HMODULE hMod)  {
 	g_Hack->shouldUnload = true;
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
-	g_Cord.shutDown();
+	g_Cord.Shutdown();
 	FreeLibraryAndExitThread(hMod, 0); 
 }
 
