@@ -1,6 +1,6 @@
 #pragma once
 #include "../../utilities/includes.hpp"
-
+#include "../../dependencies/easing-functions/easing.h"
 class Visuals 
 {
 private:
@@ -16,6 +16,17 @@ public:
 	//some stuff for lua calling
 	void renderText(const char* text, const ImVec2& pos, const ImVec4& color);
 }; inline Visuals g_Visuals;
+
+namespace Animations
+{
+	//the animations
+	inline easingFunction easeIn;
+
+	void Setup(){
+		easeIn = getEasingFunction(EaseInBack);
+	}
+
+}
 
 
 

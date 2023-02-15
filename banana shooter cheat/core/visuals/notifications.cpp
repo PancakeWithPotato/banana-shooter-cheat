@@ -30,10 +30,22 @@ void CNotifications::Render()
 
 	for (int i = 0; i < this->notifs.size(); ++i)
 	{
-		const auto notif = this->notifs.at(i);
-		//i may add animations later, idk
-		ImVec2 renderpos = {0,(0.f + i * 15.f)}; //offset between the texts is 15
-		g_Visuals.renderText(notif.strName.c_str(), renderpos, { 1,1,1,1 });
+		auto& notif = this->notifs.at(i);
+		if(!notif.bAnimated)
+		{
+			do
+			{
+				notif.dAnimationProgress += Animations::easeIn(0.5);
+				g_Visuals.renderText({notif.dAnimationProgress, (0 + i * 15.f)}, notif.strName.c_str(), {1,1,1,1});
+			} while (notif.dAnimationProgress < 1.5);
+			notif.bAnimated = true;
+		}
+		else
+		{
+			//i may add animations later, idk
+			ImVec2 renderpos = {notif.dAnimationProgress, (0.f + i * 15.f)}; //offset between the texts is 15
+			g_Visuals.renderText(notif.strName.c_str(), renderpos, { 1,1,1,1 });
+		}
 	}
 }
 void CNotifications::AddNotif(std::string text) 
