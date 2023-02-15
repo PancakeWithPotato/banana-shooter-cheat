@@ -60,6 +60,7 @@
     <ClCompile Include="utilities\discord\DiscordRPC.cpp" />
     <ClCompile Include="utilities\spotify\spotify.cpp" />
     <ClCompile Include="lua\meowLua.cpp" />
+    <ClCompile Include="core\visuals\notifications.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utilities\includes.hpp">
@@ -142,6 +143,7 @@
     <ClInclude Include="utilities\spotify\inject_sound.hpp" />
     <ClInclude Include="core\menu\meowware_cover.hpp" />
     <ClInclude Include="utilities\font\pixel7.hpp" />
+    <ClInclude Include="core\visuals\notifactions.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="utilities\discord\discord_release.lib" />

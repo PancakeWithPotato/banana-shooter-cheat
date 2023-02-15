@@ -36,6 +36,7 @@
 #include "../core/hack.hpp"
 
 #include "../core/visuals/visuals.hpp"
+#include "../core/visuals/notifactions.hpp"
 
 //lua
 #include "../lua/meowLua.hpp"

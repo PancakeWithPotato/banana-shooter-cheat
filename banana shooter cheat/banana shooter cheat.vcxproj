@@ -146,6 +146,7 @@
     <ClCompile Include="core\combat\combat.cpp" />
     <ClCompile Include="core\config\config.cpp" />
     <ClCompile Include="core\menu\menu.cpp" />
+    <ClCompile Include="core\visuals\notifications.cpp" />
     <ClCompile Include="core\visuals\visuals.cpp" />
     <ClCompile Include="dependencies\imgui\imgui.cpp" />
     <ClCompile Include="dependencies\imgui\imgui_demo.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="core\menu\menu.hpp" />
     <ClInclude Include="core\menu\meowware_cover.hpp" />
     <ClInclude Include="core\menu\style.hpp" />
+    <ClInclude Include="core\visuals\notifactions.hpp" />
     <ClInclude Include="core\visuals\visuals.hpp" />
     <ClInclude Include="dependencies\imgui\imconfig.h" />
     <ClInclude Include="dependencies\imgui\imgui.h" />

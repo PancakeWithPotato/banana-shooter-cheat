@@ -116,7 +116,6 @@ void Menu::render()  {
 	ImGui::SetupStyles();
 	ImGui::Begin("Banana Shooter Hack", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoScrollbar);
 	ImGui::Columns(2, nullptr, false);
-
 	ImGui::SetColumnOffset(1, 125);
 	if (ImGui::Button("Combat", ImVec2(115, 60)))
 		TabCount = TAB_COMBAT;

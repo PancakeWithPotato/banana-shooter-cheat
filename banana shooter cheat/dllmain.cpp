@@ -7,7 +7,10 @@
 void Main(HMODULE hMod)  {
 	if (!g_Hack->setup()) 
 		g_Debug.logState(::ERROR, "Failed to setup!");
-
+	g_Notifs.AddNotif("test ");
+	g_Notifs.AddNotif("test 2");
+	g_Notifs.AddNotif("test 3");
+	g_Notifs.AddNotif("test 4");
 	g_Cord.Initalize();
 
 	while (!GetAsyncKeyState(VK_END)) 
