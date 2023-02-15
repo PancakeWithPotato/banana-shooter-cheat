@@ -61,6 +61,7 @@
     <ClCompile Include="utilities\spotify\spotify.cpp" />
     <ClCompile Include="lua\meowLua.cpp" />
     <ClCompile Include="core\visuals\notifications.cpp" />
+    <ClCompile Include="dependencies\easing-functions\easing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utilities\includes.hpp">
@@ -144,6 +145,8 @@
     <ClInclude Include="core\menu\meowware_cover.hpp" />
     <ClInclude Include="utilities\font\pixel7.hpp" />
     <ClInclude Include="core\visuals\notifactions.hpp" />
+    <ClInclude Include="utilities\font\segoui.hpp" />
+    <ClInclude Include="dependencies\easing-functions\easing.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="utilities\discord\discord_release.lib" />

@@ -148,6 +148,7 @@
     <ClCompile Include="core\menu\menu.cpp" />
     <ClCompile Include="core\visuals\notifications.cpp" />
     <ClCompile Include="core\visuals\visuals.cpp" />
+    <ClCompile Include="dependencies\easing-functions\easing.cpp" />
     <ClCompile Include="dependencies\imgui\imgui.cpp" />
     <ClCompile Include="dependencies\imgui\imgui_demo.cpp" />
     <ClCompile Include="dependencies\imgui\imgui_draw.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="core\menu\style.hpp" />
     <ClInclude Include="core\visuals\notifactions.hpp" />
     <ClInclude Include="core\visuals\visuals.hpp" />
+    <ClInclude Include="dependencies\easing-functions\easing.h" />
     <ClInclude Include="dependencies\imgui\imconfig.h" />
     <ClInclude Include="dependencies\imgui\imgui.h" />
     <ClInclude Include="dependencies\imgui\imgui_impl_dx11.h" />
@@ -214,6 +216,7 @@
     <ClInclude Include="utilities\font\monsterrat.hpp" />
     <ClInclude Include="utilities\font\pixel7.hpp" />
     <ClInclude Include="utilities\font\roboto.hpp" />
+    <ClInclude Include="utilities\font\segoui.hpp" />
     <ClInclude Include="utilities\font\verdana.hpp" />
     <ClInclude Include="utilities\includes.hpp" />
     <ClInclude Include="utilities\offsets.hpp" />

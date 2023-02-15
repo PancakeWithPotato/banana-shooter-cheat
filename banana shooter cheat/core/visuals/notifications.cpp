@@ -5,13 +5,18 @@ void CNotifications::ClearNotifs()
 	if (this->notifs.empty())
 		return;
 	auto time = ImGui::GetTime();
+	if (this->notifs.size() >= iMaxNotifs) 
+	{
+		for (size_t i = 0; i < this->notifs.size(); i++)
+		{
+			if(this->notifs.size() >= iMaxNotifs)
+				this->notifs.erase(this->notifs.begin() + i);
+		}
+	}
 	for (int i = 0; i < this->notifs.size(); ++i)
 	{
 		if (this->notifs.at(i).dEndTime <= time) 
-		{
-			std::cout << "Cleared notif " << this->notifs.at(i).strName << std::endl;
 			this->notifs.erase(this->notifs.begin() + i);
-		}
 	}
 }
 void CNotifications::Render() 
@@ -26,7 +31,8 @@ void CNotifications::Render()
 	for (int i = 0; i < this->notifs.size(); ++i)
 	{
 		const auto notif = this->notifs.at(i);
-		ImVec2 renderpos = { 0.f, 0.f + i * 25.f}; //offset between the texts is 25
+		//i may add animations later, idk
+		ImVec2 renderpos = {0,(0.f + i * 15.f)}; //offset between the texts is 15
 		g_Visuals.renderText(notif.strName.c_str(), renderpos, { 1,1,1,1 });
 	}
 }
@@ -37,5 +43,6 @@ void CNotifications::AddNotif(std::string text)
 		Notif_t notif{ .strName = text, .dPostTime = ImGui::GetTime() };
 		this->notifs.emplace_back(notif);
 	}
-	this->notifs.emplace_back(text);
+	Notif_t notif{ .strName = text, .dPostTime = ImGui::GetTime() };
+	this->notifs.emplace_back(notif);
 }

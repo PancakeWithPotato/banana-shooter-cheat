@@ -123,6 +123,10 @@ void meowLua::registerTables(lua_State* L)
 		lua_pushcfunction(L, luaHack::AddCallback);
 		lua_settable(L, -3);
 
+		lua_pushstring(L, "addNotification");
+		lua_pushcfunction(L, luaHack::addNotif);
+		lua_settable(L, -3);
+
 		lua_setglobal(L, "hack");
 	}
 
@@ -296,6 +300,13 @@ int luaHack::AddCallback(lua_State* L)
 	return 0;
 }
 
+int luaHack::addNotif(lua_State* L)
+{
+	luaL_argcheck(L, lua_isstring(L, 1), 1, "Expected a string! (1)");
+	std::string strNotif = lua_tostring(L, 1);
+	g_Notifs.AddNotif(strNotif);
+	return 0;
+}
 //extra utils (i hate this already)
 static int luaUtils::vec2::vec2New(lua_State* L, ImVec2 vec)
 {

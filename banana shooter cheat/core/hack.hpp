@@ -16,7 +16,6 @@ public:
 	Player* localPlayer = nullptr;
 	std::unordered_map<unsigned long long, Player*> players;
 
-	std::vector<std::string> notifs;
 	std::string testFunction(std::string testString);
 }; inline Hack* g_Hack = new Hack();
 

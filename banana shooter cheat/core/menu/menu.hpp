@@ -31,6 +31,7 @@ public:
 	ImFont* helveticaLight = nullptr;
 
 	ImFont* smallest7 = nullptr;
+	ImFont* segoui = nullptr;
 	void render();
 	void renderLua();
 	bool open = true;

@@ -198,6 +198,7 @@ HRESULT Hooks::hPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flag
 
 			ImFontConfig RoBoToFoNtCoNfIG;
 			RoBoToFoNtCoNfIG.RasterizerFlags = ImGuiFreeType::ForceAutoHint;
+			g_Menu.segoui = io.Fonts->AddFontFromMemoryTTF(SegoUI::font, SegoUI::iSize, 17, &RoBoToFoNtCoNfIG);
 			g_Menu.smallest7 = io.Fonts->AddFontFromMemoryTTF(pixel7::font, pixel7::size, 14, &RoBoToFoNtCoNfIG);
 			g_Menu.helveticaNormal = io.Fonts->AddFontFromMemoryTTF(Helvetica::fontNormal, Helvetica::normalSize, 15, &RoBoToFoNtCoNfIG);
 			g_Menu.robotoFont = io.Fonts->AddFontFromMemoryTTF(Roboto::font, Roboto::size, 15, &RoBoToFoNtCoNfIG, io.Fonts->GetGlyphRangesDefault());

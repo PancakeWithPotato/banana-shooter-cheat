@@ -1,6 +1,7 @@
 #include "visuals.hpp"
 #include "../../utilities/spotify/spotify.hpp"
 #include "../menu/menu.hpp"
+
 void Visuals::init() {
 	if (bInit)
 		return;

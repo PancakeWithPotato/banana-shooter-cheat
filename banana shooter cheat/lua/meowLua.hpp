@@ -59,6 +59,7 @@ namespace luaUtils
 namespace luaHack 
 {
 	int AddCallback(lua_State* L);
+	int addNotif(lua_State* L);
 }
 
 namespace luaConfig 

@@ -38,6 +38,8 @@
 #include "../core/visuals/visuals.hpp"
 #include "../core/visuals/notifactions.hpp"
 
+#include "../dependencies/easing-functions/easing.h" //credit: https://github.com/nicolausYes/easing-functions
+
 //lua
 #include "../lua/meowLua.hpp"
 
@@ -47,6 +49,7 @@
 #include "font/verdana.hpp"
 #include "font/helvetica.hpp"
 #include "font/pixel7.hpp"
+#include "font/segoui.hpp"
 
 #define WHITE ImVec4(1.f, 1.f, 1.f, 1.f);
 

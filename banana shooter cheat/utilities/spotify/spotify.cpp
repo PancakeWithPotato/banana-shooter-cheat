@@ -77,9 +77,9 @@ void Spotify::Update()
 		return;
 
 	this->CurrentlyPlaying = this->GetCurrentSong();
-	if (this->DidSongChange())
-		g_Hack->notifs.emplace_back(std::format("Started playing {} by {}", this->CurrentlyPlaying.strSongname, this->CurrentlyPlaying.strAuthor));
-		//std::cout << std::format("song has changed, B: {} - {}, L: {} - {} \n", this->m_BackupSong.strAuthor, this->m_BackupSong.strSongname, this->CurrentlyPlaying.strAuthor, this->CurrentlyPlaying.strSongname);
+	if (this->DidSongChange()) 
+		g_Notifs.AddNotif(std::format("Changed song to {} by {}", this->CurrentlyPlaying.strSongname, this->CurrentlyPlaying.strAuthor));
+//std::cout << std::format("song has changed, B: {} - {}, L: {} - {} \n", this->m_BackupSong.strAuthor, this->m_BackupSong.strSongname, this->CurrentlyPlaying.strAuthor, this->CurrentlyPlaying.strSongname);
 	switch (this->CurrentState)
 	{
 	case NOT_RUNNING:

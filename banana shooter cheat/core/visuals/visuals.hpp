@@ -17,3 +17,5 @@ public:
 	void renderText(const char* text, const ImVec2& pos, const ImVec4& color);
 }; inline Visuals g_Visuals;
 
+
+
