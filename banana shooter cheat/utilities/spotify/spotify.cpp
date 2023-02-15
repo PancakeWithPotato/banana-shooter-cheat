@@ -93,8 +93,13 @@ void Spotify::Update()
 	}
 }
 
-bool Spotify::DidSongChange() 
+bool Spotify::DidSongChange()
 {
+	if (this->m_BackupSong.strSongname == "") 
+	{
+		this->m_BackupSong = this->CurrentlyPlaying;
+		return false;
+	}
 	if (this->m_BackupSong.strSongname != this->CurrentlyPlaying.strSongname) 
 	{
 		this->m_BackupSong = this->CurrentlyPlaying;
