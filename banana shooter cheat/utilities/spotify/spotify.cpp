@@ -53,7 +53,7 @@ Song_t Spotify::GetCurrentSong()
 			continue;
 
 		GetWindowTextA(hWindow, title, iTitleLength + 1);
-		static std::string strTitle{title};
+		std::string strTitle{title};
 		size_t dash = 0;
 		dash = strTitle.find_last_of('-');
 
@@ -77,6 +77,8 @@ void Spotify::Update()
 		return;
 
 	this->CurrentlyPlaying = this->GetCurrentSong();
+	if (this->DidSongChange())
+		std::cout << std::format("song has changed, B: {} - {}, L: {} - {} \n", this->m_BackupSong.strAuthor, this->m_BackupSong.strSongname, this->CurrentlyPlaying.strAuthor, this->CurrentlyPlaying.strSongname);
 	switch (this->CurrentState)
 	{
 	case NOT_RUNNING:
@@ -89,4 +91,15 @@ void Spotify::Update()
 		this->strComplete = std::format("Currently playing {} by {}", this->CurrentlyPlaying.strSongname, this->CurrentlyPlaying.strAuthor);
 		break;
 	}
+}
+
+bool Spotify::DidSongChange() 
+{
+	if (this->m_BackupSong.strSongname != this->CurrentlyPlaying.strSongname) 
+	{
+		this->m_BackupSong = this->CurrentlyPlaying;
+		return true;
+	}
+
+	return false;
 }
