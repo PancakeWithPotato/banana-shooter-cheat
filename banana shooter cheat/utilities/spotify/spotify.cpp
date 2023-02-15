@@ -25,7 +25,7 @@ DWORD Spotify::GetProcessID()
 Song_t Spotify::GetCurrentSong()
 {
 	static int iTitleLength = 0;
-	static std::string szTitle;
+	static char title[300];
 	static DWORD dwTmpID = 0;
 
 	this->m_dwPID = this->GetProcessID();
@@ -52,10 +52,10 @@ Song_t Spotify::GetCurrentSong()
 		if (dwTmpID != this->m_dwPID)
 			continue;
 
-		GetWindowTextA(hWindow, szTitle.data(), iTitleLength + 1);
-
+		GetWindowTextA(hWindow, title, iTitleLength + 1);
+		static std::string strTitle{title};
 		size_t dash = 0;
-		dash = szTitle.find_last_of('-');
+		dash = strTitle.find_last_of('-');
 
 		if (dash == std::string::npos) {
 			this->CurrentState = STOPPED;
@@ -64,7 +64,7 @@ Song_t Spotify::GetCurrentSong()
 
 		this->CurrentState = PLAYING;
 		//TODO: playing a song with an umlaut (or probably any special charachter really) will fuck up the whole thing
-		return { szTitle.substr(0, dash - 1), szTitle.substr(dash + 2, szTitle.size()) };
+		return { strTitle.substr(0, dash - 1), strTitle.substr(dash + 2, strTitle.size()) };
 	}
 	return Song_t();
 }

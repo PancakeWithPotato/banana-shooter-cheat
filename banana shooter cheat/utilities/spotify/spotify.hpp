@@ -18,6 +18,7 @@ class Spotify
 private:
 	DWORD m_dwPID;
 	DWORD GetProcessID();
+	Song_t m_BackupSong;
 public:
 	Spotify() {
 		m_dwPID = GetProcessID();
@@ -28,4 +29,6 @@ public:
 	std::string strComplete;
 
 	void Update();
+
+	bool DidSongChange();
 }; inline Spotify g_Spotify;
