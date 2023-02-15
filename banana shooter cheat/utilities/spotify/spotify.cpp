@@ -36,7 +36,7 @@ Song_t Spotify::GetCurrentSong()
 		return{ "", "" };
 	}
 
-	for (HWND hWindow = GetTopWindow(0); hWindow; hWindow = GetWindow(window, GW_HWNDNEXT))
+	for (HWND hWindow = GetTopWindow(0); hWindow; hWindow = GetWindow(hWindow, GW_HWNDNEXT))
 	{
 		if (!IsWindowVisible(hWindow))
 			continue;
