@@ -8,8 +8,7 @@ struct Notif_t
 	double dPostTime;
 	double dEndTime = dPostTime + iNotifTime;
 	bool bAnimated = false;
-	bool dAnimationProgress;
-
+	double dAnimationProgress;
 };
 
 class CNotifications
