@@ -22,10 +22,7 @@ namespace Animations
 	//the animations
 	inline easingFunction easeIn;
 
-	void Setup(){
-		easeIn = getEasingFunction(EaseInBack);
-	}
-
+	static void Setup();
 }
 
 

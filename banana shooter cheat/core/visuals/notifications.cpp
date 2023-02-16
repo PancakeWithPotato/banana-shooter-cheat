@@ -36,14 +36,14 @@ void CNotifications::Render()
 			do
 			{
 				notif.dAnimationProgress += Animations::easeIn(0.5);
-				g_Visuals.renderText(notif.strName.c_str(), { notif.dAnimationProgress, (0 + i * 15.f) }, {1,1,1,1});
+				g_Visuals.renderText(notif.strName.c_str(), { (float)notif.dAnimationProgress, (0 + i * 15.f) }, {1,1,1,1});
 			} while (notif.dAnimationProgress < 1.5);
 			notif.bAnimated = true;
 		}
 		else
 		{
 			//i may add animations later, idk
-			ImVec2 renderpos = {notif.dAnimationProgress, (0.f + i * 15.f)}; //offset between the texts is 15
+			ImVec2 renderpos = {(float)notif.dAnimationProgress, (0.f + i * 15.f)}; //offset between the texts is 15
 			g_Visuals.renderText(notif.strName.c_str(), renderpos, { 1,1,1,1 });
 		}
 	}

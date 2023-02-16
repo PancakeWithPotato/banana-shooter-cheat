@@ -8,8 +8,13 @@ void Visuals::init() {
 
 	draw = ImGui::GetBackgroundDrawList();
 	v2ScreenSize = ImGui::GetIO().DisplaySize;
-
+	Animations::Setup();
 	bInit = true;
+}
+
+void Animations::Setup()
+{
+	easeIn = getEasingFunction(EaseInBack);
 }
 
 void Visuals::renderSpotifyStatus() {
