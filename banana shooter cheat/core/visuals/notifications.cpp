@@ -36,7 +36,7 @@ void CNotifications::Render()
 			do
 			{
 				notif.dAnimationProgress += Animations::easeIn(0.5);
-				g_Visuals.renderText({notif.dAnimationProgress, (0 + i * 15.f)}, notif.strName.c_str(), {1,1,1,1});
+				g_Visuals.renderText(notif.strName.c_str(), { notif.dAnimationProgress, (0 + i * 15.f) }, {1,1,1,1});
 			} while (notif.dAnimationProgress < 1.5);
 			notif.bAnimated = true;
 		}

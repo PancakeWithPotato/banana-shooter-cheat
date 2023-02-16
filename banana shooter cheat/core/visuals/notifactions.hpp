@@ -7,6 +7,8 @@ struct Notif_t
 	std::string strName;
 	double dPostTime;
 	double dEndTime = dPostTime + iNotifTime;
+	bool bAnimated = false;
+	bool dAnimationProgress;
 
 };
 
