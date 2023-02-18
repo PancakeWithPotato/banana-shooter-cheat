@@ -31,21 +31,17 @@ void CNotifications::Render()
 	for (int i = 0; i < this->notifs.size(); ++i)
 	{
 		auto& notif = this->notifs.at(i);
-		if(!notif.bAnimated)
-		{
-			do
-			{
-				notif.dAnimationProgress += Animations::easeIn(0.5);
-				g_Visuals.renderText(notif.strName.c_str(), { (float)notif.dAnimationProgress, (0 + i * 15.f) }, {1,1,1,1});
-			} while (notif.dAnimationProgress < 1.5);
-			notif.bAnimated = true;
+		if (!notif.bIDGenerated) {
+			notif.uAnimationID += rand() % 500;
+			//g_Debug.logState(::SUCCESS, "Id is: %i", notif.uAnimationID);
+			notif.bIDGenerated = true;
 		}
-		else
-		{
-			//i may add animations later, idk
-			ImVec2 renderpos = {(float)notif.dAnimationProgress, (0.f + i * 15.f)}; //offset between the texts is 15
-			g_Visuals.renderText(notif.strName.c_str(), renderpos, { 1,1,1,1 });
-		}
+		
+		if (notif.dAnimationProgress < 3.5)
+			notif.dAnimationProgress += Animations::Tween(notif.uAnimationID, { .duration = 1.f, .state = !notif.bAnimated, .from = (float)notif.dAnimationProgress, .dest = 3.5f }); //as state, i could pass in true, since it doesnt matter if i change it to false or not, cuz im doing "+=", not "=". I Do this, since it starts as a minus value, and just simply using "=", would make it a value between 0 and 1, thus not minus.
+		//i may add animations later, idk
+		ImVec2 renderpos = {(float)notif.dAnimationProgress, (0.f + i * 15.f)}; //offset between the texts is 15
+		g_Visuals.renderText(notif.strName.c_str(), renderpos, { 1,1,1,1 });
 	}
 }
 void CNotifications::AddNotif(std::string text) 

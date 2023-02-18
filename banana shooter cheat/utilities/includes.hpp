@@ -14,6 +14,7 @@
 #include <variant>
 #include <filesystem>
 #include <fstream>
+#include <algorithm>
 
 #include "../dependencies/imgui/imgui.h"
 #include "../dependencies/imgui/imgui_freetype.h"

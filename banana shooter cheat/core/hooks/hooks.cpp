@@ -228,6 +228,7 @@ HRESULT Hooks::hPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flag
 	if (g_Config::get<bool>("visuals,enemy_box,b"))
 		g_Visuals.renderEnemyBoxes({ 100,100 }, { 200,200 }, g_Config::get<ImVec4>("visuals,enemy_box_color,c"));
 
+	Animations::time = ImGui::GetIO().DeltaTime;
 	g_Visuals.renderText("this is from c++", { 500,500 }, { 0,0,0,1 });
 	g_Notifs.Render();
 	for (auto& i : g_Lua.luas)

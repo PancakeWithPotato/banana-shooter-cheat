@@ -14,7 +14,11 @@ void Visuals::init() {
 
 void Animations::Setup()
 {
-	easeIn = getEasingFunction(EaseInBack);
+	easeIn = getEasingFunction(EaseInSine);
+	easeInQuint = getEasingFunction(EaseInQuint);
+	easeOutQuint = getEasingFunction(EaseOutQuint);
+	easeInOutQuart = getEasingFunction(EaseInOutQuart);
+	easeInCirc = getEasingFunction(EaseInCirc);
 }
 
 void Visuals::renderSpotifyStatus() {
@@ -47,3 +51,39 @@ void Visuals::renderText(const char* text, const ImVec2& pos, const ImVec4& colo
 	draw->AddText(pos, g_Config::convertColor(color), text);
 }
 
+
+float Animations::Tween(uint64_t id, const AnimInfo& info)
+{
+	float time = TweenHelper(id, info.duration, info.state, Animations::time);
+	return (float)Animations::easeOutQuint(time);
+}
+
+float Animations::TweenHelper(uint64_t id, float duration, bool state, float dt)
+{
+	auto value = Animations::values.find(id);
+
+	if (value == values.end())
+	{
+		values.insert({ id, 0.0f });
+		value = values.find(id);
+	}
+
+	if (state)
+	{
+		if (value->second < 1.0f) 
+		{
+			value->second += (1.0f / duration) * dt; 
+		}
+	}
+	else
+	{
+		if (value->second > 0.0f) 
+		{
+			value->second -= (1.0f / duration) * dt;
+		}
+	}
+
+  	value->second = std::clamp(value->second, 0.0f, 1.0f);
+
+	return value->second;
+}

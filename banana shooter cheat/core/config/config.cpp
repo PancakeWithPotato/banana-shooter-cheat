@@ -1,24 +1,10 @@
 #include "config.hpp"
 #include <ShlObj_core.h>
-
+#include <direct.h>
 #include "ini.hpp"
 
 void g_Config::init() 
 {
-    strBase = "C:\\Users\\" + g_Hack->username + "\\Documents\\meowware";
-	if (std::filesystem::create_directory(strBase.c_str())) std::cout << "Created dir!\n";
-
-	strBase.append("\\banana_shooter");
-	if (std::filesystem::create_directory(strBase.c_str())) std::cout << "Created dir!\n";
-
-	luaStrBase = strBase;
-	strBase.append("\\configs");
-	if (std::filesystem::create_directory(strBase.c_str()))std::cout << "Created dir!\n";
-
-	luaStrBase.append("\\luas");
-	if (std::filesystem::create_directory(luaStrBase.c_str())) std::cout << "Created dir!\n";
-
-	getConfigs();
 
 	elements["misc,spotify,b"] = true;
 
@@ -35,6 +21,45 @@ void g_Config::init()
 
 	//global shit
 	elements["global,copied_color,n"] = WHITE;
+
+	auto languageID = GetUserDefaultLCID();
+	g_Debug.logState(::WARNING, "Language id is %d", languageID);
+	if(languageID == 0x0c07)
+		strBase = "C:\\Benutzer\\" + g_Hack->username + "\\Documents\\meowware";
+	else
+		strBase = "C:\\Users\\" + g_Hack->username + "\\Documents\\meowware";
+	//std::cout << std::format("Folder {}\n", strBase);
+	if (std::filesystem::create_directory(strBase.c_str())) std::cout << "Created dir!\n";
+	//std::cout << std::format("Folder2 {}\n", strBase);
+	strBase.append("\\banana_shooter");
+	if (std::filesystem::create_directory(strBase.c_str())) std::cout << "Created dir!\n";
+	//std::cout << std::format("Folder3 {}\n", strBase);
+	luaStrBase = strBase;
+	//std::cout << std::format("Folder2_1 {}\n", luaStrBase);
+	strBase.append("\\configs");
+	if (std::filesystem::create_directory(strBase.c_str()))std::cout << "Created dir!\n";
+	//std::cout << std::format("Folder4 {}\n", strBase);
+	luaStrBase.append("\\luas");
+	//std::cout << std::format("Folder2_2 {}\n", luaStrBase);
+	if (std::filesystem::create_directory(luaStrBase.c_str())) std::cout << "Created dir!\n";
+
+	// strBase = "C:\\Users\\" + g_Hack->username + "\\Documents\\meowware";
+	////std::cout << std::format("Folder {}\n", strBase);
+	//if (_mkdir(strBase.c_str())) std::cout << "Created dir!\n";
+	////std::cout << std::format("Folder2 {}\n", strBase);
+	//strBase.append("\\banana_shooter");
+	//if	(_mkdir(strBase.c_str())) std::cout << "Created dir!\n";
+	////std::cout << std::format("Folder3 {}\n", strBase);
+	//luaStrBase = strBase;
+	////std::cout << std::format("Folder2_1 {}\n", luaStrBase);
+	//strBase.append("\\configs");
+	//if (_mkdir(strBase.c_str()))std::cout << "Created dir!\n";
+	////std::cout << std::format("Folder4 {}\n", strBase);
+	//luaStrBase.append("\\luas");
+	////std::cout << std::format("Folder2_2 {}\n", luaStrBase);
+	//if (_mkdir(strBase.c_str())) std::cout << "Created dir!\n";
+
+	getConfigs();
 }
 
 void g_Config::save(const std::string& strName)  {

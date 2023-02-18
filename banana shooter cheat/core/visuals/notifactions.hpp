@@ -1,14 +1,16 @@
 #pragma once
 #include "visuals.hpp"
 #define iMaxNotifs 30
-#define iNotifTime 6
+#define iNotifTime 8
 struct Notif_t
 {
 	std::string strName;
 	double dPostTime;
 	double dEndTime = dPostTime + iNotifTime;
 	bool bAnimated = false;
-	double dAnimationProgress;
+	bool bIDGenerated = false;
+	double dAnimationProgress = -1 * (ImGui::CalcTextSize(strName.c_str()).x / 2);
+	uint64_t uAnimationID = 0xDEAD;
 };
 
 class CNotifications
