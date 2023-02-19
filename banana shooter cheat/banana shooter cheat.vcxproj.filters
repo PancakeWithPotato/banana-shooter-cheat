@@ -135,11 +135,6 @@
     <ClInclude Include="utilities\font\verdana.hpp" />
     <ClInclude Include="utilities\font\helvetica.hpp" />
     <ClInclude Include="sdk\structures.h" />
-    <ClInclude Include="lua\include\lauxlib.h" />
-    <ClInclude Include="lua\include\lua.h" />
-    <ClInclude Include="lua\include\lua.hpp" />
-    <ClInclude Include="lua\include\luaconf.h" />
-    <ClInclude Include="lua\include\lualib.h" />
     <ClInclude Include="lua\meowLua.hpp" />
     <ClInclude Include="utilities\spotify\inject_sound.hpp" />
     <ClInclude Include="core\menu\meowware_cover.hpp" />
@@ -147,11 +142,18 @@
     <ClInclude Include="core\visuals\notifactions.hpp" />
     <ClInclude Include="utilities\font\segoui.hpp" />
     <ClInclude Include="dependencies\easing-functions\easing.h" />
+    <ClInclude Include="lua\lauxlib.h" />
+    <ClInclude Include="lua\lua.h" />
+    <ClInclude Include="lua\lua.hpp" />
+    <ClInclude Include="lua\luaconf.h" />
+    <ClInclude Include="lua\luajit.h" />
+    <ClInclude Include="lua\lualib.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="utilities\discord\discord_release.lib" />
-    <Library Include="lua\lua54.lib" />
     <Library Include="utilities\discord\discord_debug.lib" />
+    <Library Include="lua\lua51.lib" />
+    <Library Include="lua\luajit.lib" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="sdk\thx_nerdie.txt" />

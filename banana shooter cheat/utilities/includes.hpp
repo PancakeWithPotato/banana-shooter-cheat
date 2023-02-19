@@ -27,6 +27,8 @@
 #define RESET termcolor::reset
 #define CHANGE termcolor::cyan
 
+#define LUA_OK 0
+
 #include "debug.hpp"
 
 #include "../core/config/config.hpp"

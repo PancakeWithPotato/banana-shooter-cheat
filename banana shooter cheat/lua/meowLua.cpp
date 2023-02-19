@@ -27,6 +27,8 @@ void meowLua::openLua(std::string name)
 	std::string file = this->baseFolder + "\\" + name + ".lua";
 	int errorCode = luaL_dofile(this->luas.at(this->currentLuas).state, file.c_str());
 
+	luaopen_ffi(this->luas.at(this->currentLuas).state);
+
 	//do error checking
 	//also waiting on sounds lol (reccomend me some good error sound, and good succes sound)
 	if (errorCode != LUA_OK)

@@ -198,11 +198,12 @@
     <ClInclude Include="dependencies\minhook\MinHook.h" />
     <ClInclude Include="dependencies\minhook\trampoline.h" />
     <ClInclude Include="dependencies\termcolor\termcolor.hpp" />
-    <ClInclude Include="lua\include\lauxlib.h" />
-    <ClInclude Include="lua\include\lua.h" />
-    <ClInclude Include="lua\include\lua.hpp" />
-    <ClInclude Include="lua\include\luaconf.h" />
-    <ClInclude Include="lua\include\lualib.h" />
+    <ClInclude Include="lua\lauxlib.h" />
+    <ClInclude Include="lua\lua.h" />
+    <ClInclude Include="lua\lua.hpp" />
+    <ClInclude Include="lua\luaconf.h" />
+    <ClInclude Include="lua\luajit.h" />
+    <ClInclude Include="lua\lualib.h" />
     <ClInclude Include="lua\meowLua.hpp" />
     <ClInclude Include="sdk\structures.h" />
     <ClInclude Include="utilities\discord\DiscordRPC.h" />
@@ -227,7 +228,8 @@
     <ClInclude Include="utilities\spotify\spotify.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="lua\lua54.lib" />
+    <Library Include="lua\lua51.lib" />
+    <Library Include="lua\luajit.lib" />
     <Library Include="utilities\discord\discord_debug.lib" />
     <Library Include="utilities\discord\discord_release.lib" />
   </ItemGroup>

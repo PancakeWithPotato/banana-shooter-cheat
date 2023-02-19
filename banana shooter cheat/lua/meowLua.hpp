@@ -1,7 +1,8 @@
 #pragma once
 #include "include/lua.hpp"
 #include "../utilities/includes.hpp"
-
+#pragma comment(lib, "lua51.lib")
+#pragma comment(lib, "luajit.lib")
 
 struct LUA_t 
 {
