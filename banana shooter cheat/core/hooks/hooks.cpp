@@ -94,7 +94,7 @@ void __stdcall Hooks::hDoAttack(Firearms_o* thisptr)  {
 	player = g_Combat.closestPlayer(g_Hack->players, true);
 	for (auto& i : g_Lua.luas)
 	{
-		if (i.state || i.attackUpdateCallbacks.empty())
+		if (!i.state || i.attackUpdateCallbacks.empty())
 			continue;
 		for (auto& k : i.attackUpdateCallbacks)
 		{
@@ -136,9 +136,9 @@ void __stdcall Hooks::hUpdatePlayer(Player* player) {
 
 	for (auto& i : g_Lua.luas)
 	{
-		if (i.state || i.renderCallbacks.empty())
+		if (!i.state || i.playerUpdateCallbacks.empty())
 			continue;
-		for (auto& k : i.renderCallbacks)
+		for (auto& k : i.playerUpdateCallbacks)
 		{
 			lua_getglobal(i.state, k.second);
 			auto stuff = lua_pcall(i.state, 0, 0, 0);

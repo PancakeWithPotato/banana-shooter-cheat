@@ -51,6 +51,11 @@ void Visuals::renderText(const char* text, const ImVec2& pos, const ImVec4& colo
 	draw->AddText(pos, g_Config::convertColor(color), text);
 }
 
+void Visuals::renderBox(const ImVec2& min, const ImVec2& max, const ImVec4& color)
+{
+	draw->AddRect(min, max, g_Config::convertColor(color));
+}
+
 
 float Animations::Tween(uint64_t id, const AnimInfo& info)
 {

@@ -38,7 +38,7 @@ void CNotifications::Render()
 		}
 		
 		if (notif.dAnimationProgress < 3.5)
-			notif.dAnimationProgress += Animations::Tween(notif.uAnimationID, { .duration = 1.f, .state = !notif.bAnimated, .from = (float)notif.dAnimationProgress, .dest = 3.5f }); //as state, i could pass in true, since it doesnt matter if i change it to false or not, cuz im doing "+=", not "=". I Do this, since it starts as a minus value, and just simply using "=", would make it a value between 0 and 1, thus not minus.
+			notif.dAnimationProgress += Animations::Tween(notif.uAnimationID, { .duration = 0.5f, .state = !notif.bAnimated, .from = (float)notif.dAnimationProgress, .dest = 3.5f }); //as state, i could pass in true, since it doesnt matter if i change it to false or not, cuz im doing "+=", not "=". I Do this, since it starts as a minus value, and just simply using "=", would make it a value between 0 and 1, thus not minus.
 		//i may add animations later, idk
 		ImVec2 renderpos = {(float)notif.dAnimationProgress, (0.f + i * 15.f)}; //offset between the texts is 15
 		g_Visuals.renderText(notif.strName.c_str(), renderpos, { 1,1,1,1 });
@@ -48,9 +48,9 @@ void CNotifications::AddNotif(std::string text)
 {
 	if (this->notifs.size() >= iMaxNotifs) 
 	{	this->ClearNotifs();
-		Notif_t notif{ .strName = text, .dPostTime = ImGui::GetTime() };
+		Notif_t notif{ .strName = "[meowware] " + text, .dPostTime = ImGui::GetTime()};
 		this->notifs.emplace_back(notif);
 	}
-	Notif_t notif{ .strName = text, .dPostTime = ImGui::GetTime() };
+	Notif_t notif{ .strName = "[meowware] " + text, .dPostTime = ImGui::GetTime() };
 	this->notifs.emplace_back(notif);
 }

@@ -24,7 +24,7 @@ void g_Config::init()
 
 	auto languageID = GetUserDefaultLCID();
 	g_Debug.logState(::WARNING, "Language id is %d", languageID);
-	if(languageID == 0x0c07)
+	if(languageID == 3079)
 		strBase = "C:\\Benutzer\\" + g_Hack->username + "\\Documents\\meowware";
 	else
 		strBase = "C:\\Users\\" + g_Hack->username + "\\Documents\\meowware";

@@ -15,6 +15,7 @@ public:
 
 	//some stuff for lua calling
 	void renderText(const char* text, const ImVec2& pos, const ImVec4& color);
+	void renderBox(const ImVec2& min, const ImVec2& max, const ImVec4& color);
 }; inline Visuals g_Visuals;
 
 
