@@ -22,6 +22,7 @@ private:
 	void renderMisc();
 	void renderCombat();
 	void renderVisuals();
+
 public:
 	ImFont* robotoFont = nullptr;
 	ImFont* monsterratFont = nullptr;
@@ -36,6 +37,9 @@ public:
 	void renderLua();
 	bool open = true;
 	ID3D11ShaderResourceView* image = nullptr;
+
+
+	bool bBulletContext = false;
 }; 
 
 inline Menu g_Menu;

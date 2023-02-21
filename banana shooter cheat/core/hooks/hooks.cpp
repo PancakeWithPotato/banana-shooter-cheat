@@ -90,6 +90,9 @@ void __stdcall Hooks::hDoAttack(Firearms_o* thisptr)  {
 
 	if (g_Config::get<int>("combat,bullet_count,i"))
 		g_Combat.bulletMultiplier(thisptr, g_Config::get<int>("combat,bullet_count,i"));
+
+	thisptr->fields.damage = g_Config::get<int>("combat,bullet_damage,i");
+	thisptr->fields.useGravity = g_Config::get<bool>("combat,bullet_gravity,b");
 	thisptr->fields.damage = INT_MAX;
 	player = g_Combat.closestPlayer(g_Hack->players, true);
 	for (auto& i : g_Lua.luas)
@@ -158,8 +161,11 @@ void __stdcall Hooks::hUpdateAntiCheat(Manager_AntiCheatDectect_o* ptr) {
 }
 
 void __stdcall Hooks::hBulletInitialization(Bullet_o* bullet, Vector3 dir, float speed, int damage, void* layermask, bool local, bool useGravity) {
-	if (local) {
-		return g_Hooks->oBulletInitialization(bullet, dir, 9999.f, 9999.f, layermask, local, false);
+	if (local) 
+	{
+		g_Debug.logState(::SUCCESS, "Local bullet spawned!");
+		bullet->fields.penetrationAmount = g_Config::get<float>("combat,bullet_pen,f");
+		return g_Hooks->oBulletInitialization(bullet, dir, g_Config::get<float>("combat,bullet_speed,f"), g_Config::get<int>("combat,bullet_damage,i"), layermask, local, g_Config::get<bool>("combat,bullet_gravity,b"));
 	}
 
 	return g_Hooks->oBulletInitialization(bullet, dir, speed, damage, layermask, local, useGravity);

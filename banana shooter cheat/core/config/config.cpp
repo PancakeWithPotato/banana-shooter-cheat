@@ -5,16 +5,22 @@
 
 void g_Config::init() 
 {
-
+	//priority stuff
 	elements["misc,spotify,b"] = true;
 
+	//combat
 	elements["combat,aimbot_enabled,b"] = false;
 	elements["combat,aimbot_target,i"] = 0;
 	elements["combat,explosive_bullets,b"] = false;
 	elements["combat,bullet_count,i"] = 0;
 	elements["combat,norecoil,b"] = false;
 	elements["combat,noreload,b"] = false;
+	elements["combat,bullet_gravity,b"] = false;
+	elements["combat,bullet_damage,i"] = 15;
+	elements["combat,bullet_speed,f"] = 120.f;
+	elements["combat,bullet_pen,f"] = 1.f;
 
+	//visuals
 	elements["visuals,bob_speed,f"] = 17.f;
 	elements["visuals,enemy_box_color,c"] = WHITE;
 	elements["visuals,enemy_box,b"] = false;

@@ -3,7 +3,38 @@
 #include "../hooks/hooks.hpp"
 #include "style.hpp"
 #include <algorithm>
+namespace ImGui 
+{
+	static void HelpMarker(const char* format, ...) {
+		ImGui::SameLine();
+		ImGui::TextDisabled("(?)");
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::BeginTooltip();
+			ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+			ImGui::Text(format);
+			ImGui::PopTextWrapPos();
+			ImGui::EndTooltip();
+		}
+	}
 
+	void OpenBulletContext() 
+	{
+		static auto* style = &ImGui::GetStyle();
+		style->WindowMinSize = ImVec2(260, 150);
+		ImGui::Begin("Bullet attributes", &g_Menu.bBulletContext, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize);
+		ImGui::BeginChild("##att", {260,150 }, true);
+		ImGui::Spacing();
+		ImGui::Checkbox("Use gravity", &g_Config::get<bool>("combat,bullet_gravity,b"));
+		ImGui::SliderFloat("Speed", &g_Config::get<float>("combat,bullet_speed,f"), 0.f, 150.f);
+		ImGui::SameLine();
+		HelpMarker("LCTRL + LMB to on the slider to set an exact value");
+		ImGui::SliderInt("Damage", &g_Config::get<int>("combat,bullet_damage,i"), 1, 10000);
+		ImGui::SliderFloat("Penetration amount", &g_Config::get<float>("combat,bullet_pen,f"), 1.f, 150.f);
+		ImGui::EndChild();
+		ImGui::End();
+	}
+}
 void meowpicker(const char* label, ImVec4& color)
 {
 	ImGui::SameLine();
@@ -12,15 +43,12 @@ void meowpicker(const char* label, ImVec4& color)
 	//ImGui::Text("%s", label);
 	//ImGui::SameLine();
 
-	ImVec2 button_size(20.f, 0.0f);
+	ImVec2 button_size(23.f, 0.0f);
 	button_size.y = ImGui::GetFrameHeight();
 
 	ImGui::PushStyleColor(ImGuiCol_Button, color);
 	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(color.x + 0.1f, color.y + 0.1f, color.z + 0.1f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(color.x + 0.2f, color.y + 0.2f, color.z + 0.2f, 1.0f));
-	//since in this case, every single child has the same width, we can hardcode our setcursorposx, and it will look fine (315)
-	constexpr float availWeWant = 315.f;
-	ImGui::SetCursorPosX(availWeWant);
 	if (ImGui::Button("##colorpicker", button_size))
 	{
 		ImGui::OpenPopup("picker");
@@ -63,22 +91,6 @@ void meowpicker(const char* label, ImVec4& color)
 	}
 
 	ImGui::PopID();
-}
-
-
-namespace ImGui {
-	static void HelpMarker(const char* format, ...) {
-		ImGui::SameLine();
-		ImGui::TextDisabled("(?)");
-		if (ImGui::IsItemHovered())
-		{
-			ImGui::BeginTooltip();
-			ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
-			ImGui::Text(format);
-			ImGui::PopTextWrapPos();
-			ImGui::EndTooltip();
-		}
-	}
 }
 
 void Menu::render()  {
@@ -148,6 +160,9 @@ void Menu::render()  {
 
 	ImGui::End();
 
+	if (this->bBulletContext)
+		ImGui::OpenBulletContext();
+
 	//picture
 	ImGui::Begin("dummy", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoInputs);
 	ImGui::SetWindowPos({ g_Visuals.v2ScreenSize.x - 150, g_Visuals.v2ScreenSize.y - 150 });
@@ -183,7 +198,9 @@ void Menu::renderCombat()
 
 	ImGui::SliderInt("Bullet count", &g_Config::get<int>("combat,bullet_count,i"), 1, 100);
 	ImGui::HelpMarker("Will shoot more bullets");
-	
+	if (ImGui::Button("Open bullet modifications"))
+		this->bBulletContext = true;
+
 	ImGui::SameLine(); 
 	
 	ImGui::EndChild();
@@ -191,12 +208,12 @@ void Menu::renderCombat()
 
 void Menu::renderMisc() 
 {
-	ImGui::BeginChild("##configs", { 350, 240 }, true);
+	ImGui::BeginChild("##configs", { 350, 260 }, true);
 
 	ImGui::Checkbox("Spotify playback detection", &g_Config::get<bool>("misc,spotify,b"));
 
 	ImGui::SetCursorPos({ ImGui::GetWindowSize().x - 200, ImGui::GetWindowSize().y - 200 });
-	ImGui::BeginChild("Configs", { 195,187 });
+	ImGui::BeginChild("Configs", { 195,190 }); //187
 	ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 5);
 	ImGui::Spacing();
 	ImGui::BeginChild("##configss", { 185, 90 });
@@ -204,10 +221,7 @@ void Menu::renderMisc()
 	{
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 10);
 		if (ImGui::Button(i.c_str(), ImVec2(175, 25))) 
-		{
 			g_Config::strConfiginput = i;
-
-		}
 	}
 	ImGui::EndChild();
 	ImGui::Spacing();
