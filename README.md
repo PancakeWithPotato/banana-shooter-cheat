@@ -15,3 +15,4 @@ External dependecies:\
 -**blastbrean**, for annoying me but sometimes actually helping</font>
 
 If you care about the discord, join here: https://discord.gg/r8abKWnNqX
+Webiste: https://meowwarenumber.one
